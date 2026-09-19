@@ -26,4 +26,4 @@ Maintain one talk outline and one homework specification per week. Keep addition
 
 Curriculum ownership covers the full learning progression, teaching guidance, assignments, assessment, and transitions. Preserve the existing folder structure and resolve routine editorial decisions within the instructor's direction.
 
-Keep this branch focused on curriculum and existing teaching examples. Do not build applications, add hosted CI, or deploy infrastructure without a separate explicit request. Commit and push verified revisions to the curriculum branch; do not merge without explicit authorization.
+The [continuing classroom project](../project/README.md) now has a scaffold under `project/`; keep its specifications, tasks, code, and application-specific infrastructure there. Follow the [repository instructions](../AGENTS.md) and [project instructions](../project/AGENTS.md) for work in that area. Build application behavior, add hosted CI, or deploy infrastructure when requested as subsequent work. Use a feature branch for curriculum revisions as well as application changes, following the repository's commit-size, validation, and pre-commit review rules.

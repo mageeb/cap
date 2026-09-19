@@ -45,7 +45,7 @@ To prevent students from relying on simple "one-shot" prompts, the residency dev
 ---
 
 ## **The Standardized Agentic Workspace (SAW)**
-Students create or fork their own applications and configure explicit engineering checks. This repository supplies curriculum and teaching examples, not a production application. Branch protection and review policy must be enabled in their own repository; copying a workflow alone does not prevent merging.
+Students create or fork their own applications and configure explicit engineering checks. This repository supplies curriculum, teaching examples, and a [continuing classroom project](project/README.md), currently a scaffold to develop during teaching. Branch protection and review policy must be enabled in their own repository; copying a workflow alone does not prevent merging.
 *   **Structure:** `/src`, `/tests`, `/infrastructure`, and specifically `/docs/prompt-logs`.
 *   **Automated checks:** Week 6 teaches students to configure dependency installation, tests, security checks, frontend builds, and evidence-log validation for their own projects. The existing workflow file is an illustrative template requiring adaptation, not a ready-to-run application pipeline or an AI grader.
 

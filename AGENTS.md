@@ -53,6 +53,9 @@ These instructions apply throughout this repository. Read them at the start of e
 - Never edit or commit directly on `main` or `master`. If a task starts there, create the feature branch first, preserving existing work. Do not reset, discard, or include unrelated changes to make the branch clean.
 - Make each commit one coherent change. Aim for **100 changed lines or fewer**, counting additions plus deletions in handwritten code and documentation. Keep required tests with the behavior they verify.
 - Split larger work into sensible commits when possible. If an inseparable change exceeds the target, explain why in the commit body. Identify generated files, lockfiles, and mechanical moves separately; do not distort code or leave a broken intermediate state to hit the target.
+- For a task that produces multiple commits, format every subject as `<number>/N [<task-tag>] [<project-tag>] <title>`. Use the literal uppercase `N`, not the total commit count. Start at `1/N` and increment for each commit in that task, including across sessions.
+- Keep both tags consistent within a series: the first identifies the task, and the second identifies the application or project. For the classroom application, use `[project-tbd]` until a project tag is agreed, then use the agreed tag for new series; do not use `[cap]` as its project tag.
+- Example: `1/N [project-scaffold] [project-tbd] Add product brief`. If a task grows beyond one commit, update its earlier unpushed commit subject to follow the series format.
 - Stage only intended files or hunks. Inspect `git diff --cached` and `git diff --cached --numstat` before committing; the staged contents are the unit being reviewed.
 
 ## Before every commit

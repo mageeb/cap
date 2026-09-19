@@ -6,6 +6,8 @@ One application developed progressively during CAP teaching. Its specifications,
 
 ## Start here
 
+For copy-paste prompts at each stage, use the [project workflow and session handoff guide](docs/workflow.md).
+
 1. Define the product in [docs/brief.md](docs/brief.md).
 2. Describe the first complete user workflow in [specs/001-first-workflow/spec.md](specs/001-first-workflow/spec.md).
 3. Fill in its [plan](specs/001-first-workflow/plan.md) as needed and track implementation in its [tasks](specs/001-first-workflow/tasks.md).
@@ -23,6 +25,7 @@ project/
 │   ├── brief.md
 │   ├── roadmap.md
 │   ├── architecture.md
+│   ├── workflow.md
 │   ├── adrs/
 │   └── prompt-logs/
 ├── specs/

@@ -21,3 +21,5 @@ None yet. Add links to relevant code, tests, and logs as work is completed.
 ## Next step and unresolved issues
 
 Next step: Define the product and first user workflow. The app's behavior and technology stack remain undecided.
+
+Pending collaboration choices: [DEC-001: log location](../../../DECISIONS.md#dec-001-location-of-the-decision-log) and [DEC-002: entry format](../../../DECISIONS.md#dec-002-decision-entry-format). Review these one at a time through Ask User Question when requested.

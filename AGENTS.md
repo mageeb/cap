@@ -18,6 +18,16 @@
 - Be concise and direct. Err on the side of brevity; omit fluff, repetition, and unnecessary background.
 - Address the user as a technically fluent college graduate. Use precise technical terms when useful, with plain language and no unnecessary jargon.
 - End **every user-facing message**, including progress updates, with a short **TLDR:** summary.
+- Whenever you need the user's input, clarification, preference, or approval, use the available Ask User Question tool. Put the actual question, necessary context, and concise choices in that prompt; do not leave a request only in ordinary prose.
+- Use a blocking question tool when available. If only an asynchronous question tool is available, keep the question pending and pause dependent work until the user answers; continue only independent work. Silence, elapsed time, and preselected choices are not answers. If no question tool is available, explain the limitation and leave work requiring an answer paused.
+
+### Autonomous decisions and user review
+
+- Record every choice you make that is not already settled by the user's instructions or confirmed project records in [DECISIONS.md](DECISIONS.md). Record it when made, with a stable ID, task or scope, choice, reason, alternatives, affected files or behavior, and technical verification evidence. Mark it **Pending user review**, even if checks pass. Carrying out an already agreed choice is not a new decision.
+- Read the pending decisions relevant to your task at session start and after compaction. Keep them visible at handoff by linking their IDs from the relevant task record; do not rely on chat history.
+- Continue authorized work with provisional choices when user input is not required. Recording a decision does not replace asking for required input, and technical verification does not establish user confirmation.
+- When the user asks to review autonomous decisions, present **one decision at a time** through Ask User Question, including what was chosen, why, its effect, and options to confirm, redirect, or defer. Wait for the answer before presenting the next decision.
+- Record each response: **Confirmed** only after explicit confirmation, **Redirected** with the user's replacement direction and any follow-up work, or **Pending user review** if deferred. Preserve the original choice and record actual follow-up results; do not mark a requested correction complete before verifying it.
 
 ## Scope
 

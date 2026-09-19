@@ -29,5 +29,6 @@ These instructions apply to `project/` and its descendants, alongside the [repos
 
 - Keep task checkboxes current. Mark implementation tasks complete only when their acceptance checks pass; link to code, tests, or recorded evidence.
 - At a handoff, leave the next step and unresolved issues in the relevant `tasks.md` so a fresh session can continue.
+- Keep autonomous choices in the shared [decision log](../DECISIONS.md); read relevant pending entries before working and link their IDs from the active feature's `tasks.md` at handoff. User review follows the repository's one-question-at-a-time rule; significant technical decisions still belong in ADRs, linked from the log.
 - Record useful teaching evidence in `docs/prompt-logs/`, using the [shared template](../infrastructure/template/docs/prompt-logs/TEMPLATE.md) when helpful. Capture relevant prompts, corrections, and actual check results without secrets or private data.
 - Update README setup, run, and check commands when introducing tooling. No application commands exist yet; do not claim to have run them.

@@ -10,6 +10,8 @@ Open this repository in your local session. The initial scaffold is on `feature/
 
 Superpowers must be installed and enabled in the environment running the agent; installing it on one machine does not put the plugin in Git. Ask the session to confirm skill availability. The prompts below can also be followed directly if the plugin is unavailable.
 
+Whenever a stage needs your input or approval, the agent must use Ask User Question and wait for your answer before continuing dependent work. Autonomous choices go into the shared [decision log](../../DECISIONS.md) as pending user review; successful checks do not count as your confirmation.
+
 ## 1. Load context and brainstorm
 
 Paste this into a fresh session, replacing the idea placeholder:
@@ -75,15 +77,28 @@ Before leaving a session:
 Update the active feature's tasks.md with completed and remaining work,
 decisions, unresolved issues, actual check results, branch, and exact next
 step. Commit the relevant work following our rules. Report any remaining
-uncommitted files. Do not rely on chat history as the handoff.
+uncommitted files. Record autonomous choices in DECISIONS.md and link
+relevant pending decision IDs from tasks.md. Do not rely on chat history
+as the handoff.
 ```
 
 To resume later:
 
 ```text
 Read both AGENTS.md files and the active feature's spec, plan, and tasks.
+Read the relevant pending entries in DECISIONS.md.
 Check Git status and recent commits. Summarize the recorded state and
 resume the next unfinished task within the previously agreed scope.
+```
+
+To review choices the agent made while you were away:
+
+```text
+Read DECISIONS.md and show me the decisions awaiting my review.
+Use Ask User Question for one decision at a time. Explain the choice,
+reason, and effect, then let me confirm, redirect, or defer it.
+Wait for my answer before showing the next decision. Record my response
+and any follow-up work; keep technical checks separate from my approval.
 ```
 
 ## Checking documentation correctness

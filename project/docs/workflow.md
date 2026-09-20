@@ -6,11 +6,15 @@ Use this guide to take the classroom application from an idea to verified code. 
 
 ## Before starting a new session
 
-Open this repository in your local session. The initial scaffold is on `feature/project-agent-workflow`; use that branch or a later branch that contains it. New product work should get its own feature branch from that base. A local session in the same directory can see uncommitted files; another worktree or clone needs them committed first. Push the branch before using a remote checkout.
+Open this repository in your local session. The complete setup currently lives on `feature/panel-skill`, including the scaffold and panel. Start from that branch or a later branch containing the setup, then create a new feature branch for product work. A local session in the same directory can see uncommitted files; another worktree or clone needs them committed first. Push the branch before using a remote checkout.
 
 Superpowers must be installed and enabled in the environment running the agent; installing it on one machine does not put the plugin in Git. Ask the session to confirm skill availability. The prompts below can also be followed directly if the plugin is unavailable.
 
-Whenever a stage needs your input or approval, the agent must use Ask User Question and wait for your answer before continuing dependent work. Autonomous choices go into the shared [decision log](../../DECISIONS.md) as pending user review; successful checks do not count as your confirmation.
+Before escalating a question, the agent uses [panel](../../skills/panel/SKILL.md): three independent answers, followed by one exchange of first answers if they do not align. The coordinator decides whether to proceed provisionally or ask you. Required user input and approval still go through Ask User Question, with dependent work paused until you answer. Autonomous choices and panel reasoning go into the shared [decision log](../../DECISIONS.md) as pending user review; successful checks and panel agreement do not count as your confirmation.
+
+Round 1 runs three Codex generalists in parallel with fresh conversation contexts. Each considers the whole question using the same neutral packet; only its own private emphasis differs: user value, implementation, or assumptions and risks. None learns about the other emphases, peers, or the coordinator's preferred direction. These perspectives come from one model family and do not guarantee independent errors. For a complete panel, if all three align under compatible conditions without a material objection, skip round 2; otherwise, the same agents exchange all complete first answers once, optionally with an identical, clearly labeled coordinator view. The coordinator makes the final decision.
+
+The tracked skill is in `skills/panel/SKILL.md`. This machine discovers it through a link at `~/.codex/skills/panel`; that link depends on this checkout remaining at its current path on a branch containing the skill. A new environment can read the tracked file directly or install the skill there.
 
 ## 1. Load context and brainstorm
 
@@ -95,6 +99,8 @@ To review choices the agent made while you were away:
 
 ```text
 Read DECISIONS.md and show me the decisions awaiting my review.
+Reuse any completed panel for each decision; do not restart it merely
+to ask for my confirmation. Include its reasoning and any dissent.
 Use Ask User Question for one decision at a time. Explain the choice,
 reason, and effect, then let me confirm, redirect, or defer it.
 Wait for my answer before showing the next decision. Record my response

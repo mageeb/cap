@@ -44,6 +44,7 @@ These instructions apply throughout this repository. Read them at the start of e
 ## Repository map
 
 - `curriculum/weeks/`: Weekly lessons, presentations, homework, reference procedures, and isolated teaching examples.
+- `skills/`: Maintained workflows used in this repo; classroom comparison examples stay under `curriculum/`.
 - `project/`: The continuing classroom application's product documents, feature specs, tasks, code, tests, and deployment configuration.
 - `infrastructure/template/`: Reusable student starter material; application-specific infrastructure belongs in `project/infrastructure/`.
 - `conductor/plan.md`: Course preparation and delivery decisions; application tasks belong with their feature specs.
@@ -72,7 +73,7 @@ These instructions apply throughout this repository. Read them at the start of e
 ## Before every commit
 
 1. Run relevant validation against the changes intended for the commit. Checks that depend on additional unstaged work do not establish that the commit is valid.
-2. Review the exact staged diff against the request and acceptance criteria. For executable changes, use [review-with-refuter](curriculum/weeks/02/skills/review-with-refuter/SKILL.md), or another code-review skill explicitly selected for the task. If the skill cannot run, perform and report a manual correctness and regression review.
+2. Review the exact staged diff against the request and acceptance criteria. For executable changes, use [code-review](skills/code-review/SKILL.md): Superpowers reviewer → independent refuter → coordinator verdict. If automatic discovery is unavailable, read the linked file directly. Another skill may be explicitly selected for the task; if the required workflow cannot run, perform and report a manual correctness and regression review, naming the unavailable parts.
 3. For documentation-only changes, perform a sanity review of accuracy, scope, internal consistency, local links, and unintended edits. Run `git diff --cached --check` for all commits.
 4. Resolve supported blockers and missing required checks before committing. Optional feedback does not require a fix. Recheck the staged diff after any revision.
 5. Include a concise `Review:` and `Checks:` summary in the commit body, using actual results. State a size exception there when needed; do not claim an independent review unless one occurred.

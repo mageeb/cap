@@ -40,6 +40,7 @@ Statuses: **Pending user review**, **Confirmed**, or **Redirected**. Passing che
 - **Alternative:** A separate personal installation if independence from this checkout becomes necessary.
 - **Effects:** The skill source is versioned here; this machine's link is not distributed by Git. Other environments can read the tracked skill directly or install it locally. Keep the checkout at its current path on a branch containing the skill while using this link.
 - **Technical verification:** Skill validator passed; a fresh native Codex `skills/list` returned one enabled `panel` skill at the tracked source. Independent skill review passed; the integration review corrected the wording about shared-context isolation.
+- **Later clarification:** This earlier exercise withheld peer answers but disclosed panel participation and assigned lenses. It does not establish compliance with the user's stricter blind-round requirement recorded in DEC-005.
 - **User response:** Not reviewed.
 
 ## DEC-004: Panel alignment threshold
@@ -56,10 +57,15 @@ Statuses: **Pending user review**, **Confirmed**, or **Redirected**. Passing che
 ## DEC-005: Panelist lenses
 
 - **Task / scope:** Panel skill; the three default perspectives.
-- **Status:** Pending user review.
+- **Status:** Redirected.
 - **Choice:** Use user outcome, implementation/evidence, and risks/alternatives as complementary lenses; each agent evaluates all choices.
 - **Reason:** These cover practical tradeoffs without assigning agents positions to defend.
 - **Alternative:** Three generalists with identical roles.
 - **Effects:** Round 1 shares the same question and evidence with all three, but gives each a different lens. Dissent is optional.
 - **Technical verification:** A live round-1 exercise used all three lenses and reached alignment; independent skill review found no blocker in their roles or the blind-context instructions.
-- **User response:** Not reviewed.
+- **User response:** The user clarified that round-1 agents must receive an unsteered question, without knowing about each other or the coordinator's direction. Round 2 may reveal all first answers and the coordinator's tentative view; the coordinator retains the final decision.
+- **Replacement / follow-up:** Remove assigned lenses and panel-revealing language from round-1 dispatch. Send identical neutral packets; preserve full answer exchange only for a needed second round and label any coordinator view separately.
+- **Follow-up verification:** Independent review and prompt-generation replay passed: identical neutral first requests omitted panel and coordinator cues; second requests included all supplied first answers and a labeled coordinator view. Skill validation, staged links, anchors, and whitespace passed. This verified authored prompts, not live runtime isolation.
+- **Latest user-approved direction:** Use three generalists with private emphases on user value, implementation, and assumptions and risks. Each considers the whole question; the neutral round-1 packet differs only in the recipient's own emphasis and reveals no peers, other emphases, or coordinator preference. Different private emphases are compatible with a blind first round; removing all emphases was stricter than the user intended. This supersedes the earlier replacement while preserving its history.
+- **Latest implementation:** Updated the canonical skill, repository instructions, workflow guide, and task handoff to the approved direction. Preserved the alignment threshold, two-round limit, coordinator authority, and required user input. Corrected the introducing unmerged skill and integration commits instead of adding a later patch; this history records successive user clarifications, not a request to approve this design again.
+- **Latest verification:** Skill validation, authored-prompt comparisons, and independent adversarial skill and integration reviews passed. Six fixture replays covered first-round alignment, two-round dissent with a supported minority choice, binding approval, incompatible conditions, a failed worker, and essential user-only information. First requests differed only in private emphasis; second requests preserved the packet, original agents, and complete first answers. These are prompt-authoring and decision replays, not live runtime tests or proof of filesystem isolation.

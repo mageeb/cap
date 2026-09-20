@@ -69,3 +69,23 @@ Statuses: **Pending user review**, **Confirmed**, or **Redirected**. Passing che
 - **Latest user-approved direction:** Use three generalists with private emphases on user value, implementation, and assumptions and risks. Each considers the whole question; the neutral round-1 packet differs only in the recipient's own emphasis and reveals no peers, other emphases, or coordinator preference. Different private emphases are compatible with a blind first round; removing all emphases was stricter than the user intended. This supersedes the earlier replacement while preserving its history.
 - **Latest implementation:** Updated the canonical skill, repository instructions, workflow guide, and task handoff to the approved direction. Preserved the alignment threshold, two-round limit, coordinator authority, and required user input. Corrected the introducing unmerged skill and integration commits instead of adding a later patch; this history records successive user clarifications, not a request to approve this design again.
 - **Latest verification:** Skill validation, authored-prompt comparisons, and independent adversarial skill and integration reviews passed. Six fixture replays covered first-round alignment, two-round dissent with a supported minority choice, binding approval, incompatible conditions, a failed worker, and essential user-only information. First requests differed only in private emphasis; second requests preserved the packet, original agents, and complete first answers. These are prompt-authoring and decision replays, not live runtime tests or proof of filesystem isolation.
+
+## DEC-006: Code review skill source and discovery
+
+- **Task / scope:** Reusable code review skill; local discovery.
+- **Status:** Pending user review.
+- **Choice:** Track [skills/code-review/SKILL.md](skills/code-review/SKILL.md) here and link its directory at `~/.codex/skills/code-review`, following the panel installation pattern.
+- **Reason / alternative:** One maintained source preserves review history and local discovery; a separate global copy would avoid checkout dependence but could drift.
+- **Effects:** The link is local, depends on this checkout and a branch containing the skill, and is not distributed by Git. Other environments must read the tracked skill or install it there. Classroom examples remain separate.
+- **Technical verification:** Skill validator passed; the local link resolves to the tracked source. A fresh native Codex `skills/list` returned one enabled `code-review` entry without discovery errors. Superpowers 6.4.1 is installed and enabled, with the requesting-code-review skill and template present. Independent document review found no supported issues.
+- **User response:** Not reviewed.
+
+## DEC-007: Independent review and refutation
+
+- **Task / scope:** Code review orchestration.
+- **Status:** Pending user review.
+- **Choice:** Dispatch the Superpowers reviewer, then a separate fresh refuter; the coordinator decides ACCEPT, COMMENT, or REJECT from both reports and the evidence.
+- **Reason / alternative:** A second reader can challenge assumptions the reviewer missed; one reviewer could instead refute its own findings at lower cost.
+- **Effects:** Two sequential workers review the same frozen change. Severity labels remain advisory; the coordinator distinguishes supported blockers from useful optional improvements.
+- **Technical verification:** Independent document review passed. In a live isolated-fixture evaluation, each scope used the installed Superpowers 6.4.1 reviewer template and a separate fresh refuter: a valid change received ACCEPT with 5/5 tests passing; a staged threshold defect received REJECT with 1/7 tests failing, despite an unstaged fix. Coordinator, reviewer, and refuter reproduced the results on exact snapshots; the source checkout, index, and HEAD were preserved. These are skill trials, not application tests.
+- **User response:** Not reviewed.

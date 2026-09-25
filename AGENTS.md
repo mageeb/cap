@@ -44,6 +44,7 @@ These instructions apply throughout this repository. Read them at the start of e
 ## Repository map
 
 - `curriculum/weeks/`: Weekly lessons, presentations, homework, reference procedures, and isolated teaching examples.
+- `skills/`: Maintained workflows used in this repo; classroom comparison examples stay under `curriculum/`.
 - `project/`: The continuing classroom application's product documents, feature specs, tasks, code, tests, and deployment configuration.
 - `infrastructure/template/`: Reusable student starter material; application-specific infrastructure belongs in `project/infrastructure/`.
 - `conductor/plan.md`: Course preparation and delivery decisions; application tasks belong with their feature specs.
@@ -64,15 +65,26 @@ These instructions apply throughout this repository. Read them at the start of e
 - Never edit or commit directly on `main` or `master`. If a task starts there, create the feature branch first, preserving existing work. Do not reset, discard, or include unrelated changes to make the branch clean.
 - Make each commit one coherent change. Aim for **100 changed lines or fewer**, counting additions plus deletions in handwritten code and documentation. Keep required tests with the behavior they verify.
 - Split larger work into sensible commits when possible. If an inseparable change exceeds the target, explain why in the commit body. Identify generated files, lockfiles, and mechanical moves separately; do not distort code or leave a broken intermediate state to hit the target.
-- For a task that produces multiple commits, format every subject as `<number>/N [<task-tag>] [<project-tag>] <title>`. Use the literal uppercase `N`, not the total commit count. Start at `1/N` and increment for each commit in that task, including across sessions.
+- Keep each PR focused on one coherent change. A multi-commit PR contains one numbered series; different series belong in separate PRs, even when their branches share history.
+- For a single-commit PR, use `[<task-tag>] [<project-tag>] <title>` without a numeric prefix. For a multi-commit PR, use `<number>/N [<task-tag>] [<project-tag>] <title>`: start at `1/N`, use the literal uppercase `N`, and increment consecutively across tasks and sessions without restarting inside the PR. If the PR grows beyond one commit, number the first commit too; if it becomes a single commit, remove its prefix. Fold defect corrections into their introducing commits as described below.
 - Keep both tags consistent within a series: the first identifies the task, and the second identifies the application or project. For the classroom application, use `[project-tbd]` until a project tag is agreed, then use the agreed tag for new series; do not use `[cap]` as its project tag.
-- Example: `1/N [project-scaffold] [project-tbd] Add product brief`. If a task grows beyond one commit, update its earlier unpushed commit subject to follow the series format.
+- Multi-commit example: `1/N [project-scaffold] [project-tbd] Add product brief`. Single-commit example: `[pr-series] [project-tbd] Define commit numbering rules`. A separate multi-commit panel PR starts its own `1/N [panel] [project-tbd] ...` series.
+- For dependent work, stack PRs: branch from the prerequisite branch and target that branch as the PR base, so each PR shows only its own series. Record dependencies in PR descriptions and verify the actual base, commit list, and diff before and after publishing or retargeting. Retarget remaining PRs as prerequisites land, checking that earlier series have dropped out of their diffs. Creating a PR does not authorize merging it; rewriting unmerged history follows the rule below.
 - Stage only intended files or hunks. Inspect `git diff --cached` and `git diff --cached --numstat` before committing; the staged contents are the unit being reviewed.
+
+### Correct unmerged history at its source
+
+- When a defect is discovered, identify the commit that introduced it. If that change has not merged into the default branch (`main` or `master` here), correct that commit, even if discovered later in a dependent PR. Amend it or fold a local fixup into it; do not publish a later patch commit that leaves the introducing commit defective.
+- Review the whole series for avoidable add/change/delete churn. Move the proper implementation into its introducing commit and remove redundant later edits. Preserve warranted stages, such as an intentional scaffold followed by implementation, or genuinely new requirements; explain their purpose. Repeated edits alone do not establish a defect.
+- Rebuild dependent commits and PR branches on the corrected history while preserving unrelated work and each PR's scope. Keep numbering consecutive. Verify the affected commits individually, including relevant checks and renewed review; a passing final tip does not establish that intermediate commits are valid. Update their `Review:` and `Checks:` evidence to match the rewritten snapshots.
+- Before rewriting, verify current remote branches and PR merge status, preserve recovery refs, and check for concurrent work. Never rewrite `main`, `master`, or changes already merged there; fix merged defects through a new change. Use an isolated checkout when another session is using the shared worktree.
+- This instruction authorizes rewriting the affected unmerged feature commits and updating their published PR branches when necessary for these corrections. Use explicit `--force-with-lease=<ref>:<expected-sha>` leases against freshly verified remote heads. If a lease fails or unfamiliar concurrent work appears, stop and reconcile it rather than overwriting it.
+- Before pushing, resolve known defects and required verification gaps, and inspect the complete PR series and diff. After publishing a rewrite, verify remote heads, PR bases, commit lists, and diffs again. Keep recovery refs until the rewritten stack is verified.
 
 ## Before every commit
 
 1. Run relevant validation against the changes intended for the commit. Checks that depend on additional unstaged work do not establish that the commit is valid.
-2. Review the exact staged diff against the request and acceptance criteria. For executable changes, use [review-with-refuter](curriculum/weeks/02/skills/review-with-refuter/SKILL.md), or another code-review skill explicitly selected for the task. If the skill cannot run, perform and report a manual correctness and regression review.
+2. Review the exact staged diff against the request and acceptance criteria. For executable changes, use [code-review](skills/code-review/SKILL.md): Superpowers reviewer → independent refuter → coordinator verdict. If automatic discovery is unavailable, read the linked file directly. Another skill may be explicitly selected for the task; if the required workflow cannot run, perform and report a manual correctness and regression review, naming the unavailable parts.
 3. For documentation-only changes, perform a sanity review of accuracy, scope, internal consistency, local links, and unintended edits. Run `git diff --cached --check` for all commits.
 4. Resolve supported blockers and missing required checks before committing. Optional feedback does not require a fix. Recheck the staged diff after any revision.
 5. Include a concise `Review:` and `Checks:` summary in the commit body, using actual results. State a size exception there when needed; do not claim an independent review unless one occurred.

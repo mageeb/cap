@@ -6,7 +6,7 @@ Use this guide to take the classroom application from an idea to verified code. 
 
 ## Before starting a new session
 
-Open this repository in your local session. The complete setup currently lives on `feature/panel-skill`, including the scaffold and panel. Start from that branch or a later branch containing the setup, then create a new feature branch for product work. A local session in the same directory can see uncommitted files; another worktree or clone needs them committed first. Push the branch before using a remote checkout.
+Open this repository in your local session. The complete setup currently lives on `feature/pr-commit-series`, including the scaffold, panel, code review, and PR rules. Start from that branch or a later branch containing the setup, then create a new feature branch for product work. A local session in the same directory can see uncommitted files; another worktree or clone needs them committed first. Push the branch before using a remote checkout.
 
 Superpowers must be installed and enabled in the environment running the agent; installing it on one machine does not put the plugin in Git. Ask the session to confirm skill availability. The prompts below can also be followed directly if the plugin is unavailable.
 
@@ -14,7 +14,7 @@ Before escalating a question, the agent uses [panel](../../skills/panel/SKILL.md
 
 Round 1 runs three Codex generalists in parallel with fresh conversation contexts. Each considers the whole question using the same neutral packet; only its own private emphasis differs: user value, implementation, or assumptions and risks. None learns about the other emphases, peers, or the coordinator's preferred direction. These perspectives come from one model family and do not guarantee independent errors. For a complete panel, if all three align under compatible conditions without a material objection, skip round 2; otherwise, the same agents exchange all complete first answers once, optionally with an identical, clearly labeled coordinator view. The coordinator makes the final decision.
 
-The tracked skill is in `skills/panel/SKILL.md`. This machine discovers it through a link at `~/.codex/skills/panel`; that link depends on this checkout remaining at its current path on a branch containing the skill. A new environment can read the tracked file directly or install the skill there.
+The tracked skills are [panel](../../skills/panel/SKILL.md) and [code-review](../../skills/code-review/SKILL.md). This machine discovers them through links at `~/.codex/skills/panel` and `~/.codex/skills/code-review`; those links depend on this checkout remaining at its current path on a branch containing the skills. A new environment can read the tracked files directly or install them there. These are agent instructions, not executable hooks that enforce invocation.
 
 ## 1. Load context and brainstorm
 
@@ -65,13 +65,39 @@ Recommend the execution approach and show me the plan before coding.
 
 ```text
 I approve the plan. Implement the agreed feature using subagents where
-they save time, with independent review and an adversarial pass.
+they save time. Use $code-review before committing executable changes:
+Superpowers reviewer, independent refuter, then your own verdict.
 Follow our testing, branch, and commit rules. Keep tasks.md current.
 Continue through the approved scope; ask for clarification only when a
 material decision cannot be resolved from the spec and existing context.
 ```
 
 **Check:** Compare the working behavior with the spec, inspect actual check results, and review the diff. Each commit needs its own review and validation. Keep commits at or below 100 changed lines when practical; record justified exceptions.
+
+Keep one coherent change per PR. A single-commit PR uses `[task-tag] [project-tag] Title` without numbering. Number only multi-commit PRs: start at `1/N`, increment for warranted new work, and keep separate series in separate PRs. If a PR grows beyond one commit, number its first commit too; remove the prefix if it becomes a single commit. Correct defects in their introducing unmerged commits, then rebuild and verify dependent commits; do not append patch commits that preserve known defects earlier in the series. Remove avoidable add/change/delete churn while preserving intentional stages and new requirements. Follow the [history correction rules](../../AGENTS.md#correct-unmerged-history-at-its-source) for recovery refs, concurrent work, and publishing with explicit leases. When work depends on an unmerged PR, target its branch so the next PR shows only its own commits.
+
+The setup is arranged for separate PRs in this order:
+
+| Series | Branch | PR base | Commits |
+|---|---|---|---|
+| Project scaffold | `feature/project-agent-workflow` | `main` | `1/N`–`7/N` |
+| Panel | `feature/panel-skill` | `feature/project-agent-workflow` | `1/N`–`3/N` |
+| Code review | `feature/code-review-skill` | `feature/panel-skill` | `1/N`–`2/N` |
+| PR rules | `feature/pr-commit-series` | `feature/code-review-skill` | Single commit, unnumbered |
+
+After a prerequisite merges, retarget the next PR to the integration branch and verify its commit list and diff again. Ask a session to publish prepared PRs with: “Create one PR for each coherent change, number commits only in multi-commit PRs, preserve the dependency order, and verify that each PR contains only its own commits.”
+
+To request a review by itself:
+
+```text
+Use $code-review to review the staged changes against the active spec.
+If it is not listed, read skills/code-review/SKILL.md directly.
+Return ACCEPT, COMMENT, or REJECT. Separate supported blockers from
+useful optional improvements, and explain refuted findings and checks.
+Review only; do not edit or commit.
+```
+
+The wrapper uses Superpowers' installed `requesting-code-review` workflow and reviewer template. It adds a separate refuter and a coordinator verdict; an optional improvement must have a concrete benefit that outweighs its cost. The three week-02 review skills remain teaching comparisons. Documentation-only changes use the sanity checks below unless a fuller review is requested.
 
 ## 5. Save a handoff or resume
 

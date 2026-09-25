@@ -69,3 +69,34 @@ Statuses: **Pending user review**, **Confirmed**, or **Redirected**. Passing che
 - **Latest user-approved direction:** Use three generalists with private emphases on user value, implementation, and assumptions and risks. Each considers the whole question; the neutral round-1 packet differs only in the recipient's own emphasis and reveals no peers, other emphases, or coordinator preference. Different private emphases are compatible with a blind first round; removing all emphases was stricter than the user intended. This supersedes the earlier replacement while preserving its history.
 - **Latest implementation:** Updated the canonical skill, repository instructions, workflow guide, and task handoff to the approved direction. Preserved the alignment threshold, two-round limit, coordinator authority, and required user input. Corrected the introducing unmerged skill and integration commits instead of adding a later patch; this history records successive user clarifications, not a request to approve this design again.
 - **Latest verification:** Skill validation, authored-prompt comparisons, and independent adversarial skill and integration reviews passed. Six fixture replays covered first-round alignment, two-round dissent with a supported minority choice, binding approval, incompatible conditions, a failed worker, and essential user-only information. First requests differed only in private emphasis; second requests preserved the packet, original agents, and complete first answers. These are prompt-authoring and decision replays, not live runtime tests or proof of filesystem isolation.
+
+## DEC-006: Code review skill source and discovery
+
+- **Task / scope:** Reusable code review skill; local discovery.
+- **Status:** Pending user review.
+- **Choice:** Track [skills/code-review/SKILL.md](skills/code-review/SKILL.md) here and link its directory at `~/.codex/skills/code-review`, following the panel installation pattern.
+- **Reason / alternative:** One maintained source preserves review history and local discovery; a separate global copy would avoid checkout dependence but could drift.
+- **Effects:** The link is local, depends on this checkout and a branch containing the skill, and is not distributed by Git. Other environments must read the tracked skill or install it there. Classroom examples remain separate.
+- **Technical verification:** Skill validator passed; the local link resolves to the tracked source. A fresh native Codex `skills/list` returned one enabled `code-review` entry without discovery errors. Superpowers 6.4.1 is installed and enabled, with the requesting-code-review skill and template present. Independent document review found no supported issues.
+- **User response:** Not reviewed.
+
+## DEC-007: Independent review and refutation
+
+- **Task / scope:** Code review orchestration.
+- **Status:** Pending user review.
+- **Choice:** Dispatch the Superpowers reviewer, then a separate fresh refuter; the coordinator decides ACCEPT, COMMENT, or REJECT from both reports and the evidence.
+- **Reason / alternative:** A second reader can challenge assumptions the reviewer missed; one reviewer could instead refute its own findings at lower cost.
+- **Effects:** Two sequential workers review the same frozen change. Severity labels remain advisory; the coordinator distinguishes supported blockers from useful optional improvements.
+- **Technical verification:** Independent document review passed. In a live isolated-fixture evaluation, each scope used the installed Superpowers 6.4.1 reviewer template and a separate fresh refuter: a valid change received ACCEPT with 5/5 tests passing; a staged threshold defect received REJECT with 1/7 tests failing, despite an unstaged fix. Coordinator, reviewer, and refuter reproduced the results on exact snapshots; the source checkout, index, and HEAD were preserved. These are skill trials, not application tests.
+- **User response:** Not reviewed.
+
+## DEC-008: Pull request stack and policy placement
+
+- **Task / scope:** Apply the user's one-series-per-PR rule to the existing work.
+- **Status:** Pending user review.
+- **Choice:** Reuse the existing scaffold, panel, and code-review branch boundaries as three stacked PRs, and put this new rule in a fourth PR on `feature/pr-commit-series`.
+- **Reason / alternative:** Targeting each prerequisite branch keeps inherited commits out of each PR's review scope without rewriting history. Waiting for each predecessor to merge before opening the next would delay review.
+- **Effects:** The stack is `main` → `feature/project-agent-workflow` → `feature/panel-skill` → `feature/code-review-skill` → `feature/pr-commit-series`. The user explicitly requires separate PRs and numbering within each PR; this entry tracks the dependency arrangement and placement of the new policy.
+- **Technical verification:** Independent and coordinator branch audits confirmed disjoint 7-, 3-, and 2-commit ranges, consecutive numbering, consistent tags, review/check evidence, and at most 100 changed lines per commit. Range whitespace and committed Markdown links passed. Independent sanity/adversarial review accepted the new policy and handoff; staged documentation checks passed. Published PR metadata is checked separately against these exact branch ranges.
+- **User response:** Not reviewed.
+- **Later user clarification:** Numbering applies only to multi-commit PRs. A single-commit PR keeps its task and project tags without a numeric prefix, superseding the earlier wording about numbering within every PR. This clarifies formatting; the dependency arrangement and policy placement remain pending user review.

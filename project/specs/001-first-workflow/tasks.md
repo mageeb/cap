@@ -23,3 +23,5 @@ None yet. Add links to relevant code, tests, and logs as work is completed.
 Next step: Define the product and first user workflow. The app's behavior and technology stack remain undecided.
 
 Pending collaboration choices: [DEC-001: log location](../../../DECISIONS.md#dec-001-location-of-the-decision-log) and [DEC-002: entry format](../../../DECISIONS.md#dec-002-decision-entry-format). Review these one at a time through Ask User Question when requested.
+
+Panel setup choices still await review in [DEC-003: source and installation](../../../DECISIONS.md#dec-003-panel-skill-source-and-installation) and [DEC-004: alignment threshold](../../../DECISIONS.md#dec-004-panel-alignment-threshold). [DEC-005: panelist lenses](../../../DECISIONS.md#dec-005-panelist-lenses) preserves the redirection history and latest user-approved design: blind generalists with private emphases on user value, implementation, and assumptions and risks. That design needs no repeat approval; its skill validation, independent review, and prompt-replay evidence are recorded there.

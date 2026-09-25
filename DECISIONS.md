@@ -89,3 +89,14 @@ Statuses: **Pending user review**, **Confirmed**, or **Redirected**. Passing che
 - **Effects:** Two sequential workers review the same frozen change. Severity labels remain advisory; the coordinator distinguishes supported blockers from useful optional improvements.
 - **Technical verification:** Independent document review passed. In a live isolated-fixture evaluation, each scope used the installed Superpowers 6.4.1 reviewer template and a separate fresh refuter: a valid change received ACCEPT with 5/5 tests passing; a staged threshold defect received REJECT with 1/7 tests failing, despite an unstaged fix. Coordinator, reviewer, and refuter reproduced the results on exact snapshots; the source checkout, index, and HEAD were preserved. These are skill trials, not application tests.
 - **User response:** Not reviewed.
+
+## DEC-008: Pull request stack and policy placement
+
+- **Task / scope:** Apply the user's one-series-per-PR rule to the existing work.
+- **Status:** Pending user review.
+- **Choice:** Reuse the existing scaffold, panel, and code-review branch boundaries as three stacked PRs, and put this new rule in a fourth PR on `feature/pr-commit-series`.
+- **Reason / alternative:** Targeting each prerequisite branch keeps inherited commits out of each PR's review scope without rewriting history. Waiting for each predecessor to merge before opening the next would delay review.
+- **Effects:** The stack is `main` → `feature/project-agent-workflow` → `feature/panel-skill` → `feature/code-review-skill` → `feature/pr-commit-series`. The user explicitly requires separate PRs and numbering within each PR; this entry tracks the dependency arrangement and placement of the new policy.
+- **Technical verification:** Independent and coordinator branch audits confirmed disjoint 7-, 3-, and 2-commit ranges, consecutive numbering, consistent tags, review/check evidence, and at most 100 changed lines per commit. Range whitespace and committed Markdown links passed. Independent sanity/adversarial review accepted the new policy and handoff; staged documentation checks passed. Published PR metadata is checked separately against these exact branch ranges.
+- **User response:** Not reviewed.
+- **Later user clarification:** Numbering applies only to multi-commit PRs. A single-commit PR keeps its task and project tags without a numeric prefix, superseding the earlier wording about numbering within every PR. This clarifies formatting; the dependency arrangement and policy placement remain pending user review.

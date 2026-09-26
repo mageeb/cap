@@ -1,0 +1,14 @@
+flowchart LR
+    human["Developer"]
+    subgraph harness["Coding harness — agent software"]
+        cli["CLI — terminal interface"]
+        runtime["Agent runtime — context, loop, permissions"]
+        cli <-->|"task / progress"| runtime
+    end
+    model["Model — reasoning and tool requests"]
+    tools["Tools — files, shell, Git, tests"]
+    human <-->|"prompts / results"| cli
+    runtime -->|"context + tool results"| model
+    model -->|"response / tool request"| runtime
+    runtime -->|"execute allowed actions"| tools
+    tools -->|"results"| runtime

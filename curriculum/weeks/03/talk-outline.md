@@ -1,41 +1,111 @@
-# Week 3: One Sustained Agent in the Terminal
+# Week 3: From AI Chat to Agentic Development
 
 ## Learning Goals
-Set up and supervise one agent over a substantial task. Students deliberately gather context, maintain project instructions and skills, define acceptance checks, and resume work from evidence-backed checkpoints. Excalidraw is the homework, not the classroom demo.
+Move from in-the-loop conversational coding to structured terminal-agent workflows. Students should be able to explain the value and risks of CLI agents; distinguish hooks, skills, project instructions, and subagents; create and use goal/spec/plan/task artifacts; persist project context across sessions; use Git worktrees for parallel work; and complete a change through review, simplification, verification, and a pull request.
 
-## Core Instruction (75m)
-- **Terminal operating setup (15m):** Work in a repository/branch, establish baseline checks, record tool access and commands, and inspect changes from VS Code when useful.
-- **Context for a large repository (20m):** Ask the agent to discover relevant files and verify its map. Record interfaces and decisions in concise project context; use skills for recurring exploration and validation. Avoid assuming the entire repository fits or that more pasted text is always better.
-- **In the loop to on the loop (20m):** Establish a goal, constraints, acceptance checks, retry/time limits, and checkpoints. Supervise a single agent without approving every micro-step; stop for unexplained failures or scope changes.
-- **Sustained execution (20m):** Plan → implement → check → report → continue. Demonstrate a resume brief with current state, completed checks, unresolved questions, and the next task. A longer run is justified by the work, not a duration quota.
+## Recommended 90-minute Run of Show
 
-## Exercise Preparation
-Copy [seed.py](demo/seed.py), [test_seed.py](demo/test_seed.py), and [pyproject.toml](demo/pyproject.toml) to a disposable repository. Python and in-memory SQLite suffice for the tests; install Ruff in the chosen demo environment before class. The [instructor solution](demo/instructor_solution.py) is available for comparison after attempting the exercise. Record tool versions and rehearse commands before teaching.
+| Segment | Time | Presentation slides / emphasis |
+|---|---:|---|
+| Bridge from Week 2 | 4m | Prior agent practices; today's terminal workflows, feature artifacts, and worktrees |
+| CLI coding agents | 12m | Tool loop, GitHub CLI access, resume, model/effort, Plan mode, permissions/YOLO, harness, MCP |
+| Hooks | 5m | definition, event → action, common uses, lint-after-edit example |
+| Agents & subagents | 6m | isolation, delegation, parallelism, when not to delegate |
+| Spec-driven development + durable context | 14m | goal → spec → explore → plan → tasks; context files; session recovery |
+| Skills + worktrees | 8m | reusable procedures; worktree mental model and commands |
+| Live Excalidraw demo | 25m | choose **one**: Focus Mode or Presentation Mode |
+| Bonus: coding benchmarks | 6m | SWE-bench, Terminal-Bench, score caveats |
+| Bonus: Boris Cherny | 7m | origin, terminal design, workflow, resources |
+| Recap / questions | 3m | seven takeaways |
 
-```sh
-python3 -m unittest -v
-ruff check .
-```
+**If time is tight:** skip the benchmark comparison table discussion and/or shorten the Boris material. Do not shorten the live demo verification and review steps; those are central to the course message.
 
-The starter intentionally inserts only one row and mishandles repeat/invalid requests. Four acceptance checks expose row count, uniqueness, idempotence, and invalid-input behavior. Keep a baseline commit, a verified reference checkpoint, and screenshots/recording as fallback.
+## Teaching Through-Line
 
-## Instructor Demonstration Plan (45m)
-1. **Baseline (5m):** Run checks and inspect the failures before invoking the terminal agent.
-2. **Context and skill (10m):** Reuse [Week 2’s validation procedure](../02/reference.md#reusable-skill-validate-a-small-change), add a repository map, and write the current task contract.
-3. **Supervised execution (15m):** Ask one agent to implement `seed_users(connection, count)`, modifying only `seed.py`, retaining tests and lint settings, and running checks after changes. Stop after three unsuccessful corrections or ten minutes and report evidence. Observe actual behavior rather than scripting a hallucination.
-4. **Checkpoint/resume (10m):** Have it write completed work, changed files, checks/results, unresolved issues, and next action. Resume from that brief. Explain how this pattern supports a larger work session; show a clearly labeled prepared longer-task checkpoint if available.
-5. **Independent review (5m):** Run checks yourself, inspect the diff, and discuss when intervention was justified. Demonstrate that substituting the starter makes the tests fail again.
+Week 2 practiced prompts, context, project instructions, subagents, reusable review skills, and verification during a live application build.
 
-## Student Hands-on (30m)
-- 0–5m: copy fixture, create branch, and capture baseline.
-- 5–10m: write instructions, acceptance criteria, and limits.
-- 10–20m: supervise one terminal agent fixing the implementation.
-- 20–25m: write and use a checkpoint/resume brief.
-- 25–30m: independently run checks and explain one decision to a peer.
+Week 3 builds on those practices with terminal workflows, hooks, explicit feature artifacts, saved project state, and Git worktrees:
 
-If tooling is unavailable, students inspect the disclosed reference and compare it to the failing starter, recording that fallback honestly. This does not replace the sustained-agent evidence required in homework.
+> Goal → spec → explore → plan → tasks → implement → verify → review → PR
 
-## Debrief and Homework (30m)
-Compare interventions and checkpoints (15m), then explain the Excalidraw feature choices and help students identify their initial mapping questions (15m). Homework scope, evidence, and grading are in [homework.md](homework.md).
+The module should never imply that “agentic” means unsupervised. The point is to make the work more structured, persistent, testable, and delegable.
 
-Use the [context map and checkpoint templates](reference.md) for the exercise and homework.
+<!-- Slide 3 revision: replaced the interaction/delegation split; framing pending user review in [DEC-003](../../../DECISIONS.md#dec-003-module-03-transition-slide). -->
+
+## Instructor Demonstration Plan (25m)
+
+Choose one live follow-along path:
+
+- [Demo A — Selection Focus Mode](demo-focus-mode.md)
+- [Demo B — Frame Presentation Mode](demo-presentation-mode.md)
+
+Have students complete [pre-class setup](pre-class-setup.md) first: fork and `git clone` Excalidraw, install dependencies, and verify the app. In class, introduce either demo; students confirm their fork remote, create a feature branch, and follow the matching runbook's exact prompts in order:
+
+1. Create a feature branch, open the already-running app, and enter built-in Plan mode.
+2. Paste the runbook's repository-exploration prompt; compare 2–3 approaches with cited evidence.
+3. Choose an approach, leave Plan mode, and paste the goal/spec prompts in sequence.
+4. Paste the runbook prompt to explore code and create `PLAN.md` and `TASKS.md`.
+5. Implement one task at a time, observe the running app, and run focused checks.
+6. Review the diff, fix supported findings, simplify, and re-verify.
+7. Save project context and PR notes; inspect/stage changes, commit, push, and open a PR against each student's own fork.
+
+## Live debugging
+
+When an AI step fails, keep the class at the same step, read the output, reproduce the problem, inspect the relevant code, and agree on a small fix. The demo runbooks include a short debugging prompt.
+
+## Key Instructor Messages
+
+### CLI
+A CLI agent is valuable because it shares the engineering environment: files, shell, Git, tests, build tools. The useful change is not the text UI itself; it is the **tool-and-feedback loop**.
+
+After the Claude/Codex comparison, show the session picker and model/effort controls. Resume restores conversation history; inspect current Git state before continuing. Distinguish model capability from reasoning effort, and show available choices rather than prescribing a fixed model ranking. Keep this within the CLI segment; the later context section covers fresh-session handoff.
+
+<!-- CLI controls addition: placement and teaching choices pending review in [DEC-004](../../../DECISIONS.md#dec-004-module-03-cli-session-and-model-controls). -->
+
+Introduce Plan mode after model/effort selection: inspect → propose → review → implement. Show Claude's Plan indicator and Codex `/plan`. Chat can produce plans, and some graphical coding-agent interfaces also have dedicated Plan modes. Compare repository access and execution controls; avoid claiming planning is exclusive to a CLI. Keep the control walkthrough brief and use the later spec/plan section for depth.
+
+<!-- Planning-mode addition: framing pending review in [DEC-005](../../../DECISIONS.md#dec-005-module-03-planning-mode-and-chat-comparison). -->
+
+After permissions, explain YOLO as bypassing execution safeguards to reduce approval interruptions during long or batch runs. Distinguish permission prompts from sandbox boundaries, explain the tool-specific flags, and point out that worktrees provide no security isolation. Discuss the examples without enabling bypass on the classroom machine.
+
+<!-- YOLO addition: framing pending review in [DEC-006](../../../DECISIONS.md#dec-006-module-03-yolo-mode). -->
+
+Close the CLI section with the harness diagram: trace a prompt through the CLI to the runtime, a model tool request back to the runtime, and a tool result into the next model call. Explain that the harness manages context, tools, permissions, and sessions; the model supplies reasoning. Use this overview to connect the upcoming hooks, skills, and subagents sections.
+
+Introduce MCP as the standard interface a CLI host uses to connect external services. Trace the path: CLI host/client → MCP server → service. Show the OpenAI docs server commands on the slide; explain that MCP connects tools/context while skills provide reusable instructions. Mention GitHub, Figma, and monitoring as other examples, and ask students to inspect server access before using it.
+
+For the demo's initial comparison, show Claude's built-in `Read` and `Bash` search tools (`Glob`/`Grep` where available), or Codex's shell-based file reading/search. Plan mode controls the workflow; tools gather evidence; skills supply reusable instructions. Choose the approach, leave Plan mode, then explicitly request goal/spec documents only. That transition permits document edits without authorizing feature implementation. See the [reference workflow](reference.md#compare-approaches-with-built-in-capabilities).
+
+<!-- Harness depiction: [DEC-007](../../../DECISIONS.md#dec-007-module-03-coding-harness-diagram), pending user review. Built-in replacement workflow: [DEC-008](../../../DECISIONS.md#dec-008-remove-the-custom-approach-comparison-skill), redirected by the user. -->
+
+### Hooks
+Keep the main lesson to two slides: what a hook is, how an event triggers a configured action, typical uses, and a lint-after-edit example. The harness runs the configured action when its matching event occurs. Configuration details and operational guidance are in the Appendix at the end of the deck, after both bonus sections and the closing slides; use them for questions or later reference rather than the core walkthrough.
+
+<!-- Hooks simplification and appendix placement: [DEC-009](../../../DECISIONS.md#dec-009-hooks-basics-and-appendix), pending user review. -->
+
+### Subagents
+The main benefit is **context isolation and task focus**, not merely “more AI.” Parallel agents are useful only when work can be decomposed cleanly.
+
+### Spec-driven development
+Separate product decisions from implementation decisions. A spec says what behavior must exist; codebase exploration reveals existing architecture; a plan maps requirements onto that architecture; tasks make progress observable.
+
+### Durable context
+The repository should contain enough state for a fresh session—or another AI—to continue. Store decisions, current status, evidence, and next steps; do not store a giant transcript.
+
+### Worktrees
+Branches isolate history. Worktrees isolate both branch **and working directory**, which is particularly useful for simultaneous coding agents.
+
+### Skills and plugins
+Define a skill as one repeatable procedure centered on `SKILL.md`; define a plugin as an installable marketplace bundle whose contents depend on the CLI. Show the OpenAI Developers plugin paths for Claude Code and Codex, and call out that their bundled integrations differ.
+
+### Review and simplification
+AI-generated code is not “done” when it compiles. Review it against the spec, validate observable behavior, then simplify unnecessary complexity while preserving acceptance criteria.
+
+### Boris Cherny workflow examples
+At the end of Boris’s section, distinguish Claude Code’s bundled `/simplify`, `/batch`, and `/loop` skills and built-in `/goal` command from his personal `/commit-push-pr`, `/go`, and `/babysit` workflows. Explain the `/loop 5m /babysit` example as a timer invoking a personal routine. Direct students to inspect `/skills` for the implementation available in their CLI.
+
+## Student Practice / Homework
+See [homework.md](homework.md). Students may use Claude Code or Codex CLI and should work only in their own repositories/forks.
+
+## Pre-class Requirements
+Share [pre-class-setup.md](pre-class-setup.md) ahead of class. Students should arrive with their own Excalidraw fork cloned locally, Excalidraw running, GitHub CLI authenticated, and one AI coding CLI working.

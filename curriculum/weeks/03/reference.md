@@ -339,15 +339,6 @@ A skill is a reusable procedure. Good skills define:
 - what evidence to gather;
 - expected output.
 
-This package includes these **course-provided instructor skills**; their procedures are not assumed to be built into either CLI:
-
-- `skills/goal/SKILL.md`
-- `skills/code-review/SKILL.md`
-- `skills/simplify/SKILL.md`
-- `skills/commit-push-pr/SKILL.md`
-
-For the live Claude demo, these can be installed/copied as Claude user or project skills according to current Claude Code docs. Keeping them as **user-level skills** avoids committing course-only skill files into the Excalidraw feature PR.
-
 Comparing implementation approaches uses [built-in Plan mode and repository exploration tools](#compare-approaches-with-built-in-capabilities). A mode controls workflow, a tool performs an operation, and a skill supplies reusable instructions. The demo's comparison step requires no custom skill.
 
 ---
@@ -617,8 +608,6 @@ These examples combine built-in Claude Code features with personal skills. The c
 Cherny’s personal workflows include `/commit-push-pr` (commit, push, open a PR; reportedly used daily for each change), `/go` (end-to-end test, simplify, then open a PR), and `/babysit` (a recurring PR follow-up workflow that responds to review comments, rebases, and pushes). One reported example combines the bundled `/loop` with `/babysit`: `/loop 5m /babysit`. The availability and behavior of these personal skills depend on the user's setup; do not present them as Claude Code built-ins.
 
 `/simplify` targets reuse and cleanup opportunities, not correctness bugs; review bug findings separately.
-
-The course also supplies skills whose names may overlap with bundled Claude Code commands or skills, including `/goal` and `/simplify`. Check the source shown by `/skills` in the installed CLI before invoking one; the course skill and the built-in feature may have different behavior.
 
 Sources: [Claude Code command reference](https://code.claude.com/docs/en/commands), [Boris Cherny’s public workflow posts](https://x.com/bcherny), and the [Y Combinator interview](https://www.youtube.com/watch?v=PQU9o_5rHC4). The slide’s description of his exact personal routines follows the examples supplied for this lesson; built-in classifications and feature behavior follow current official documentation.
 

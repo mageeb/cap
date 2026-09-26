@@ -785,7 +785,7 @@ This is **not** proof that two agents will make identical decisions. It is a way
 
 A **skill** packages a repeatable workflow so you do not rewrite the same multi-step instruction every time.
 
-Course-provided skills for today’s demo (install separately):
+Example workflows to package as your own skills:
 
 | Skill | Purpose |
 |---|---|

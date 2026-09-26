@@ -102,7 +102,7 @@ Define a skill as one repeatable procedure centered on `SKILL.md`; define a plug
 AI-generated code is not “done” when it compiles. Review it against the spec, validate observable behavior, then simplify unnecessary complexity while preserving acceptance criteria.
 
 ### Boris Cherny workflow examples
-At the end of Boris’s section, distinguish Claude Code’s bundled `/simplify`, `/batch`, and `/loop` skills and built-in `/goal` command from his personal `/commit-push-pr`, `/go`, and `/babysit` workflows. Explain the `/loop 5m /babysit` example as a timer invoking a personal routine. Course-provided `/goal` and `/simplify` skills may overlap by name, so direct students to inspect `/skills` for the implementation available in their CLI.
+At the end of Boris’s section, distinguish Claude Code’s bundled `/simplify`, `/batch`, and `/loop` skills and built-in `/goal` command from his personal `/commit-push-pr`, `/go`, and `/babysit` workflows. Explain the `/loop 5m /babysit` example as a timer invoking a personal routine. Direct students to inspect `/skills` for the implementation available in their CLI.
 
 ## Student Practice / Homework
 See [homework.md](homework.md). Students may use Claude Code or Codex CLI and should work only in their own repositories/forks.

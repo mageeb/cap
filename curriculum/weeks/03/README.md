@@ -11,7 +11,6 @@ This package contains the CAP Module/Week 03 curriculum: a 90-minute lesson, a l
 - [`demo-focus-mode.md`](demo-focus-mode.md) — Excalidraw Selection Focus Mode live follow-along.
 - [`demo-presentation-mode.md`](demo-presentation-mode.md) — Excalidraw Frame Presentation Mode live follow-along.
 - [`homework.md`](homework.md) — suggested follow-up assignment.
-- [`skills/`](skills/) — optional course-specific goal, code-review, simplify, and commit/push/PR skills. Some names overlap with Claude Code's bundled features; inspect `/skills` in the CLI to see which implementation is available. The live demo does not require installing custom skills.
 - [`templates/`](templates/) — spec/plan/task/context templates for the demo and students.
 
 ## Demo Choice

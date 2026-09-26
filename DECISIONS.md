@@ -177,13 +177,15 @@ Statuses: **Pending user review**, **Confirmed**, or **Redirected**. Passing che
 ## DEC-016: Publish the remaining Module 03 work from the merged base
 
 - **Task / scope:** Commit the remaining `module03_gpt` files and create a follow-up PR after PR #7.
-- **Status:** Pending user review.
+- **Status:** Redirected.
 - **Choice:** Start `feature/module03-follow-up` from `origin/main` and import the remaining changes from saved stash `63a8ac6`. Keep `module03_gpt` and the stash as backups. Commit the independent diagram, templates, and skills in small groups, followed by the linked curriculum replacement. Publish through the existing `tameraw/cap` fork, using a `fork` remote, as PR #7 did.
 - **Reason:** The saved presentation and Excalidraw setup already match main; a fresh base avoids replaying the original commits or including already-merged file changes. The linked lesson, setup, demos, reference, assignment, and decision history need one coherent replacement commit.
 - **Alternative:** Merge main into the original branch and publish its existing commit history, or put all remaining files into one large commit.
 - **Effects:** Remaining Week 03 teaching files and this decision log. The PR serves as the task record and links the pending decisions.
 - **Technical verification:** The initial staged tree exactly matched `63a8ac6` (`git diff --cached --exit-code 63a8ac6` passed). No presentation or Excalidraw setup changes remain relative to main. Independent content and adversarial reviews passed after the integration repairs. Staged validation passed for 107 local links/anchors, 95 shell blocks in both bash and zsh, SVG XML, unique decision IDs, and whitespace. No application code was added; setup and feature execution were not rerun. GitHub rejected a direct upstream push (403); API checks confirmed PR #7 used `tameraw/cap`, that fork is writable, and `mageeb/cap` is read-only for the active account.
-- **User response:** Committing all remaining files and opening a new PR explicitly requested; packaging not yet reviewed.
+- **User response:** Initially requested all remaining files and a new PR; subsequently requested removing the added `skills/` folder and its `code-review`, `commit-push-pr`, `goal`, and `simplify` contents from PR #8.
+- **Replacement direction:** Remove the four skill files from the PR. Preserve the other teaching materials; clean up claims and links that imply the deleted files are supplied.
+- **Follow-up results:** Local removal and reference cleanup verified: no Module 03 skill files remain tracked, and the staged skills diff against `origin/main` is empty. See [DEC-018](#dec-018-remove-the-supplied-skills-from-pr-8).
 
 ## DEC-017: Align course records with the replacement Module 03 package
 
@@ -195,3 +197,14 @@ Statuses: **Pending user review**, **Confirmed**, or **Redirected**. Passing che
 - **Effects:** [Week 03 README](curriculum/weeks/03/README.md), [course overview](CAP%202.0%20AI-Native.md), [delivery plan](conductor/plan.md), and [context template](curriculum/weeks/03/templates/PROJECT_CONTEXT.md).
 - **Technical verification:** Independent reviewers identified the stale references and whitespace errors, then accepted the repairs. The final staged consistency review and all 107 local links/anchors passed; `git diff --cached --check` passed. The validation also found and repaired three stale slide anchors in earlier entries; their original choices and review status remain preserved.
 - **User response:** Not reviewed.
+
+## DEC-018: Remove the supplied skills from PR #8
+
+- **Task / scope:** Apply the user's requested removal of the added Module 03 skills folder.
+- **Status:** Pending user review.
+- **Choice:** Use a follow-up commit on the existing PR branch. Remove the four skill files and their folder listing/install guidance; keep generic skill concepts and external workflow examples, relabeling the slide examples as workflows students can package themselves.
+- **Reason:** The PR should omit the supplied skills without leaving broken links or claims that they are included. A follow-up commit preserves the published review history.
+- **Alternative:** Delete only the files and leave stale instructions, or rewrite the published commit series.
+- **Effects:** Week 03 skills, README, reference, instructor outline, one presentation sentence, and PR description. The other weeks' skills remain unchanged.
+- **Technical verification:** Independent review of the exact staged diff passed with no blockers. All four skill files are removed; the staged skills diff against `origin/main` is empty. All 107 local links/anchors, 95 shell examples under both bash and zsh, and staged whitespace checks passed. The presentation change is one shorter introductory sentence; no slide layout changed.
+- **User response:** Folder removal explicitly requested; delivery and wording choices not yet reviewed.

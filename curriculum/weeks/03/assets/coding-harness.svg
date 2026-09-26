@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 320" role="img" aria-labelledby="title desc">
+  <title id="title">A CLI interface inside a coding harness connects a developer to a model and tools</title>
+  <desc id="desc">The harness contains the CLI and agent runtime. The runtime sends context and tool results to the model, receives responses and tool requests, executes allowed tool actions, and feeds results back.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#176b87"/></marker>
+    <style>text{font-family:"Avenir Next",Avenir,Helvetica,Arial,sans-serif;fill:#13233f} .label{font-size:21px;font-weight:600} .small{font-size:17px} .edge{fill:none;stroke:#176b87;stroke-width:2.5;marker-end:url(#arrow)} .box{fill:#e7eef0;stroke:#176b87;stroke-width:2}</style>
+  </defs>
+  <rect x="170" y="14" width="510" height="196" rx="14" fill="#fffdf8" stroke="#176b87" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="190" y="45" class="label">Coding harness — agent software</text>
+  <rect x="0" y="98" width="135" height="64" rx="9" class="box"/>
+  <text x="67" y="136" text-anchor="middle" class="label">Developer</text>
+  <rect x="193" y="87" width="145" height="89" rx="9" class="box"/>
+  <text x="265" y="120" text-anchor="middle" class="label">CLI</text>
+  <text x="265" y="146" text-anchor="middle" class="small">Terminal UI</text>
+  <path d="M137 130H190" class="edge" marker-start="url(#arrow)"/>
+  <rect x="382" y="87" width="275" height="89" rx="9" class="box"/>
+  <text x="520" y="119" text-anchor="middle" class="label">Agent runtime</text>
+  <text x="520" y="146" text-anchor="middle" class="small">Context · loop · permissions</text>
+  <path d="M341 130H379" class="edge" marker-start="url(#arrow)"/>
+  <rect x="920" y="87" width="195" height="89" rx="9" class="box"/>
+  <text x="1017" y="119" text-anchor="middle" class="label">Model</text>
+  <text x="1017" y="146" text-anchor="middle" class="small">Reasoning</text>
+  <path d="M660 102H917" class="edge"/>
+  <text x="790" y="87" text-anchor="middle" class="small">Context + tool results</text>
+  <path d="M917 163H660" class="edge"/>
+  <text x="790" y="189" text-anchor="middle" class="small">Response / tool request</text>
+  <rect x="382" y="259" width="275" height="57" rx="9" class="box"/>
+  <text x="520" y="294" text-anchor="middle" class="label">Files · shell · Git · tests</text>
+  <path d="M456 179V256" class="edge"/>
+  <text x="439" y="233" text-anchor="end" class="small">Allowed actions</text>
+  <path d="M583 256V179" class="edge"/>
+  <text x="600" y="233" class="small">Results</text>
+</svg>

@@ -56,7 +56,7 @@ Mentors evaluate working demonstrations, engineering decisions, and verification
 
 The repository includes an optional **LLM-assisted review prompt**, not an implemented model-calling GitHub Action. An instructor may supply the week, assignment, diff, and selected evidence to that prompt using an approved tool, then verify the resulting provisional assessment. Student text and code are untrusted evidence, not instructions to the reviewer.
 
-Use the shared dimensions: context management, validation/correction, structural oversight, and system integrity. Week 1 has an exploratory rubric; Weeks 2–4 use their homework weights; Weeks 5–12 use the four dimensions equally. Mentors spend an initial 5–10 minutes per review and use the weekly 30–60 minute coaching allocation for unresolved gaps. Require a working demonstration, an architecture explanation, and a truthful account of what the student trusted, checked, and corrected. Do not promise employment or production readiness based on course completion alone.
+Use the shared dimensions: context management, validation/correction, structural oversight, and system integrity. Week 1 has an exploratory rubric; Weeks 2–4 use their homework rubrics; Weeks 5–12 use the four dimensions equally. Mentors spend an initial 5–10 minutes per review and use the weekly 30–60 minute coaching allocation for unresolved gaps. Require a working demonstration, an architecture explanation, and a truthful account of what the student trusted, checked, and corrected. Do not promise employment or production readiness based on course completion alone.
 
 ---
 
@@ -66,7 +66,7 @@ Use the shared dimensions: context management, validation/correction, structural
 *Focus: Establishing the baseline for AI collaboration, context management, and practical engineering skills.*
 *   **W1 | Inspiration:** Three nontechnical builders present finished work, workflow evolution, and lessons learned, followed by Q&A. No classroom project; setup and exploration happen at home.
 *   **W2 | Guided Practice:** Build a fresh app in VS Code. Prompt versus context, instruction layers, project instructions, reusable skills, and the human-in-the-loop validation cycle.
-*   **W3 | Sustained Agent:** Terminal workflows with one agent: context discovery, plans, checkpoints, skills, acceptance checks, and on-the-loop supervision. A 30-minute classroom exercise prepares students for substantial Excalidraw homework.
+*   **W3 | Sustained Agent:** Terminal workflows with one agent: context discovery, plans, checkpoints, skills, acceptance checks, and on-the-loop supervision. A 90-minute lesson includes a 25-minute Excalidraw follow-along; homework applies the workflow to a feature or fix in an owned or authorized repository.
 *   **W4 | Orchestration:** Coordinate agents through script-driven, instruction-driven, and hybrid harnesses. Define roles, connections, ownership, stopping rules, and integration checks; use a harness for an open-ended hard build.
 
 ### **Phase 2: Production (Weeks 5-8)**
@@ -83,17 +83,17 @@ Use the shared dimensions: context management, validation/correction, structural
 *   **W11 | Interviews:** AI-Enabled SWE Interviews (Prompt audits of vulnerable code, refactoring with strict engineering constraints).
 *   **W12 | Demos:** Project Demos & Workflow Sharing. Students present their live end-to-end pipelines and a "Prompt Case Study" showing Before/After code.
 
-**Assessment alignment:** Week 1 uses the field-report rubric; Weeks 2–4 use their published assignment weights, with the shared engineering rubric supplying evidence anchors. Weeks 5–12 use the shared rubric. Credit verified outcomes, architecture decisions, and justified intervention; do not reward app size or penalize iteration count by itself.
+**Assessment alignment:** Week 1 uses the field-report rubric; Weeks 2–4 use their published assignment rubrics, with the shared engineering rubric supplying evidence anchors. Weeks 5–12 use the shared rubric. Credit verified outcomes, architecture decisions, and justified intervention; do not reward app size or penalize iteration count by itself.
 
 ## Weekly Materials and Delivery
 
-Each weekly folder links to its talk outline and homework. The outline contains the agenda, teaching prompts, and demonstration plans. Weeks 2–4 also include reusable reference procedures; Week 3 includes a seed-data exercise and an Excalidraw comments brief. All materials are visible to students; disclose reuse in submissions.
+Each weekly folder links to its talk outline and homework. The outline contains the agenda, teaching prompts, and demonstration plans. Weeks 2–4 also include reusable reference procedures; Week 3 includes pre-class setup and two alternative Excalidraw live-demo runbooks. All materials are visible to students; disclose reuse in submissions.
 
 | Week | Start here | Homework |
 |---|---|---|
 | 1 | [Inspiration materials](curriculum/weeks/01/README.md) | [Setup and first attempt](curriculum/weeks/01/homework.md) |
 | 2 | [Guided practice materials](curriculum/weeks/02/README.md) | [A fresh application](curriculum/weeks/02/homework.md) |
-| 3 | [Terminal and sustained-agent materials](curriculum/weeks/03/README.md) | [Excalidraw feature choice](curriculum/weeks/03/homework.md) |
+| 3 | [Terminal and sustained-agent materials](curriculum/weeks/03/README.md) | [Agentic development workflow](curriculum/weeks/03/homework.md) |
 | 4 | [Orchestration materials](curriculum/weeks/04/README.md) | [An open-ended hard build](curriculum/weeks/04/homework.md) |
 | 5 | [Week 5 materials](curriculum/weeks/05/README.md) | [Assignment and assessment](curriculum/weeks/05/homework.md) |
 | 6 | [Week 6 materials](curriculum/weeks/06/README.md) | [Assignment and assessment](curriculum/weeks/06/homework.md) |

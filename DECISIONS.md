@@ -219,3 +219,14 @@ Statuses: **Pending user review**, **Confirmed**, or **Redirected**. Passing che
 - **Effects:** [Week 4 slides](curriculum/weeks/04/presentation.md), [loop runbook](curriculum/weeks/04/demo-01-loop.md), [task-queue runbook](curriculum/weeks/04/demo-01b-task-queue.md), [external-controller runbook](curriculum/weeks/04/demo-03-external-controller.md), their 19 script/helper files, and this log. Earlier decision records are preserved from main.
 - **Technical verification:** The first published commit differs from main only in the five reviewed Markdown files. Static checks passed for the 19 extracted files: 2 Bash, 8 Python, 6 JavaScript and 3 JSON files. The script snapshot is frozen for independent code review; final review and verification evidence will be recorded in its commit body. Live agent/browser demos have not been rehearsed.
 - **User response:** Feature-branch publication and actual runnable scripts explicitly requested; exact branch and extraction choices remain pending review.
+
+## DEC-020: Show a larger task graph after the parallel-work example
+
+- **Task / scope:** Add the requested concrete task-graph visual to the orchestration talk.
+- **Status:** Pending user review.
+- **Choice:** Insert one slide after the paint-app parallel-work example. Show an API contract, four parallel mobile/service implementation jobs, an integration barrier, two parallel code reviews and human release approval. Use the existing ivory, navy, teal and amber theme, with short task labels and left-to-right arrows. Keep the existing 60-minute teaching agenda.
+- **Reason:** Students can see a real application/service graph with two fan-outs and joins after learning the smaller paint-app dependency example. Labels identify tasks, and the notes explain that agents, programs or people can perform them.
+- **Alternative:** Keep only the two-worker paint-app example, or introduce graph terminology before showing a concrete dependency sequence.
+- **Effects:** [Week 4 presentation](curriculum/weeks/04/presentation.md), one inserted slide and its speaker notes.
+- **Technical verification:** The changed slide and its two neighbors were rendered and visually inspected; the full render has 23 slides, 15 loaded images, no failed images and no overflow. The source is frozen for independent documentation and adversarial review. Its other slides are unchanged. Live classroom execution has not been rehearsed.
+- **User response:** The graph slide explicitly requested; exact placement, diagram and theme choices remain pending review.

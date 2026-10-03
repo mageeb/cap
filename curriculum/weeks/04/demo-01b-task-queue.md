@@ -249,333 +249,56 @@ During setup, verify the printed results before continuing:
 
 **If a check fails, stop:** keep the fixture intact, open a new terminal, and repeat setup with a fresh demo directory. Do not run the remaining blocks until the repository root, branch, remote and ignore checks pass. For later terminals, restore `$CAP_QUEUE_DEMO` to the printed repository root and `cd "$CAP_QUEUE_DEMO"` before following commands.
 
-## 2. Agent and browser helpers
+## 2. Copy the runnable scripts into this fixture
 
-The browser helper runs cumulative criteria: task 02 includes 01, and task 03 includes both earlier tasks. It saves the actual browser state on successful or failed checks whenever a page exists.
+The actual files are checked in under [scripts/task-queue/](scripts/task-queue/queue.sh). **Run their fixture copies only.** The controller refuses CAP's source directory; all app changes and local commits belong in this nested demo repository.
 
-```bash
-cat > .harness/agent.py <<'EOF'
-"""One fresh Codex call, with a time limit and process-group cleanup."""
-import os
-import signal
-import subprocess
-import sys
-
-app, prompt, output, seconds = sys.argv[1:]
-try:
-    seconds = int(seconds)
-    if seconds <= 0:
-        raise ValueError
-except ValueError:
-    raise SystemExit('PASS_SECONDS must be a positive integer')
-command = [
-    'codex', 'exec', '--ignore-user-config', '--ephemeral',
-    '--sandbox', 'workspace-write', '--disable', 'memories',
-    '--disable', 'multi_agent', '-c', 'project_doc_max_bytes=0',
-    '--json', '--output-schema', os.path.abspath('.harness/schema.json'),
-    '-o', output,
-]
-if os.getenv('MODEL'):
-    command += ['-m', os.environ['MODEL']]
-command += ['-']  # Read the complete request from standard input.
-process = None
-
-
-def stop(*_):
-    """Ask the whole call to stop; force it after a short grace period."""
-    if process:
-        try:
-            os.killpg(process.pid, signal.SIGTERM)
-        except ProcessLookupError:
-            pass
-        try:
-            process.wait(timeout=3)
-        except subprocess.TimeoutExpired:
-            pass
-        # The leader can exit while a descendant ignores TERM. Clean its group
-        # regardless of the leader's exit status, then reap the leader.
-        try:
-            os.killpg(process.pid, signal.SIGKILL)
-        except ProcessLookupError:
-            pass
-        process.wait()
-    sys.exit(124)
-
-
-signal.signal(signal.SIGTERM, stop)
-signal.signal(signal.SIGINT, stop)
-# Automatic parent instructions are disabled: the explicit prompt is the task.
-with open(prompt) as request:
-    process = subprocess.Popen(
-        command, cwd=app, stdin=request, start_new_session=True,
-    )
-try:
-    sys.exit(process.wait(timeout=seconds))
-except subprocess.TimeoutExpired:
-    stop()
-EOF
-cat > .harness/check.cjs <<'EOF'
-// Run task 01 checks, then add 02 and 03 checks cumulatively.
-// The screenshot is evidence from the real browser, even after a failed check.
-process.env.PLAYWRIGHT_BROWSERS_PATH = '0';
-const { chromium } = require('playwright'), assert = require('node:assert/strict');
-const http = require('node:http'), fs = require('node:fs'), path = require('node:path');
-const root = path.resolve(process.argv[2]), task = Number(process.argv[3]), image = process.argv[4];
-const server = http.createServer((req,res) => {
-  const file = path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname);
-  const target = file === root ? path.join(root,'index.html') : file;
-  if (!target.startsWith(root+path.sep)) { res.writeHead(403); return res.end(); }
-  try { res.setHeader('Content-Type', {'.html':'text/html','.js':'text/javascript','.css':'text/css'}[path.extname(target)] || 'text/plain');
-    res.end(fs.readFileSync(target)); } catch { res.writeHead(404); res.end(); }
-});
-(async () => {
-  // Port 0 selects an unused local port for this check's short-lived server.
-  await new Promise(r => server.listen(0,'127.0.0.1',r));
-  let browser, page;
-  try {
-    browser = await chromium.launch(); page = await browser.newPage({viewport:{width:1280,height:900}});
-    const errors = []; page.on('pageerror',e => errors.push(e.message));
-    await page.goto(`http://127.0.0.1:${server.address().port}`,{waitUntil:'networkidle'});
-    const value = id => page.locator('#'+id).inputValue();
-    assert.equal(await value('tool'),'pencil'); assert.equal(await value('color'),'#152536');
-    assert.deepEqual(await page.locator('#tool option').evaluateAll(a => a.map(x=>x.value)),['pencil','eraser']);
-    assert.deepEqual(await page.locator('#color option').evaluateAll(a => a.map(x=>x.value)),['#152536','#188D91','#E8A64C']);
-    const canvas = page.locator('#paint');
-    async function draw() {
-      const b = await canvas.evaluate(c => {const r=c.getBoundingClientRect(); return {x:r.x+c.clientLeft,y:r.y+c.clientTop,w:c.clientWidth,h:c.clientHeight,cw:c.width,ch:c.height};});
-      await page.mouse.move(b.x+50*b.w/b.cw,b.y+60*b.h/b.ch); await page.mouse.down();
-      await page.mouse.move(b.x+150*b.w/b.cw,b.y+60*b.h/b.ch,{steps:15}); await page.mouse.up();
-    }
-    const before = await canvas.evaluate(c => c.toDataURL()); await draw();
-    assert.notEqual(await canvas.evaluate(c => c.toDataURL()),before,'Default drag drew nothing');
-    // Task 02 adds reload persistence and verifies a real teal pencil stroke.
-    if (task >= 2) {
-      await page.selectOption('#tool','pencil'); await page.selectOption('#color','#188D91');
-      await page.reload(); assert.equal(await value('tool'),'pencil'); assert.equal(await value('color'),'#188D91');
-      await draw();
-      assert.equal(await canvas.evaluate(c => {
-        const p=c.getContext('2d').getImageData(100,60,1,1).data;
-        return p[0]===24 && p[1]===141 && p[2]===145 && p[3]===255;
-      }),true,'Pencil stroke is not teal');
-    }
-    // Task 03 preserves both earlier checks, then adds eraser and bad-data safety.
-    if (task >= 3) {
-      await page.selectOption('#tool','eraser'); await page.reload();
-      assert.equal(await value('tool'),'eraser'); assert.equal(await value('color'),'#188D91');
-      // Canvas pixels do not persist: draw a NEW stroke after reload, then erase it.
-      await page.selectOption('#tool','pencil'); await draw();
-      await page.selectOption('#tool','eraser'); const painted=await canvas.evaluate(c => c.toDataURL());
-      await draw(); assert.notEqual(await canvas.evaluate(c => c.toDataURL()),painted,'Eraser did not change pixels');
-      assert.equal(await canvas.evaluate(c => {
-        const p=c.getContext('2d').getImageData(100,60,1,1).data;
-        return p[3]===0 || (p[0]===255 && p[1]===255 && p[2]===255);
-      }),true,'Eraser did not clear the stroke');
-      for (const raw of ['{broken','null','[]','{"tool":"bad","color":"#188D91"}',
-        '{"tool":"eraser","color":"purple"}']) {
-        await page.evaluate(raw => localStorage.setItem('cap.paint.preferences.v1',raw),raw);
-        await page.reload(); assert.equal(await value('tool'),'pencil'); assert.equal(await value('color'),'#152536');
-      }
-      assert.equal(await page.evaluate(async () => {
-        const m = await import('./settings.js'), s = {getItem(){throw Error('denied');},setItem(){throw Error('denied');}};
-        const p=m.loadPreferences(s); m.savePreferences(s,p);
-        return p.tool==='pencil' && p.color==='#152536';
-      }),true,'Denied storage not safe');
-    }
-    assert.deepEqual(errors,[]);
-    // A successful task requires its screenshot; capture errors fail the gate.
-    await page.screenshot({path:image,fullPage:true});
-    console.log(`PASS task ${String(task).padStart(2,'0')}: cumulative browser criteria.`);
-  } catch (error) {
-    // Preserve best-effort failure evidence without replacing the original error.
-    if (page) await page.screenshot({path:image,fullPage:true}).catch(()=>{});
-    throw error;
-  } finally {
-    try { if (browser) await browser.close(); }
-    finally { await new Promise(r => server.close(r)); }
-  }
-})().catch(e => {console.error(e);process.exitCode=1;});
-EOF
-```
-
-## 3. The completion-loop controller
-
-Read this during class. The queue is a text file, and each item gets at most two attempts. A failed check becomes the next attempt's explicit repair feedback. Task order and checks are external to the LLM.
+Copy this block after completing section 1. It copies all six small files and checkpoints the prepared fixture. It does not call an agent.
 
 ```bash
-cat > .harness/changes.py <<'EOF'
-"""Count added PLUS deleted app lines since the last accepted checkpoint."""
-import subprocess
-
-total = 0
-summary = subprocess.check_output(['git', 'diff', '--numstat', '--', 'app'], text=True)
-for entry in summary.splitlines():
-    added, deleted, _ = entry.split('\t', 2)
-    if added == '-' or deleted == '-':
-        raise SystemExit('STOP: binary app changes cannot satisfy a line budget')
-    total += int(added) + int(deleted)
-print(total)
-EOF
-cat > .harness/check.py <<'EOF'
-"""Run a browser check with an overall timeout, including stuck page code."""
-import os
-import signal
-import subprocess
-import sys
-
-seconds, *command = sys.argv[1:]
-try:
-    seconds = int(seconds)
-    if seconds <= 0 or not command:
-        raise ValueError
-except ValueError:
-    raise SystemExit('CHECK_SECONDS must be positive, followed by a check command')
-process = None
-
-
-def stop(*_):
-    """Stop Node and its browser group, even if Node already exited."""
-    if process:
-        try:
-            os.killpg(process.pid, signal.SIGTERM)
-        except ProcessLookupError:
-            pass
-        try:
-            process.wait(timeout=3)
-        except subprocess.TimeoutExpired:
-            pass
-        # A browser descendant can outlive Node; always finish group cleanup.
-        try:
-            os.killpg(process.pid, signal.SIGKILL)
-        except ProcessLookupError:
-            pass
-        process.wait()
-    sys.exit(124)
-
-
-signal.signal(signal.SIGTERM, stop)
-signal.signal(signal.SIGINT, stop)
-process = subprocess.Popen(command, start_new_session=True)
-try:
-    sys.exit(process.wait(timeout=seconds))
-except subprocess.TimeoutExpired:
-    print(f'STOP: browser check exceeded {seconds} seconds', file=sys.stderr)
-    stop()
-EOF
-cat > .harness/journal.cjs <<'EOF'
-// Called only after the cumulative browser criterion passes.
-const fs = require('node:fs');
-const [directory, task] = process.argv.slice(2);
-const report = JSON.parse(fs.readFileSync(`${directory}/report.json`, 'utf8'));
-for (const key of ['implemented', 'envisioned', 'limitations']) {
-  if (typeof report[key] !== 'string' || !report[key].trim()) {
-    throw Error(`Missing ${key} in the agent report`);
-  }
-}
-const checks = fs.readFileSync(`${directory}/checks.txt`, 'utf8').trim();
-fs.appendFileSync('ledger.md', `\n## Task ${task}\n\n` +
-  `Agent implemented: ${report.implemented}\n\n` +
-  `Agent envisioned: ${report.envisioned}\n\n` +
-  `Agent limitations: ${report.limitations}\n\n` +
-  `Controller observed: ${checks}\n\n` +
-  `Evidence: ${directory}/screen.png. Human acceptance pending.\n`);
-EOF
-cat > .harness/queue.sh <<'EOF'
-#!/usr/bin/env bash
-# Run this COPY from an isolated demo's .harness/, never from CAP's source tree.
-# Outer loop: next task. Inner loop: one attempt, then at most one repair.
-set -euo pipefail
-cd "$(dirname "$0")/.."
-seconds="${PASS_SECONDS:-180}"
-check_seconds="${CHECK_SECONDS:-60}"
-
-# Require the disposable repository and reject unaccepted prior changes.
-if [ "$(git rev-parse --show-toplevel)" != "$PWD" ] ||
-   [ "$(git branch --show-current)" != 'feature/paint-task-queue' ] ||
-   [ -n "$(git remote)" ] || [ ! -f .harness/queue.txt ]; then
-  echo 'STOP: use the isolated fixture created by the runbook.'; exit 1
-fi
-if [ -n "$(git status --porcelain -- app ledger.md)" ]; then
-  echo 'STOP: inspect unaccepted app or ledger changes before starting.'; exit 1
-fi
-
-run="$(date -u +%Y%m%dT%H%M%SZ)-$$"
-worker=''
-# The active Python helper stops its agent or browser group on interruption.
-cleanup() {
-  if [ -n "$worker" ]; then
-    kill -TERM "$worker" 2>/dev/null || true
-    wait "$worker" 2>/dev/null || true
-  fi
-}
-trap cleanup EXIT
-trap 'exit 130' INT TERM
-
-# read takes the next line of queue.txt. No LLM chooses the task order.
-while read -r task; do
-  passed=0
-  feedback='No prior check output for this task.'
-  for attempt in 1 2; do
-    dir="$PWD/artifacts/$run-task$task-attempt$attempt"
-    mkdir -p "$dir"
-
-    echo "[1/6] Task $task, attempt $attempt/2: request + prior feedback"
-    cat .harness/contract.txt ledger.md ".harness/tasks/$task.txt" > "$dir/prompt.txt"
-    printf '\nPrevious check feedback:\n%s\n' "$feedback" >> "$dir/prompt.txt"
-
-    echo '[2/6] Call a fresh agent; wait for its result'
-    python3 .harness/agent.py "$PWD/app" "$dir/prompt.txt" "$dir/report.json" \
-      "$seconds" > "$dir/events.jsonl" 2> "$dir/agent.stderr" &
-    worker=$!
-    if ! wait "$worker"; then
-      echo "STOP: agent failed; inspect $dir"; exit 1
-    fi
-    worker=''
-
-    echo '[3/6] Measure all app changes since this task began'
-    git add -N app # New files must also count against the budget.
-    git diff -- app > "$dir/app.diff"
-    lines="$(python3 .harness/changes.py)"
-    # A failed first attempt has no commit, so its repair shares this budget.
-    if [ "$lines" -gt 1000 ]; then
-      echo "STOP: $lines changed lines exceed the task budget; inspect $dir"; exit 1
-    fi
-
-    echo '[4/6] Run this task AND all earlier browser criteria'
-    # Track the browser check and give it an overall time limit.
-    python3 .harness/check.py "$check_seconds" node .harness/check.cjs app \
-      "$task" "$dir/screen.png" > "$dir/checks.txt" 2>&1 &
-    worker=$!
-    if wait "$worker"; then
-      worker=''
-      echo '[5/6] Record claims, observed checks, and the evidence path'
-      node .harness/journal.cjs "$dir" "$task"
-
-      echo '[6/6] Save a local checkpoint; then move to the next task'
-      git add app ledger.md
-      git commit -m "Queued task $task passed its browser criteria"
-      git rev-parse HEAD > "$dir/checkpoint.txt"
-      passed=1
-      echo "DONE task $task: $dir"
-      break # Leave the attempt loop: this task is now complete.
-    fi
-    worker=''
-
-    # A check failure supplies facts to one fresh repair attempt, not a resume.
-    feedback="$(cat "$dir/checks.txt")"
-    echo "FAILED CHECK task $task: $dir/checks.txt"
-  done
-
-  # Do not advance the queue after two failed attempts.
-  if [ "$passed" -ne 1 ]; then
-    echo "STOP: task $task exhausted two attempts; human handoff"; exit 1
-  fi
-done < .harness/queue.txt
-EOF
+export CAP_ROOT="/Users/michaelmurray/code/cap"
+cd "$CAP_QUEUE_DEMO" || exit 1
+cp "$CAP_ROOT/curriculum/weeks/04/scripts/task-queue/"* .harness/
 git add .gitignore AGENTS.md package.json .harness app ledger.md
 git commit -m "Prepare independent paint task-queue fixture"
 ```
 
-A task's criterion may pass while the product still has other defects. The queue does not create parallel Workers, discover dependencies, or independently review code. The two-attempt cap is a classroom bound, not an assurance that a difficult task can finish in two attempts.
+| File | Job |
+|---|---|
+| [queue.sh](scripts/task-queue/queue.sh) | Read the next task; allow one attempt and at most one repair |
+| [agent.py](scripts/task-queue/agent.py) | Start a fresh Codex call; enforce its timeout and interruption cleanup |
+| [check.py](scripts/task-queue/check.py) | Put an overall time limit around the browser check and handle interruption |
+| [changes.py](scripts/task-queue/changes.py) | Measure app lines changed across the entire current task |
+| [check.cjs](scripts/task-queue/check.cjs) | Run cumulative browser criteria and save actual browser evidence |
+| [journal.cjs](scripts/task-queue/journal.cjs) | Append a validated report and the controller's observed checks |
+
+The browser helper runs cumulative criteria: task 02 includes 01, and task 03 includes both earlier tasks. It saves the actual browser state on successful or failed checks whenever a page exists.
+
+## 3. Read the completion loop with the class
+
+Open the copied file: `cat .harness/queue.sh`. The task list is ordinary text, and the Bash script chooses what runs:
+
+1. Read a task from `queue.txt`; build its prompt with current code context and prior failure feedback.
+2. Start a **fresh agent** and wait.
+3. Measure app changes against the last completed task's checkpoint.
+4. Run **this task's browser checks plus all earlier checks** within a time limit.
+5. On success, record claims and observed evidence.
+6. Save a local checkpoint and move to the next task.
+
+A failed browser check sends its exact output to **one fresh repair attempt**. There is no checkpoint between a failed attempt and its repair, so both share the 1,000-line change budget. Two failed checks stop the queue for a human. Agent-call failures or scope failures stop immediately.
+
+### Bash vocabulary for this script
+
+- `while read -r task` reads one task ID per line. The `done < .harness/queue.txt` line supplies that file.
+- `for attempt in 1 2` gives each task at most two attempts.
+- `if wait "$worker"` asks whether the browser-check helper succeeded; the agent saying “done” cannot pass this gate.
+- `passed=1` remembers success; `break` leaves the attempt loop.
+- `feedback` holds the previous check's output and is included in the next prompt.
+- `&`, `$!` and `wait` start the helper, remember its process ID, then wait for completion.
+- Quotes keep paths together; `>` and `2>` save logs; `trap` cleans up on interruption.
+- `set -euo pipefail` stops unexpected failures rather than continuing silently.
+
+A criterion may pass while the product has other defects. This queue does not create parallel Workers, discover dependencies, independently review code, or implement automatic resume. The two-attempt bound is a teaching choice, not a promise that every task can finish in two attempts.
 
 ## 4. Run before class and keep real evidence
 

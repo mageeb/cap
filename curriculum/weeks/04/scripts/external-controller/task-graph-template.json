@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "tasks": [
+    {
+      "id": "schema",
+      "deps": [],
+      "owned": [
+        "schema.json"
+      ],
+      "check": "schema",
+      "max_attempts": 2,
+      "task": "Write app/schema.json exactly as {\"tools\":[\"pencil\",\"eraser\"],\"colors\":[\"#152536\",\"#188D91\",\"#E8A64C\"],\"default\":{\"tool\":\"pencil\",\"color\":\"#152536\"}}. Do not change other app files."
+    },
+    {
+      "id": "ui",
+      "deps": [
+        "schema"
+      ],
+      "owned": [
+        "toolbar.js"
+      ],
+      "check": "ui",
+      "max_attempts": 2,
+      "task": "Implement app/toolbar.js. Export renderToolbar(preferences), returning an HTML string containing labelled select#tool and select#color. Tools are pencil/eraser; colors are #152536/#188D91/#E8A64C. Mark the supplied tool and color options selected. Do not access storage or attach event handlers. Preserve the field name color. Do not change other app files."
+    },
+    {
+      "id": "storage",
+      "deps": [
+        "schema"
+      ],
+      "owned": [
+        "settings.js"
+      ],
+      "check": "storage",
+      "max_attempts": 2,
+      "task": "Implement app/settings.js with exported function declarations loadPreferences(storage) and savePreferences(storage,preferences). Use the injected storage object and key cap.paint.preferences.v1. Valid tools are pencil/eraser and colors are #152536/#188D91/#E8A64C. Missing, malformed, unsupported, or invalid data recovers to BOTH defaults {tool:'pencil',color:'#152536'}. Return fresh objects and save normalized valid data. Storage read/write exceptions must not stop drawing. Preserve the exact {tool,color} interface. Do not change other app files."
+    },
+    {
+      "id": "integrate",
+      "deps": [
+        "ui",
+        "storage"
+      ],
+      "owned": [
+        "main.js"
+      ],
+      "check": "integration",
+      "max_attempts": 2,
+      "task": "Implement app/main.js only. Import renderToolbar from toolbar.js and loadPreferences/savePreferences from settings.js. Call loadPreferences(localStorage); insert renderToolbar(preferences) into #toolbar. Own all change handlers: update the complete preferences object and call savePreferences(localStorage,preferences). Draw on #paint using pointerdown/pointermove/pointerup: pencil has lineWidth 4 and the selected color; eraser draws white. Use canvas-relative coordinates. Set window.appReady=true after wiring. Color changes affect new pencil strokes. Never patch a field mismatch in another owned file; report it. Preserve the accepted color schema."
+    },
+    {
+      "id": "review",
+      "deps": [
+        "integrate"
+      ],
+      "owned": [],
+      "check": "review",
+      "max_attempts": 2,
+      "task": "Review the integrated paint app and the supplied independent check evidence read only. Challenge reload, actual colored drawing and erasing, and invalid-state defaults. Return JSON matching the CLI-supplied structured schema, with criteria IDs reload, drawing, invalid_state. Cite actual evidence, identify gaps, and do not edit app files. A report does not replace the independent browser checks."
+    }
+  ]
+}

@@ -190,311 +190,64 @@ During setup, verify the printed results before continuing:
 
 **If a check fails, stop:** keep the fixture intact, open a new terminal, and repeat setup with a fresh demo directory. Do not run the remaining blocks until the repository root, branch, remote and ignore checks pass. For later terminals, restore `$CAP_LOOP_DEMO` to the printed repository root and `cd "$CAP_LOOP_DEMO"` before following commands.
 
-## 3. Create the helpers
+## 3. Copy the runnable scripts into this fixture
 
-The helpers keep process management, browser mechanics and journal formatting out of the readable loop. Agent calls and browser checks have separate overall time limits, with process-group cleanup on timeout or interruption. The browser check is a small smoke check, not a full acceptance suite.
+The actual files are checked in under [scripts/loop/](scripts/loop/loop.sh). **Run their fixture copies only.** The controller refuses CAP's source directory; its local Git commits belong in the nested demo repository.
 
-```bash
-cat > .harness/agent.py <<'EOF'
-"""One fresh Codex call, with a time limit and process-group cleanup."""
-import os
-import signal
-import subprocess
-import sys
-
-app, prompt, output, seconds = sys.argv[1:]
-try:
-    seconds = int(seconds)
-    if seconds <= 0:
-        raise ValueError
-except ValueError:
-    raise SystemExit('PASS_SECONDS must be a positive integer')
-command = [
-    'codex', 'exec', '--ignore-user-config', '--ephemeral',
-    '--sandbox', 'workspace-write', '--disable', 'memories',
-    '--disable', 'multi_agent', '-c', 'project_doc_max_bytes=0',
-    '--json', '--output-schema', os.path.abspath('.harness/schema.json'),
-    '-o', output,
-]
-if os.getenv('MODEL'):
-    command += ['-m', os.environ['MODEL']]
-command += ['-']  # Read the complete request from standard input.
-process = None
-
-
-def stop(*_):
-    """Ask the whole call to stop; force it after a short grace period."""
-    if process:
-        try:
-            os.killpg(process.pid, signal.SIGTERM)
-        except ProcessLookupError:
-            pass
-        try:
-            process.wait(timeout=3)
-        except subprocess.TimeoutExpired:
-            pass
-        # The leader can exit while a descendant ignores TERM. Clean its group
-        # regardless of the leader's exit status, then reap the leader.
-        try:
-            os.killpg(process.pid, signal.SIGKILL)
-        except ProcessLookupError:
-            pass
-        process.wait()
-    sys.exit(124)
-
-
-signal.signal(signal.SIGTERM, stop)
-signal.signal(signal.SIGINT, stop)
-# Automatic parent instructions are disabled: the explicit prompt is the task.
-with open(prompt) as request:
-    process = subprocess.Popen(
-        command, cwd=app, stdin=request, start_new_session=True,
-    )
-try:
-    sys.exit(process.wait(timeout=seconds))
-except subprocess.TimeoutExpired:
-    stop()
-EOF
-cat > .harness/capture.cjs <<'EOF'
-// Serve the local app on an available port, draw once, and capture the result.
-process.env.PLAYWRIGHT_BROWSERS_PATH = '0';
-const { chromium } = require('playwright');
-const http = require('node:http');
-const fs = require('node:fs');
-const path = require('node:path');
-const root = path.resolve(process.argv[2]);
-const output = process.argv[3];
-const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css' };
-
-const server = http.createServer((request, response) => {
-  const file = path.resolve(root, '.' + new URL(request.url, 'http://localhost').pathname);
-  const target = file === root ? path.join(root, 'index.html') : file;
-  if (!target.startsWith(root + path.sep)) {
-    response.writeHead(403); return response.end();
-  }
-  try {
-    response.setHeader('Content-Type', mime[path.extname(target)] || 'text/plain');
-    response.end(fs.readFileSync(target));
-  } catch {
-    response.writeHead(404); response.end();
-  }
-});
-
-(async () => {
-  // Port 0 asks the OS for an unused port, so separate fixtures can coexist.
-  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
-  let browser;
-  try {
-    browser = await chromium.launch();
-    const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
-    const errors = [];
-    page.on('pageerror', error => errors.push(error.message));
-    await page.goto(`http://127.0.0.1:${server.address().port}`, { waitUntil: 'networkidle' });
-    const canvas = page.locator('#paint');
-    await canvas.waitFor({ state: 'visible' });
-    const size = await canvas.evaluate(canvas => [canvas.width, canvas.height]);
-    if (size[0] < 400 || size[1] < 240) throw Error('Canvas must be at least 400x240');
-
-    // Compare actual canvas pixels before and after a pointer drag.
-    const before = await canvas.evaluate(canvas => canvas.toDataURL());
-    const box = await canvas.boundingBox();
-    await page.mouse.move(box.x + 30, box.y + 30);
-    await page.mouse.down();
-    await page.mouse.move(box.x + 150, box.y + 80, { steps: 12 });
-    await page.mouse.up();
-    if (before === await canvas.evaluate(canvas => canvas.toDataURL())) {
-      throw Error('Drag drew no pixels');
-    }
-    if (errors.length) throw Error(errors.join('\n'));
-    await page.screenshot({ path: output, fullPage: true });
-    console.log('PASS: visible canvas, default drag changes pixels, no page errors.');
-  } finally {
-    if (browser) await browser.close();
-    await new Promise(resolve => server.close(resolve));
-  }
-})().catch(error => { console.error(error); process.exitCode = 1; });
-EOF
-cat > .harness/journal.cjs <<'EOF'
-// A report is the agent's claim. checks.txt is the controller's observation.
-const fs = require('node:fs');
-const [directory, id] = process.argv.slice(2);
-const report = JSON.parse(fs.readFileSync(`${directory}/report.json`, 'utf8'));
-for (const key of ['implemented', 'envisioned', 'limitations']) {
-  if (typeof report[key] !== 'string' || !report[key].trim()) {
-    throw Error(`Missing ${key} in the agent report`);
-  }
-}
-const checks = fs.readFileSync(`${directory}/checks.txt`, 'utf8').trim();
-fs.appendFileSync('ledger.md', `\n## ${id}\n\n` +
-  `Agent implemented: ${report.implemented}\n\n` +
-  `Agent envisioned: ${report.envisioned}\n\n` +
-  `Agent limitations: ${report.limitations}\n\n` +
-  `Controller observed: ${checks}\n\n` +
-  `Screenshot: ${directory}/screen.png. Product acceptance: pending human inspection.\n`);
-EOF
-```
-
-## 4. The controller — read this with the class
-
-It calls a fresh session, caps scope, captures evidence, checkpoints, then repeats. There is no hidden LLM scheduler. A failure stops with the working files and logs preserved for a human.
+Copy this block after completing section 2. It copies all six small files, then checkpoints the prepared fixture. It does not call an agent.
 
 ```bash
-cat > .harness/changes.py <<'EOF'
-"""Count added PLUS deleted app lines since the last accepted checkpoint."""
-import subprocess
-
-total = 0
-summary = subprocess.check_output(['git', 'diff', '--numstat', '--', 'app'], text=True)
-for entry in summary.splitlines():
-    added, deleted, _ = entry.split('\t', 2)
-    if added == '-' or deleted == '-':
-        raise SystemExit('STOP: binary app changes cannot satisfy a line budget')
-    total += int(added) + int(deleted)
-print(total)
-EOF
-cat > .harness/check.py <<'EOF'
-"""Run a browser check with an overall timeout, including stuck page code."""
-import os
-import signal
-import subprocess
-import sys
-
-seconds, *command = sys.argv[1:]
-try:
-    seconds = int(seconds)
-    if seconds <= 0 or not command:
-        raise ValueError
-except ValueError:
-    raise SystemExit('CHECK_SECONDS must be positive, followed by a check command')
-process = None
-
-
-def stop(*_):
-    """Stop Node and its browser group, even if Node already exited."""
-    if process:
-        try:
-            os.killpg(process.pid, signal.SIGTERM)
-        except ProcessLookupError:
-            pass
-        try:
-            process.wait(timeout=3)
-        except subprocess.TimeoutExpired:
-            pass
-        # A browser descendant can outlive Node; always finish group cleanup.
-        try:
-            os.killpg(process.pid, signal.SIGKILL)
-        except ProcessLookupError:
-            pass
-        process.wait()
-    sys.exit(124)
-
-
-signal.signal(signal.SIGTERM, stop)
-signal.signal(signal.SIGINT, stop)
-process = subprocess.Popen(command, start_new_session=True)
-try:
-    sys.exit(process.wait(timeout=seconds))
-except subprocess.TimeoutExpired:
-    print(f'STOP: browser check exceeded {seconds} seconds', file=sys.stderr)
-    stop()
-EOF
-cat > .harness/loop.sh <<'EOF'
-#!/usr/bin/env bash
-# Run this COPY from an isolated demo's .harness/, never from CAP's source tree.
-# Bash chooses the next pass. The fresh agent only changes the paint app.
-set -euo pipefail
-cd "$(dirname "$0")/.."
-
-# ${NAME:-default} means: use the environment setting, or this default.
-passes="${ITERATIONS:-3}"
-seconds="${PASS_SECONDS:-180}"
-check_seconds="${CHECK_SECONDS:-60}"
-case "$passes" in ''|*[!0-9]*) echo 'ITERATIONS must be 1..100'; exit 1;; esac
-if [ "$passes" -lt 1 ] || [ "$passes" -gt 100 ]; then
-  echo 'ITERATIONS must be 1..100'; exit 1
-fi
-
-# Refuse CAP itself, a published repo, or unaccepted changes from a prior pass.
-if [ "$(git rev-parse --show-toplevel)" != "$PWD" ] ||
-   [ "$(git branch --show-current)" != 'feature/paint-loop' ] ||
-   [ -n "$(git remote)" ] || [ ! -f .harness/prompt.txt ]; then
-  echo 'STOP: use the isolated fixture created by the runbook.'; exit 1
-fi
-if [ -n "$(git status --porcelain -- app ledger.md)" ]; then
-  echo 'STOP: inspect unaccepted app or ledger changes before starting.'; exit 1
-fi
-
-run="$(date -u +%Y%m%dT%H%M%SZ)-$$"
-worker=''
-# $! is the last background process's PID. On exit, stop it and await cleanup.
-cleanup() {
-  if [ -n "$worker" ]; then
-    kill -TERM "$worker" 2>/dev/null || true
-    wait "$worker" 2>/dev/null || true
-  fi
-}
-trap cleanup EXIT
-trap 'exit 130' INT TERM
-
-# One trip through this loop is one NEW conversation, with no resume command.
-for ((pass=1; pass<=passes; pass++)); do
-  id="$run-$(printf '%03d' "$pass")"
-  dir="$PWD/artifacts/$id"
-  mkdir -p "$dir"
-
-  echo "[1/6] Pass $pass/$passes: same request + current ledger"
-  cat .harness/prompt.txt ledger.md > "$dir/prompt.txt"
-
-  echo '[2/6] Call a fresh agent; wait for its result'
-  python3 .harness/agent.py "$PWD/app" "$dir/prompt.txt" "$dir/report.json" \
-    "$seconds" > "$dir/events.jsonl" 2> "$dir/agent.stderr" &
-  worker=$!
-  if ! wait "$worker"; then
-    echo "STOP: agent failed; inspect $dir and working code"; exit 1
-  fi
-  worker=''
-
-  echo '[3/6] Save the diff and enforce the 1,000-line budget'
-  [ -f app/index.html ] || { echo 'STOP: app/index.html is missing'; exit 1; }
-  git add -N app # Include new files in the diff without accepting their content.
-  git diff -- app > "$dir/app.diff"
-  lines="$(python3 .harness/changes.py)"
-  if [ "$lines" -gt 1000 ]; then
-    echo "STOP: $lines changed lines; inspect $dir"; exit 1
-  fi
-
-  echo '[4/6] Launch the app, check drawing, and save a screenshot'
-  # Track the check helper too: a stuck browser must not block this loop forever.
-  python3 .harness/check.py "$check_seconds" node .harness/capture.cjs app \
-    "$dir/screen.png" > "$dir/checks.txt" 2>&1 &
-  worker=$!
-  if ! wait "$worker"; then
-    echo "STOP: inspect $dir/checks.txt and working code"; exit 1
-  fi
-  worker=''
-
-  echo '[5/6] Record agent claims separately from observed checks'
-  node .harness/journal.cjs "$dir" "$id"
-
-  echo '[6/6] Save a local checkpoint; then start the next pass'
-  git add app ledger.md
-  git commit -m "Paint iteration $id; human acceptance pending"
-  git rev-parse HEAD > "$dir/checkpoint.txt"
-  echo "CHECKPOINT $id: $lines changed lines; $dir/screen.png"
-done
-EOF
+export CAP_ROOT="/Users/michaelmurray/code/cap"
+cd "$CAP_LOOP_DEMO" || exit 1
+cp "$CAP_ROOT/curriculum/weeks/04/scripts/loop/"* .harness/
 git add AGENTS.md .gitignore .harness ledger.md
 git commit -m "Prepare isolated paint-loop classroom fixture"
 find app -type f
 ```
 
-The final command should print nothing: **the first agent still receives an empty app folder**. Local demo commits preserve history; they do not publish anything. The cap measures added plus deleted application lines, not the total project size.
+The final command should print nothing: **the first agent still receives an empty app folder**. Local demo commits preserve history; they do not publish anything.
+
+The helper files keep mechanics out of the Bash lesson:
+
+| File | Job |
+|---|---|
+| [loop.sh](scripts/loop/loop.sh) | Choose the next pass and decide whether to continue |
+| [agent.py](scripts/loop/agent.py) | Start one fresh Codex call; stop its process group on timeout or interruption |
+| [check.py](scripts/loop/check.py) | Put an overall time limit around the browser check and handle interruption |
+| [changes.py](scripts/loop/changes.py) | Count added plus deleted app lines; reject binary changes |
+| [capture.cjs](scripts/loop/capture.cjs) | Launch the app on an available local port, check drawing, save a screenshot |
+| [journal.cjs](scripts/loop/journal.cjs) | Record the agent's claims separately from observed checks |
+
+## 4. Read the controller with the class
+
+Open the copied file: `cat .harness/loop.sh`. Its comments and numbered output follow six steps:
+
+1. Combine the **same request** with the current ledger.
+2. Call a **fresh agent** and wait for it to finish.
+3. Measure the app diff: at most **1,000 added plus deleted lines this pass**.
+4. Open the app, check actual drawing, and save an image within a time limit.
+5. Append claims and observed checks to the ledger.
+6. Commit a **local checkpoint**, then repeat.
+
+There is no hidden LLM scheduler. A failure stops with working files and logs preserved for a human. The browser check is a smoke check, not full product acceptance.
+
+### Bash vocabulary for this script
+
+- `passes`, `seconds` and `dir` are named values. Quoting `"$dir"` keeps a path together.
+- `${ITERATIONS:-3}` means “use ITERATIONS if supplied; otherwise use 3.”
+- `for` repeats the steps. `if` chooses what happens when a command succeeds or fails.
+- `&` starts the agent helper in the background; `$!` remembers its process ID; `wait` waits for it.
+- `>` saves output to a file; `2>` saves errors separately.
+- `trap` arranges cleanup when the controller exits. The Python helper handles process groups.
+- `set -euo pipefail` makes unexpected command failures and missing variables stop the script.
+
+You can teach the six-step flow without reading the browser or process-management helpers line by line.
 
 ## 5. Run before class
 
-Each agent call has a 180-second limit by default; each browser check has a separate 60-second limit. Optional `CHECK_SECONDS=90` gives checks more time. Both limits must be positive integers. A timed-out check records its failure in `checks.txt`; it may have no screenshot.
-
 Start with three passes. They can take several minutes and consume model usage. A failed pass does not automatically retry.
+
+Each agent call has a 180-second limit by default; each browser check has a separate 60-second limit. Optional `CHECK_SECONDS=90` gives browser checks more time. Both limits must be positive integers. A timed-out check records its failure in `checks.txt`; it may have no screenshot.
 
 ```bash
 ITERATIONS=3 PASS_SECONDS=180 bash .harness/loop.sh
@@ -509,7 +262,7 @@ printf 'Controller PID: '; cat artifacts/controller.pid
 tail -f artifacts/run.log
 ```
 
-`Ctrl+C` exits `tail`, while the background controller continues. Stop the controller and its current Codex call or browser check with:
+`Ctrl+C` exits `tail`, while the background controller continues. Stop the controller and its current agent call or browser check with:
 
 ```bash
 kill -TERM "$(cat artifacts/controller.pid)"

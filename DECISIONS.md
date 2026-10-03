@@ -208,3 +208,14 @@ Statuses: **Pending user review**, **Confirmed**, or **Redirected**. Passing che
 - **Effects:** Week 03 skills, README, reference, instructor outline, one presentation sentence, and PR description. The other weeks' skills remain unchanged.
 - **Technical verification:** Independent review of the exact staged diff passed with no blockers. All four skill files are removed; the staged skills diff against `origin/main` is empty. All 107 local links/anchors, 95 shell examples under both bash and zsh, and staged whitespace checks passed. The presentation change is one shorter introductory sentence; no slide layout changed.
 - **User response:** Folder removal explicitly requested; delivery and wording choices not yet reviewed.
+
+## DEC-019: Publish Week 4 on a clean branch with actual teaching scripts
+
+- **Task / scope:** Publish the orchestration lesson and provide the runnable scripts requested for its demonstrations.
+- **Status:** Pending user review.
+- **Choice:** Publish `feature/week4-orchestration` from the current `origin/main` base, importing only Week 4 materials. Extract the loop, task-queue and external-controller helpers into `curriculum/weeks/04/scripts/`; have each runbook copy its own helpers into an isolated ignored fixture. Preserve the original local branch and active working checkout.
+- **Reason:** The old local branch contains unrelated history, while reviewers need a focused branch and actual script files they can inspect and run without reconstructing long heredocs. Separate fixture copies retain the independent demo repositories and permissions.
+- **Alternative:** Publish the old diverged branch, or leave every helper solely embedded in the runbooks.
+- **Effects:** [Week 4 slides](curriculum/weeks/04/presentation.md), [loop runbook](curriculum/weeks/04/demo-01-loop.md), [task-queue runbook](curriculum/weeks/04/demo-01b-task-queue.md), [external-controller runbook](curriculum/weeks/04/demo-03-external-controller.md), their 19 script/helper files, and this log. Earlier decision records are preserved from main.
+- **Technical verification:** The first published commit differs from main only in the five reviewed Markdown files. Static checks passed for the 19 extracted files: 2 Bash, 8 Python, 6 JavaScript and 3 JSON files. The script snapshot is frozen for independent code review; final review and verification evidence will be recorded in its commit body. Live agent/browser demos have not been rehearsed.
+- **User response:** Feature-branch publication and actual runnable scripts explicitly requested; exact branch and extraction choices remain pending review.

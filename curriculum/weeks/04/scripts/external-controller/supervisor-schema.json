@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "properties": {
+    "repair_task": {
+      "type": "string",
+      "enum": [
+        "storage",
+        "blocked"
+      ]
+    },
+    "reason": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "repair_task",
+    "reason"
+  ],
+  "additionalProperties": false
+}

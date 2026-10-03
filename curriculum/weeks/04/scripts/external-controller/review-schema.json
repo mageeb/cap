@@ -1,0 +1,57 @@
+{
+  "type": "object",
+  "properties": {
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "needs_work"
+      ]
+    },
+    "criteria": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": [
+              "reload",
+              "drawing",
+              "invalid_state"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "met",
+              "partial",
+              "unmet"
+            ]
+          },
+          "evidence": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "evidence"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "verdict",
+    "criteria",
+    "gaps"
+  ],
+  "additionalProperties": false
+}

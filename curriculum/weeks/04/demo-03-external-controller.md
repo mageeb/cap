@@ -77,7 +77,7 @@ PREFLIGHT
 
 This runbook uses `--ephemeral`, `--sandbox`, `--json`, `-o`, `--output-schema`, `--ignore-user-config`, `-c project_doc_max_bytes=0`, `--disable memories`, `--disable multi_agent`, `-C`, and stdin `-`. The author inspected these options on Codex CLI 0.159.2; verify them on your installed version. Disabling memories and native multi-agent dispatch keeps each external job's input explicit. Every job gets a fresh context; the code and recorded artifacts carry progress. The explicit fixture contract replaces inherited project instructions for these isolated teaching calls; project_doc_max_bytes=0 prevents CAP AGENTS.md from adding unrelated repository workflows.
 
-Create a **new** nested demo repository. The commands stop if this location already exists. Keep an existing run intact and choose a new directory name if necessary. These commands create runtime files only when you execute them; the curriculum contains this Markdown runbook.
+Create a **new** nested demo repository. The commands stop if this location already exists. Keep an existing run intact and choose a new directory name if necessary. These commands create runtime files only when you execute them. The curriculum contains this runbook and the commented [Controller and checks](scripts/external-controller/controller.py) that you copy into the isolated fixture.
 
 **Git isolation:** this setup does not switch CAP's curriculum branch or create commits in CAP. It adds `/.demo-runs/` to CAP's local `.git/info/exclude`, preserving existing lines. That rule is not tracked or shared; this runbook configures it even on a fresh checkout. The fixture gets its own Git repository, feature branch and no remote. Run subsequent demo commands inside `$RUNDIR`.
 
@@ -176,387 +176,66 @@ cat > app/main.js <<'JS'
 JS
 ```
 
+### Copy the real teaching files
+
+The scripts are checked in beside this runbook. Copy them into your isolated demo repository; run them there so logs, app changes, and state stay out of the curriculum branch.
+
+In the Observer terminal, after creating the scaffold:
+
+```bash
+# This is the tracked source folder. It is not the working demo repository.
+DEMO_SCRIPTS=/Users/michaelmurray/code/cap/curriculum/weeks/04/scripts/external-controller
+
+# Copy the program and its Human-owned checks into this run.
+cp "$DEMO_SCRIPTS/controller.py" "$RUNDIR/controller.py"
+cp "$DEMO_SCRIPTS/checks.py" "$RUNDIR/checks.py"
+cp "$DEMO_SCRIPTS/browser-check.mjs" "$RUNDIR/browser-check.mjs"
+cp "$DEMO_SCRIPTS/supervisor-schema.json" "$RUNDIR/supervisor-schema.json"
+cp "$DEMO_SCRIPTS/review-schema.json" "$RUNDIR/review-schema.json"
+
+# The Planner will turn this fixed template into the accepted task graph.
+cp "$DEMO_SCRIPTS/task-graph-template.json" "$RUNDIR/plan/task-graph-template.json"
+
+# Keep the prepared defect separate until the safe injection boundary.
+cp "$DEMO_SCRIPTS/prepared-broken-settings.js" "$RUNDIR/artifacts/prepared-broken-settings.js"
+```
+
+Check that every copy command completed before continuing. If a source file is missing, stop and check that you are using the complete Week 4 branch and the correct CAP path.
+
+| File | What to explain to students |
+|---|---|
+| [controller.py](scripts/external-controller/controller.py) | Pick ready tasks, start fresh agents, check output, publish owned files, retry or stop. |
+| [checks.py](scripts/external-controller/checks.py) | The program checks the actual schema, modules, storage behavior, and Reviewer report. |
+| [browser-check.mjs](scripts/external-controller/browser-check.mjs) | Reload, draw teal pixels, erase a fresh stroke, and recover from bad saved data. |
+| [task-graph-template.json](scripts/external-controller/task-graph-template.json) | Five tasks, their prerequisites, owned files, checks, and two-attempt budgets. |
+| [supervisor-schema.json](scripts/external-controller/supervisor-schema.json) / [review-schema.json](scripts/external-controller/review-schema.json) | Restrict the decisions and reports an agent can return. |
+| [prepared-broken-settings.js](scripts/external-controller/prepared-broken-settings.js) | An intentionally wrong `colour` field for the labeled repair demonstration. |
+
 ### Independent checks
 
 The checks are Human-owned. Workers receive isolated app copies and publish only their declared files; the Controller invokes these checks from outside those copies. Changed, added, deleted, or symlinked unowned app paths are rejected before checks, preventing a candidate from passing against unpublished helper edits.
 
-```bash
-cd "$RUNDIR"
-cat > browser-check.mjs <<'JS'
-process.env.PLAYWRIGHT_BROWSERS_PATH = '0';
-const { chromium } = await import('playwright');
-import assert from 'node:assert/strict';
-import fs from 'node:fs';
-const [url, out] = process.argv.slice(2);
-fs.mkdirSync(out, {recursive:true});
-const browser = await chromium.launch({headless:true});
-try {
-  const page = await browser.newPage({viewport:{width:900,height:500}});
-  await page.goto(url);
-  await page.waitForFunction(() => window.appReady === true);
-  assert.equal(await page.getByLabel('Tool', {exact:true}).count(), 1);
-  assert.equal(await page.getByLabel('Color', {exact:true}).count(), 1);
-  await page.selectOption('#tool', 'pencil');
-  await page.selectOption('#color', '#188D91');
-  await page.reload();
-  await page.waitForFunction(() => window.appReady === true);
-  assert.equal(await page.locator('#tool').inputValue(), 'pencil');
-  assert.equal(await page.locator('#color').inputValue(), '#188D91');
-  async function dragStroke() {
-    const box = await page.locator('#paint').boundingBox();
-    await page.mouse.move(box.x + 41, box.y + 41);
-    await page.mouse.down();
-    await page.mouse.move(box.x + 111, box.y + 41, {steps:8});
-    await page.mouse.up();
-  }
-  const readPixel = () => page.locator('#paint').evaluate(c => [...c.getContext('2d').getImageData(75,40,1,1).data]);
-  const assertTeal = pixel => { assert.deepEqual(pixel.slice(0,3), [24,141,145]); assert.equal(pixel[3],255); };
-  await dragStroke();
-  assertTeal(await readPixel());
-  await page.screenshot({path:`${out}/pencil-teal-reload.png`});
-  await page.selectOption('#tool', 'eraser');
-  await page.reload();
-  await page.waitForFunction(() => window.appReady === true);
-  assert.equal(await page.locator('#tool').inputValue(), 'eraser');
-  assert.equal(await page.locator('#color').inputValue(), '#188D91');
-  // Canvas contents are not persisted: draw a new stroke after this reload.
-  await page.selectOption('#tool', 'pencil');
-  await dragStroke(); assertTeal(await readPixel());
-  await page.selectOption('#tool', 'eraser');
-  await dragStroke();
-  const erased = await readPixel();
-  assert.ok(erased[3] === 0 || erased.every(v => v === 255), `Expected white/transparent erased pixel: ${erased}`);
-  await page.screenshot({path:`${out}/eraser-after-reload.png`});
-  await page.evaluate(() => localStorage.setItem('cap.paint.preferences.v1', '{broken'));
-  await page.reload();
-  await page.waitForFunction(() => window.appReady === true);
-  assert.equal(await page.locator('#tool').inputValue(), 'pencil');
-  assert.equal(await page.locator('#color').inputValue(), '#152536');
-  await page.screenshot({path:`${out}/invalid-state-defaults.png`});
-  console.log(JSON.stringify({reload:'passed',drawing:'passed',eraser:'passed',invalid_state:'passed'}));
-} finally { await browser.close(); }
-JS
-cat > checks.py <<'PY'
-from pathlib import Path
-from functools import partial
-from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
-import json, subprocess, sys, threading
-ROOT = Path(__file__).resolve().parent
-criterion, app = sys.argv[1], Path(sys.argv[2]).resolve()
-assert criterion in {'schema','ui','storage','integration','review'}, 'Unknown criterion'
-
-def node(script):
-    result = subprocess.run(['node', '--input-type=module', '-e', script], cwd=ROOT,
-                            capture_output=True, text=True, timeout=30)
-    if result.returncode:
-        raise AssertionError(result.stderr or result.stdout)
-    return result.stdout
-
-prefix = "import assert from 'node:assert/strict';\n"
-uri = lambda name: (app / name).as_uri()
-if criterion == 'schema':
-    assert json.loads((app / 'schema.json').read_text()) == {
-        'tools': ['pencil', 'eraser'], 'colors': ['#152536','#188D91','#E8A64C'], 'default': {'tool': 'pencil', 'color': '#152536'}}
-if criterion == 'ui':
-    node(prefix + f"import {{renderToolbar}} from {json.dumps(uri('toolbar.js'))};\n" + r"""
-const html=renderToolbar({tool:'eraser',color:'#188D91'});
-for (const [id,value] of [['tool','eraser'],['color','#188D91']]) {
-  const select=html.match(new RegExp(`<select\\b[^>]*id=["']${id}["'][^>]*>([\\s\\S]*?)</select>`,'i'));
-  assert.ok(select,`Missing select#${id}`);
-  const options=select[1].match(/<option\b[^>]*>/gi)||[];
-  assert.ok(options.some(o => new RegExp(`value=["']${value}["']`).test(o) && /\bselected\b/i.test(o)));
-}
-""")
-if criterion in ('storage', 'integration', 'review'):
-    node(prefix + f"import {{loadPreferences,savePreferences}} from {json.dumps(uri('settings.js'))};\n" + r"""
-const data = new Map(), storage = {getItem:k=>data.get(k)??null,setItem:(k,v)=>data.set(k,v)};
-const defaults={tool:'pencil',color:'#152536'}, good={tool:'eraser',color:'#188D91'};
-assert.deepEqual(loadPreferences(storage),defaults);
-savePreferences(storage,good); assert.deepEqual(loadPreferences(storage),good);
-assert.deepEqual(JSON.parse(data.get('cap.paint.preferences.v1')),good);
-for (const bad of ['{broken',JSON.stringify({tool:'laser',color:'#188D91'}),JSON.stringify({tool:'pencil',colour:'#188D91'}),JSON.stringify({tool:'pencil',color:'blue'})]) {
-  storage.setItem('cap.paint.preferences.v1',bad); assert.deepEqual(loadPreferences(storage),defaults);
-}
-const denied={getItem(){throw Error('denied');},setItem(){throw Error('denied');}};
-assert.deepEqual(loadPreferences(denied),defaults);
-assert.doesNotThrow(()=>savePreferences(denied,defaults));
-savePreferences(storage,{tool:'bad',color:'bad'}); assert.deepEqual(loadPreferences(storage),defaults);
-""")
-if criterion in ('integration', 'review'):
-    node(prefix + f"import {{loadPreferences,savePreferences}} from {json.dumps(uri('settings.js'))};\n"
-         + f"import {{renderToolbar}} from {json.dumps(uri('toolbar.js'))};\n" + r"""
-const data=new Map(), storage={getItem:k=>data.get(k)??null,setItem:(k,v)=>data.set(k,v)};
-const good={tool:'pencil',color:'#188D91'};
-savePreferences(storage,good); assert.deepEqual(loadPreferences(storage),good);
-const html=renderToolbar(loadPreferences(storage)); assert.ok(html.includes('#188D91'));
-""")
-    server = ThreadingHTTPServer(('127.0.0.1', 0), partial(SimpleHTTPRequestHandler, directory=str(app)))
-    threading.Thread(target=server.serve_forever, daemon=True).start()
-    try:
-        result = subprocess.run(['node', str(ROOT/'browser-check.mjs'),
-            f'http://127.0.0.1:{server.server_port}', str(app.parent/'screenshots')],
-            capture_output=True, text=True, timeout=60)
-        assert result.returncode == 0, result.stderr or result.stdout
-        print(result.stdout.strip())
-    finally:
-        server.shutdown(); server.server_close()
-if criterion == 'review':
-    report = json.loads(Path(sys.argv[3]).read_text())
-    assert report['verdict'] == 'pass' and report['gaps'] == []
-    assert len(report['criteria']) == 3
-    assert {item['id'] for item in report['criteria']} == {'reload','drawing','invalid_state'}
-    assert all(item['status'] == 'met' for item in report['criteria'])
-print(json.dumps({'criterion':criterion,'status':'passed'}))
-PY
-cat > supervisor-schema.json <<'JSON'
-{"type":"object","properties":{"repair_task":{"type":"string","enum":["storage","blocked"]},"reason":{"type":"string"}},"required":["repair_task","reason"],"additionalProperties":false}
-JSON
-cat > review-schema.json <<'JSON'
-{"type":"object","properties":{"verdict":{"type":"string","enum":["pass","needs_work"]},"criteria":{"type":"array","items":{"type":"object","properties":{"id":{"type":"string","enum":["reload","drawing","invalid_state"]},"status":{"type":"string","enum":["met","partial","unmet"]},"evidence":{"type":"string"}},"required":["id","status","evidence"],"additionalProperties":false}},"gaps":{"type":"array","items":{"type":"string"}}},"required":["verdict","criteria","gaps"],"additionalProperties":false}
-JSON
-```
-
 ### The graph template
 
-Each task has `id`, `deps`, `owned`, `task`, `check`, and `max_attempts`. `deps` are prerequisite task IDs. `check` is a whitelisted independent criterion, not an arbitrary shell command supplied by a model.
+Each task has `id`, `deps`, `owned`, `task`, `check`, and `max_attempts`. `deps` are prerequisite task IDs. `check` is a whitelisted independent criterion, not an arbitrary shell command supplied by a model. Open the actual JSON before asking the Planner to write the plan:
 
 ```bash
-cd "$RUNDIR"
-cat > plan/task-graph-template.json <<'JSON'
-{
-  "version": 1,
-  "tasks": [
-    {"id":"schema","deps":[],"owned":["schema.json"],"check":"schema","max_attempts":2,
-     "task":"Write app/schema.json exactly as {\"tools\":[\"pencil\",\"eraser\"],\"colors\":[\"#152536\",\"#188D91\",\"#E8A64C\"],\"default\":{\"tool\":\"pencil\",\"color\":\"#152536\"}}. Do not change other app files."},
-    {"id":"ui","deps":["schema"],"owned":["toolbar.js"],"check":"ui","max_attempts":2,
-     "task":"Implement app/toolbar.js. Export renderToolbar(preferences), returning an HTML string containing labelled select#tool and select#color. Tools are pencil/eraser; colors are #152536/#188D91/#E8A64C. Mark the supplied tool and color options selected. Do not access storage or attach event handlers. Preserve the field name color. Do not change other app files."},
-    {"id":"storage","deps":["schema"],"owned":["settings.js"],"check":"storage","max_attempts":2,
-     "task":"Implement app/settings.js with exported function declarations loadPreferences(storage) and savePreferences(storage,preferences). Use the injected storage object and key cap.paint.preferences.v1. Valid tools are pencil/eraser and colors are #152536/#188D91/#E8A64C. Missing, malformed, unsupported, or invalid data recovers to BOTH defaults {tool:'pencil',color:'#152536'}. Return fresh objects and save normalized valid data. Storage read/write exceptions must not stop drawing. Preserve the exact {tool,color} interface. Do not change other app files."},
-    {"id":"integrate","deps":["ui","storage"],"owned":["main.js"],"check":"integration","max_attempts":2,
-     "task":"Implement app/main.js only. Import renderToolbar from toolbar.js and loadPreferences/savePreferences from settings.js. Call loadPreferences(localStorage); insert renderToolbar(preferences) into #toolbar. Own all change handlers: update the complete preferences object and call savePreferences(localStorage,preferences). Draw on #paint using pointerdown/pointermove/pointerup: pencil has lineWidth 4 and the selected color; eraser draws white. Use canvas-relative coordinates. Set window.appReady=true after wiring. Color changes affect new pencil strokes. Never patch a field mismatch in another owned file; report it. Preserve the accepted color schema."},
-    {"id":"review","deps":["integrate"],"owned":[],"check":"review","max_attempts":2,
-     "task":"Review the integrated paint app and the supplied independent check evidence read only. Challenge reload, actual colored drawing and erasing, and invalid-state defaults. Return JSON matching the CLI-supplied structured schema, with criteria IDs reload, drawing, invalid_state. Cite actual evidence, identify gaps, and do not edit app files. A report does not replace the independent browser checks."}
-  ]
-}
-JSON
+python3 -m json.tool "$RUNDIR/plan/task-graph-template.json"
 ```
 
-### The external Controller
+### Walk through the external Controller
 
-Read `start`, `finish`, and the final loop first. `start` dispatches a fresh context into an isolated copy. `finish` runs a Human-owned check before publishing declared output files. The loop selects only nodes whose dependencies passed. Failed attempts preserve their candidate files for the next fresh context; they never publish unchecked code to the live app.
+Open [controller.py](scripts/external-controller/controller.py) in your editor. Read the five numbered comments in the **MAIN LOOP** first:
 
-```bash
-cd "$RUNDIR"
-cat > controller.py <<'PY'
-from pathlib import Path
-import hashlib, json, os, shutil, signal, subprocess, sys, time
-ROOT = Path(__file__).resolve().parent
-APP, PLAN = ROOT/'app', ROOT/'plan'
-GRAPH = PLAN/'task-graph.json'
-EXPECTED = {'schema':([],['schema.json'],'schema'), 'ui':(['schema'],['toolbar.js'],'ui'),
-    'storage':(['schema'],['settings.js'],'storage'),
-    'integrate':(['ui','storage'],['main.js'],'integration'), 'review':(['integrate'],[],'review')}
+1. Keep the approved plan fixed and honor STOP.
+2. Poll running processes without calling a model.
+3. Find tasks whose prerequisites passed.
+4. Start those tasks; UI and storage can run together.
+5. Finish when every task passed, then ask for Human acceptance.
 
-def digest():
-    return hashlib.sha256(GRAPH.read_bytes() + (PLAN/'prd.md').read_bytes()).hexdigest()
+Then read `start()` and `finish()`. `start()` launches a fresh context into an isolated app copy. `finish()` runs a Human-owned check before publishing declared output files. Failed attempts preserve their candidate files for the next fresh context; they never publish unchecked code to the live app.
 
-def validate():
-    graph = json.loads(GRAPH.read_text())
-    if graph['version'] != 1: raise ValueError('Expected accepted version 1')
-    tasks = graph['tasks']
-    if len(tasks) != 5 or {t['id'] for t in tasks} != set(EXPECTED): raise ValueError('Five known task IDs required')
-    used = set()
-    for t in tasks:
-        deps, owned, check = EXPECTED[t['id']]
-        if sorted(t['deps']) != sorted(deps) or t['owned'] != owned or t['check'] != check:
-            raise ValueError('Dependencies, ownership, or criterion violate this teaching contract')
-        if type(t['max_attempts']) is not int or not 1 <= t['max_attempts'] <= 2: raise ValueError('Attempt limit must be 1 or 2')
-        if not isinstance(t['task'], str) or not t['task'].strip(): raise ValueError('Missing task instruction')
-        for name in t['owned']:
-            if Path(name).is_absolute() or '..' in Path(name).parts or name in used: raise ValueError('Unsafe or overlapping owned path')
-            used.add(name)
-    done = set()
-    while len(done) < len(tasks):
-        ready = {t['id'] for t in tasks if set(t['deps']) <= done} - done
-        if not ready: raise ValueError('Dependency cycle or missing prerequisite')
-        done |= ready
-    return {t['id']:t for t in tasks}
-
-TASKS = validate()
-if '--validate' in sys.argv:
-    print('Valid graph and PRD hash:', digest()); sys.exit(0)
-if '--approve' in sys.argv:
-    (PLAN/'APPROVED').write_text(digest()); print('Human-approved version 1:', digest()); sys.exit(0)
-if (PLAN/'APPROVED').read_text().strip() != digest(): raise ValueError('Human approval missing or stale')
-STATE = ROOT/'state.json'
-state = json.loads(STATE.read_text()) if STATE.exists() else {'plan_hash':digest(),'phase':'ready',
-    'supervisor_calls':0,'tasks':{i:{'status':'pending','attempts':0} for i in TASKS}}
-if state['plan_hash'] != digest(): raise ValueError('Plan changed. Keep this run intact and start a new run.')
-for record in state['tasks'].values():
-    if record['status'] == 'running':
-        record['status'] = 'pending'; record.pop('candidate', None)
-running = {}
-
-def save():
-    tmp = ROOT/'state.tmp'; tmp.write_text(json.dumps(state, indent=2)); tmp.replace(STATE)
-
-def notify(message, terminal=False):
-    (ROOT/'notification.txt').write_text(message + '\n'); print(message, flush=True)
-    thread = os.environ.get('PLANNER_THREAD')
-    if not terminal or not thread: return
-    try:
-        if os.environ.get('PLANNER_QUEUE_READY') != '1': raise RuntimeError('Queue command not preflighted')
-        result = subprocess.run(['codex','queue','--thread',thread,'--message',message],
-            capture_output=True, text=True, timeout=15)
-        if result.returncode: raise RuntimeError(result.stderr.strip() or result.stdout.strip())
-        state['notification_delivery'] = 'queued to '+thread
-    except Exception as error:
-        state['notification_delivery'] = 'failed: '+str(error)
-        print('Queue delivery failed; paste notification.txt into Planner:', error, flush=True)
-    save()
-
-def command(job, output, readonly=False, schema=None):
-    args = ['codex','exec','-C',str(job),'--ephemeral','--sandbox',
-        'read-only' if readonly else 'workspace-write','--disable','memories','--disable','multi_agent',
-        '--ignore-user-config','-c','project_doc_max_bytes=0','--json','-o',str(output)]
-    if schema: args += ['--output-schema', str(schema)]
-    return args + ['-']
-
-def snapshot(app, owned):
-    result = {}
-    for path in app.rglob('*'):
-        name = path.relative_to(app).as_posix()
-        if path.is_symlink(): raise RuntimeError('Symlink in candidate: '+name)
-        if name not in owned:
-            result[name] = hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else 'directory'
-    return result
-
-def stop(process):
-    try: os.killpg(process.pid, signal.SIGTERM)
-    except ProcessLookupError: return
-    try: process.wait(timeout=5)
-    except subprocess.TimeoutExpired: pass
-    try: os.killpg(process.pid, signal.SIGKILL)
-    except ProcessLookupError: pass
-    process.wait()
-
-def interrupt(signum, frame):
-    raise RuntimeError('Human interrupt signal '+str(signum))
-
-signal.signal(signal.SIGINT, interrupt)
-signal.signal(signal.SIGTERM, interrupt)
-
-def start(task_id):
-    t, r = TASKS[task_id], state['tasks'][task_id]
-    if r['attempts'] >= t['max_attempts']: raise RuntimeError('Attempt budget exhausted: '+task_id)
-    r['attempts'] += 1
-    job = ROOT/'jobs'/f"{task_id}-{r['attempts']}"; job.mkdir(exist_ok=False)
-    shutil.copytree(APP, job/'app'); (job/'package.json').write_text('{"type":"module"}')
-    if r.get('candidate'):
-        for name in t['owned']:
-            candidate = Path(r['candidate'])/'app'/name
-            if candidate.is_file(): shutil.copy2(candidate, job/'app'/name)
-    output = job/('review.json' if task_id == 'review' else 'report.txt')
-    evidence = (ROOT/'artifacts'/'integration-check.txt').read_text() if task_id == 'review' else ''
-    prompt = (PLAN/'prd.md').read_text() + '\nACCEPTED TASK:\n' + json.dumps(t) + '\n'
-    prompt += 'Work only inside app/. Publish only declared owned files. Human-owned checks are outside this sandbox.\n'
-    prompt += 'Do not edit, add, delete, or link any unowned app path; those changes fail before checks.\n'
-    prompt += 'Prior failure: '+r.get('error','none')+'\nIndependent evidence:\n'+evidence
-    before = snapshot(job/'app',t['owned']); log = open(job/'events.jsonl','w')
-    process = subprocess.Popen(command(job,output,task_id=='review',ROOT/'review-schema.json' if task_id=='review' else None),
-        stdin=subprocess.PIPE, stdout=log, stderr=log, text=True, start_new_session=True)
-    running[task_id] = (process,job,output,log,time.monotonic(),before)
-    r.update(status='running',job=str(job)); save()
-    process.stdin.write(prompt); process.stdin.close(); notify('Started '+task_id)
-
-def check(t, app, output):
-    args = [sys.executable,str(ROOT/'checks.py'),t['check'],str(app)]
-    if t['id'] == 'review': args += [str(output)]
-    process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True)
-    try:
-        started = time.monotonic()
-        while process.poll() is None:
-            if (ROOT/'STOP').exists() or time.monotonic()-started > 100:
-                raise RuntimeError('Independent check stopped or timed out')
-            time.sleep(.3)
-        out, err = process.communicate()
-        return subprocess.CompletedProcess(args, process.returncode, out, err)
-    finally: stop(process)
-
-def supervisor(error):
-    job = ROOT/'jobs'/'supervisor'; job.mkdir(exist_ok=False)
-    shutil.copytree(APP,job/'app'); output = job/'assignment.json'
-    prompt = 'Judge this integration failure read only. Accepted interface is {tool,color}. '
-    prompt += 'Return repair_task=storage only if evidence supports that cause. Otherwise return repair_task=blocked with the reason.\n'+error
-    with open(job/'events.jsonl','w') as log:
-        p = subprocess.Popen(command(job,output,True,ROOT/'supervisor-schema.json'),stdin=subprocess.PIPE,stdout=log,stderr=log,text=True,start_new_session=True)
-        try:
-            p.stdin.write(prompt); p.stdin.close(); started = time.monotonic()
-            while p.poll() is None:
-                if (ROOT/'STOP').exists() or time.monotonic()-started > 90:
-                    raise RuntimeError('Supervisor stopped or timed out')
-                time.sleep(.3)
-        finally: stop(p)
-    if p.returncode: raise RuntimeError('Supervisor invocation failed')
-    assignment = json.loads(output.read_text())
-    if assignment.get('repair_task') != 'storage' or not assignment.get('reason'):
-        raise RuntimeError('Supervisor blocked: '+assignment.get('reason','invalid assignment'))
-    return assignment
-
-def finish(task_id):
-    p, job, output, log, _, before = running.pop(task_id); stop(p); log.close()
-    t, r = TASKS[task_id], state['tasks'][task_id]
-    unchanged = snapshot(job/'app',t['owned']) == before
-    result = check(t,job/'app',output) if p.returncode == 0 and unchanged else None
-    report = (result.stdout + result.stderr) if result else ('Unowned paths changed; checks refused' if not unchanged else 'Codex invocation failed; inspect events.jsonl')
-    (job/'check.txt').write_text(report)
-    if result and result.returncode == 0:
-        for name in t['owned']:
-            source = job/'app'/name
-            if not source.is_file() or source.is_symlink(): raise RuntimeError('Missing or unsafe output: '+name)
-            shutil.copy2(source,APP/name)
-        r.update(status='passed',error='')
-        if task_id == 'integrate':
-            shutil.copy2(job/'check.txt',ROOT/'artifacts'/'integration-check.txt')
-            shutil.copytree(job/'screenshots',ROOT/'artifacts'/'screenshots',dirs_exist_ok=True)
-        notify('Passed '+task_id)
-    else:
-        r.update(status='pending',error=report,candidate=str(job))
-        if task_id == 'integrate' and state['supervisor_calls'] == 0:
-            state['supervisor_calls'] += 1; save(); notify('Integration failed; waking one Supervisor')
-            assignment = supervisor(report)
-            repair = state['tasks']['storage']; repair.update(status='pending',error=assignment['reason'])
-        if r['attempts'] >= t['max_attempts']: raise RuntimeError('Check failed at attempt limit: '+task_id)
-    save()
-
-try:
-    state['phase'] = 'running'; save()
-    while True:
-        if digest() != state['plan_hash']: raise RuntimeError('Accepted plan changed during execution')
-        if (ROOT/'STOP').exists(): raise RuntimeError('Human STOP requested')
-        for task_id, (p,job,output,log,started,before) in list(running.items()):
-            if time.monotonic()-started > 180 and p.poll() is None:
-                stop(p)
-            if p.poll() is not None: finish(task_id)
-        ready = [i for i,t in TASKS.items() if state['tasks'][i]['status']=='pending'
-                 and all(state['tasks'][d]['status']=='passed' for d in t['deps'])]
-        for task_id in ready:
-            if task_id == 'integrate' and (ROOT/'PAUSE_INTEGRATION').exists():
-                state['phase']='paused before integration'; save(); continue
-            state['phase']='running'; start(task_id)
-        if all(r['status']=='passed' for r in state['tasks'].values()):
-            state['phase']='completed'; save(); notify('Completed: inspect evidence before Human acceptance',terminal=True); break
-        time.sleep(.3)
-except Exception as error:
-    for p,job,output,log,started,before in running.values():
-        stop(p)
-        log.close()
-    for record in state['tasks'].values():
-        if record['status']=='running':
-            record['status']='pending'; record.pop('candidate',None)
-    state['phase']='blocked'; state['reason']=str(error); save(); notify('Blocked: '+str(error),terminal=True); sys.exit(1)
-PY
-```
+The shell commands in this runbook only set paths, copy files, and start programs. The **Python main loop** does the orchestration; students do not need to understand a large Bash launcher. The smaller functions explain process cleanup, the plan hash, bounded repair, and the optional notification back to the Planner.
 
 **Control boundary:** only this program chooses ready tasks. Each job has a separate workspace and fresh context. The Controller publishes declared regular files after a real check passes. Copy isolation plus the Codex workspace sandbox limits conflicting writes; this is not a general security boundary for arbitrary untrusted code. The five fixed roles, fixed checks, and maximum of two attempts are intentional teaching constraints.
 
@@ -682,24 +361,8 @@ print('Approved prepared injection boundary reached')
 PY
 python3 checks.py storage app
 cp app/settings.js artifacts/settings.before-injection.js
-cat > app/settings.js <<'JS'
-// PREPARED ADVERSE TEST: deliberately violates the accepted color field.
-const defaults = {tool:'pencil',color:'#152536'};
-function validatePreferences(value) {
-  return value && ['pencil','eraser'].includes(value.tool) && ['#152536','#188D91','#E8A64C'].includes(value.color)
-    ? {tool:value.tool,color:value.color} : {...defaults};
-}
-export function loadPreferences(storage) {
-  let value;
-  try { value=validatePreferences(JSON.parse(storage.getItem('cap.paint.preferences.v1'))); }
-  catch { value={...defaults}; }
-  return {tool:value.tool,colour:value.color};
-}
-export function savePreferences(storage,preferences) {
-  try { storage.setItem('cap.paint.preferences.v1',JSON.stringify(validatePreferences(preferences))); }
-  catch { /* Keep drawing usable when writes fail. */ }
-}
-JS
+# Inject the labeled defect only after the boundary checks above pass.
+cp artifacts/prepared-broken-settings.js app/settings.js
 printf 'Prepared colour/color mismatch injected after storage passed, before integration.\n' > artifacts/prepared-injection.txt
 rm PAUSE_INTEGRATION
 INJECT
@@ -827,6 +490,6 @@ If sign-in is missing, run `claude auth login` before launching. Paste the same 
 
 Leave `PLANNER_THREAD` and `PLANNER_QUEUE_READY` unset in the Controller terminal and use `notification.txt` for completion or blockage. The `codex queue` delivery code does not notify a Claude session.
 
-An **all-Claude** version is a controller port, not a command-name substitution. `launch()` must call fresh `claude -p` jobs with the correct allowed tools/permissions; normal JSON output is a result envelope and schema data lives in `structured_output`, unlike the Codex `-o` report file. Worker, read-only Supervisor and Reviewer outputs/status handling all need adapters. Preserve isolated candidate copies, ownership checks, independent browser gates, process-group cleanup, retries and plan hashes. Replace notification delivery separately or keep the file handoff. These adapters are not implemented in this runbook; use the native [Supervisor demo](demo-02-supervisor.md#if-you-use-claude-code) for a runnable Claude-only exercise.
+An **all-Claude** version is a controller port, not a command-name substitution. `command()` and its callers must start fresh `claude -p` jobs with the correct allowed tools/permissions; normal JSON output is a result envelope and schema data lives in `structured_output`, unlike the Codex `-o` report file. Worker, read-only Supervisor and Reviewer outputs/status handling all need adapters. Preserve isolated candidate copies, ownership checks, independent browser gates, process-group cleanup, retries and plan hashes. Replace notification delivery separately or keep the file handoff. These adapters are not implemented in this runbook; use the native [Supervisor demo](demo-02-supervisor.md#if-you-use-claude-code) for a runnable Claude-only exercise.
 
 [Claude programmatic calls and result envelopes](https://code.claude.com/docs/en/headless), [Claude CLI authentication](https://code.claude.com/docs/en/cli-reference)

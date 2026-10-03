@@ -1,467 +1,206 @@
-# Demo 2 — A live Supervisor with native Codex agents
+# Demo 2 — Chat with a Supervisor while its Workers run
 
-**Live slot:** minutes 24–32. Prepare the fixture, authenticate, rehearse permissions and open the app before class. During class, keep the main conversation open: plan, fan out, steer, integrate and review.
+## What you are building
 
-**CLI used here:** the default instructions use Codex CLI. If you use Claude Code, see [the optional Claude path](#if-you-use-claude-code) before running setup; changing a command name alone does not adapt a controller.
+The starting program is a small browser paint app. The baseline draws with a **Pencil / Navy** and has no working preference controls. Your goal is to add **Pencil / Eraser** and three-color controls, keep **Pencil / Teal** or **Eraser / Teal** after reload, and recover safely if saved data is broken.
 
-**Real example:** a paint app forgets its tool and color when the page reloads. One Worker handles the toolbar, another handles storage, an Integrator connects them, and a separate Reviewer checks the combined result. The main session is the Supervisor and still owns execution decisions. This differs from Demo 3, where a controller owns scheduling.
+You will ask one main **Supervisor** conversation to coordinate four native agents. UI and Storage Workers edit separate files at the same time. An Integrator waits for both reports and connects their work. A separate Reviewer checks the combined result. The Supervisor decides when those steps start, and you can keep chatting with it while the Workers run.
 
-## 1. Preflight and complete independent fixture
+The setup script creates an independent disposable copy of the app, its accepted specification, checks, and named agent roles. It does not launch the Workers. You will brainstorm the graph, approve execution, steer the work, and check the final app yourself.
 
-### Install missing runtime tools (macOS)
+## What you should see
 
-These executable instructions use an **already installed Codex CLI**. You need Node.js 20+ with npm, Python 3.10+, and Git 2.28+. Use a currently supported Node LTS release when installing. Each runbook is independent; do not borrow another demo's dependencies.
+- **Main terminal:** a short plan, two real Worker threads, their reports, then Integration and Review. Use `/agent` in Codex or `/tasks` in Claude to inspect progress and return to the main chat.
+- **Files:** UI changes `app/toolbar.js`, Storage changes `app/settings.js`, and Integration changes `app/main.js`. `spec.md` is their shared contract. `git diff -- app` shows what actually changed.
+- **Browser:** keep the app open on port **4174**. After the agents finish, your choices should survive a reload; drawing and erasing should still work.
+- **Evidence:** `node checks.mjs` checks the modules. Your browser checkpoints check the user experience. A Review report alone does not mean either check passed.
 
-If those runtime tools are already available, skip this installation block. If any are missing or older, the following installs the runtimes through an existing Homebrew installation and selects them in this terminal:
+A successful run has overlapping UI and Storage work, an Integrator that waits for both, a separate Review, passing module checks, and the browser behavior above. If a step fails, the Supervisor should name the responsible Worker and route one bounded repair.
+
+## 1. Install the prerequisites
+
+Assume Codex CLI or Claude Code is installed. You also need **Node 20+**, npm, **Python 3.10+**, and **Git 2.28+**. No Playwright or application packages are required.
+
+On macOS with Homebrew, install any missing tools:
 
 ```bash
 brew install node@24 python git
 export PATH="$(brew --prefix node@24)/bin:$(brew --prefix)/bin:$PATH"
 ```
 
-If `brew` is missing, follow the [official Homebrew installation instructions](https://brew.sh/) first, including its printed **Next steps** for adding Homebrew to your shell, then run the block above. The Homebrew installer explains its machine changes before applying them. Alternatively, use the official [Node.js macOS LTS installer](https://nodejs.org/en/download) and [Python macOS installer](https://www.python.org/downloads/macos/), and [Git's macOS installation instructions](https://git-scm.com/install/mac).
+If Homebrew is missing, follow [its official installation instructions](https://brew.sh/), including the printed shell setup. Alternatively, use the [Node installer](https://nodejs.org/en/download), [Python installer](https://www.python.org/downloads/macos/) and [Git installation guide](https://git-scm.com/install/mac). Repeat the PATH command in new terminals if needed.
 
-Open a fresh terminal after installing. If you used the Homebrew block, repeat its `export PATH=...` line in every new demo terminal so they select the same runtimes. This guide's setup commands target macOS.
-
-### Verify the tools and account
-
-Copy this complete block. It checks versions and authentication without running a model job:
-
-For the default path, leave `CAP_DEMO_AGENT` unset. Claude Code attendees can run `export CAP_DEMO_AGENT=claude` first; the preflight then checks Claude instead. This variable changes only the preflight, not the controller scripts. Follow the optional Claude section for execution.
+Sign in using your normal account if necessary:
 
 ```bash
-bash <<'PREFLIGHT'
-set -euo pipefail
-CAP_DEMO_AGENT=${CAP_DEMO_AGENT:-codex}
-for tool in node npm python3 git "$CAP_DEMO_AGENT"; do
-  command -v "$tool" >/dev/null || { printf 'Missing tool: %s. Install it before continuing.\n' "$tool" >&2; exit 1; }
-done
-node -e "if (Number(process.versions.node.split('.')[0]) < 20) { console.error('Need Node 20+'); process.exit(1); }"
-python3 - <<'PY_CHECK'
-import re, subprocess, sys
-assert sys.version_info >= (3, 10), 'Need Python 3.10+'
-version = subprocess.check_output(['git', '--version'], text=True)
-match = re.search(r'(\d+)\.(\d+)', version)
-assert match and tuple(map(int, match.groups())) >= (2, 28), 'Need Git 2.28+'
-PY_CHECK
-node --version
-npm --version
-python3 --version
-git --version
-git -C /Users/michaelmurray/code/cap rev-parse --show-toplevel
-case "$CAP_DEMO_AGENT" in
-  codex)
-    codex --version
-    codex login status
-    codex --help >/dev/null
-    codex features list
-    ;;
-  claude)
-    claude --version
-    claude auth status
-    ;;
-  *) printf 'Choose codex or claude for this preflight.\n' >&2; exit 1 ;;
-esac
-printf 'PASS: prerequisites ready. Continue to fixture setup.\n'
-PREFLIGHT
+codex login
 ```
 
-**Continue only when the final `PASS` line appears.** If login fails, run `codex login` (or `claude auth login` for the optional Claude path), complete the browser sign-in, and rerun the preflight. Use your normal approved account; no API key belongs in demo files. Authentication being present does not prove account quota or sandbox permissions: rehearse one real demo run before class. [Codex authentication](https://learn.chatgpt.com/docs/auth)
+For Claude, use `claude auth login` instead. The setup checks the selected CLI's version and authentication without starting a model job. Authentication does not establish quota or permissions; the exercise checks actual delegation when you launch Workers.
 
-No application packages, build step, or Playwright installation are needed for this demo. Node's built-in checks and a regular browser are enough.
+## 2. Prepare a fresh isolated fixture
 
-Native subagent availability is version-dependent. The current CLI documents explicit delegation, custom agent files and `/agent` for inspecting or switching threads. Rehearse the exact setup and sandbox on the presentation machine. Do not replace failed delegation with fabricated Worker reports. [Codex subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents)
-
-Copy this block into a terminal. This fixture is independent of Demo 1.
-
-**Git isolation:** this setup does not switch CAP's curriculum branch or create commits in CAP. It adds `/.demo-runs/` to CAP's local `.git/info/exclude`, preserving existing lines. That rule is not tracked or shared; this runbook configures it even on a fresh checkout. The fixture gets its own Git repository, feature branch and no remote. Run subsequent demo commands inside `$CAP_SUPERVISOR_DEMO`.
+Open a terminal in the **CAP curriculum checkout**, where `curriculum/weeks/04` exists. This is different from the disposable app repository that setup will print. If you are at the root of a printed `.demo-runs/supervisor-*` fixture, `cd ../..` returns to CAP; derive `CAP_ROOT` only after returning. Then copy:
 
 ```bash
-cd /Users/michaelmurray/code/cap || exit 1
-CAP_DEMO_EXCLUDE=$(git rev-parse --git-path info/exclude)
-if ! grep -qxF '/.demo-runs/' "$CAP_DEMO_EXCLUDE"; then
-  printf '\n/.demo-runs/\n' >> "$CAP_DEMO_EXCLUDE"
-fi
-export CAP_SUPERVISOR_DEMO="$PWD/.demo-runs/supervisor-$(date +%Y%m%d-%H%M%S)"
-if [ -e "$CAP_SUPERVISOR_DEMO" ]; then
-  printf 'Existing run found: %s. Choose a fresh demo directory.\n' "$CAP_SUPERVISOR_DEMO" >&2
-  exit 1
-fi
-mkdir -p "$CAP_SUPERVISOR_DEMO/app" "$CAP_SUPERVISOR_DEMO/.codex/agents"
-cd "$CAP_SUPERVISOR_DEMO" || exit 1
-git init -b feature/paint-preferences || exit 1
-if [ "$(git -C "$CAP_SUPERVISOR_DEMO" rev-parse --show-toplevel)" != "$CAP_SUPERVISOR_DEMO" ] ||
-   [ "$(git -C "$CAP_SUPERVISOR_DEMO" branch --show-current)" != "feature/paint-preferences" ] ||
-   [ -n "$(git -C "$CAP_SUPERVISOR_DEMO" remote)" ] ||
-   ! git -C /Users/michaelmurray/code/cap check-ignore -q "$CAP_SUPERVISOR_DEMO/"; then
-  printf 'Git isolation check failed. Stop here; do not run later blocks.\n' >&2
-  exit 1
-fi
-# Identity is set only in this isolated repository when no identity exists.
-git config user.name >/dev/null || git config --local user.name "CAP Demo"
-git config user.email >/dev/null || git config --local user.email "cap-demo@example.invalid"
-git var GIT_AUTHOR_IDENT >/dev/null
-git -C "$CAP_SUPERVISOR_DEMO" rev-parse --show-toplevel
-git -C "$CAP_SUPERVISOR_DEMO" branch --show-current
-git -C "$CAP_SUPERVISOR_DEMO" remote -v
-git -C /Users/michaelmurray/code/cap check-ignore -v "$CAP_SUPERVISOR_DEMO/"
-git -C /Users/michaelmurray/code/cap status --short
-cat > AGENTS.md <<'EOF'
-# Isolated classroom fixture
-All edits in this nested repository are delegated to the named Workers or
-Integrator. The main session is the Supervisor. CAP source and this fixture's
-spec.md, checks.mjs, agent configurations, package.json and AGENTS.md are fixed.
-Do not add unrelated CAP planning/DECISIONS workflows. Do not commit or push.
-UI Worker owns app/toolbar.js; Storage Worker owns app/settings.js;
-Integrator owns app/main.js; Reviewer has no write ownership.
-Each report must cite actual files and actual command results, or say not run.
-EOF
-cat > package.json <<'EOF'
-{"private":true,"type":"module"}
-EOF
-cat > spec.md <<'EOF'
-# Accepted product contract: remember paint preferences
-A user picks a drawing tool and color, reloads, and resumes with the same choices.
-
-Allowed tools: pencil, eraser.
-Allowed colors: #152536 (navy), #188D91 (teal), #E8A64C (amber).
-Defaults: {tool:'pencil', color:'#152536'}.
-Storage key: cap.paint.preferences.v1. JSON shape: {tool, color} only.
-Missing, malformed, or invalid saved preferences fall back to BOTH defaults.
-Storage read/write exceptions must not stop drawing.
-Pencil/teal must draw a visible teal stroke after reload. Check visible color
-with PENCIL: an eraser stroke cannot prove which drawing color is selected.
-Eraser selection and the retained drawing color must persist independently.
-The page remains usable with keyboard-labelled tool and color controls.
-No packages, services, build step, or other product features.
-
-Accepted module contract:
-- app/toolbar.js exports renderToolbar(preferences), an HTML string containing
-  labelled select#tool and select#color with the supplied choices selected.
-  It has no storage access or event handlers.
-- app/settings.js exports loadPreferences(storage) and
-  savePreferences(storage, preferences). The storage object is injected.
-  load returns a fresh valid {tool,color}. save writes normalized valid data.
-- app/main.js owns rendering, change handlers, persistence calls, and drawing.
-
-Task graph:
-UI toolbar   ──┐
-              ├── Integration ── Review ── human browser acceptance
-Storage      ──┘
-
-UI and Storage can run concurrently because their owned files do not overlap.
-Integration starts only after BOTH actual reports. Review starts after integration.
-EOF
-cat > app/index.html <<'EOF'
-<!doctype html>
-<html lang="en"><meta charset="utf-8"><title>CAP Paint</title>
-<style>
-body{font:18px system-ui;background:#f4f1e9;color:#152536;max-width:820px;margin:40px auto}
-label{display:inline-block;margin:0 20px 18px 0}select{font:inherit;margin-left:8px}
-canvas{display:block;background:white;border:2px solid #152536;touch-action:none}
-</style>
-<h1>CAP Paint</h1><p>Choose a tool and color. What happens after reload?</p>
-<div id="toolbar"></div><canvas id="paint" width="700" height="360"></canvas>
-<script type="module" src="main.js"></script></html>
-EOF
-cat > app/toolbar.js <<'EOF'
-export function renderToolbar() {
-  return '<label>Tool <select id="tool"><option value="pencil">Pencil</option></select></label>' +
-    '<label>Color <select id="color"><option value="#152536">Navy</option></select></label>';
-}
-EOF
-cat > app/settings.js <<'EOF'
-export function loadPreferences() { return {tool:'pencil',color:'#152536'}; }
-export function savePreferences() { /* Not implemented yet. */ }
-EOF
-cat > app/main.js <<'EOF'
-import { renderToolbar } from './toolbar.js';
-const preferences = {tool:'pencil',color:'#152536'};
-document.querySelector('#toolbar').innerHTML = renderToolbar(preferences);
-const canvas = document.querySelector('#paint'), ctx = canvas.getContext('2d');
-let drawing = false;
-function position(e) {
-  const b = canvas.getBoundingClientRect();
-  return [(e.clientX-b.left)*canvas.width/b.width,(e.clientY-b.top)*canvas.height/b.height];
-}
-canvas.addEventListener('pointerdown', e => {
-  drawing = true; canvas.setPointerCapture(e.pointerId);
-  ctx.beginPath(); ctx.moveTo(...position(e));
-});
-canvas.addEventListener('pointermove', e => {
-  if (!drawing) return;
-  ctx.strokeStyle = preferences.color; ctx.lineWidth = 5; ctx.lineCap = 'round';
-  ctx.lineTo(...position(e)); ctx.stroke();
-});
-canvas.addEventListener('pointerup', () => drawing = false);
-canvas.addEventListener('pointercancel', () => drawing = false);
-EOF
-cat > checks.mjs <<'EOF'
-import assert from 'node:assert/strict';
-import { loadPreferences, savePreferences } from './app/settings.js';
-import { renderToolbar } from './app/toolbar.js';
-const defaults = {tool:'pencil',color:'#152536'}, key = 'cap.paint.preferences.v1';
-function storage(raw = null) {
-  return {getItem: k => {assert.equal(k,key); return raw;},
-    setItem: (k,v) => {assert.equal(k,key); raw = v;}};
-}
-assert.deepEqual(loadPreferences(storage()),defaults);
-for (const raw of ['{broken','null','[]','{"tool":"brush","color":"#188D91"}',
-  '{"tool":"eraser","color":"purple"}']) assert.deepEqual(loadPreferences(storage(raw)),defaults);
-const s = storage();
-savePreferences(s,{tool:'pencil',color:'#188D91'});
-assert.deepEqual(loadPreferences(s),{tool:'pencil',color:'#188D91'});
-savePreferences(s,{tool:'eraser',color:'#188D91'});
-assert.deepEqual(loadPreferences(s),{tool:'eraser',color:'#188D91'});
-savePreferences(s,{tool:'bad',color:'bad'});
-assert.deepEqual(loadPreferences(s),defaults);
-const denied = {getItem(){throw Error('denied');},setItem(){throw Error('denied');}};
-assert.deepEqual(loadPreferences(denied),defaults);
-assert.doesNotThrow(() => savePreferences(denied,defaults));
-const html = renderToolbar({tool:'eraser',color:'#188D91'});
-for (const [id,value] of [['tool','eraser'],['color','#188D91']]) {
-  const select = html.match(new RegExp(`<select\\b[^>]*id=["']${id}["'][^>]*>([\\s\\S]*?)</select>`,'i'));
-  assert.ok(select,`Missing select#${id}`);
-  const options = select[1].match(/<option\b[^>]*>/gi) || [];
-  assert.ok(options.some(o => new RegExp(`value=["']${value}["']`).test(o) && /\bselected\b/i.test(o)),
-    `Selected ${id} must be ${value}`);
-}
-console.log('PASS: module defaults, invalid data, pencil/teal, eraser/teal, denied storage, selected controls.');
-EOF
+export CAP_ROOT="$(git rev-parse --show-toplevel)"
+ls "$CAP_ROOT/curriculum/weeks/04/scripts/supervisor/setup.sh" && \
+export CAP_SUPERVISOR_DEMO="$CAP_ROOT/.demo-runs/supervisor-$(date +%Y%m%d-%H%M%S)" && \
+bash "$CAP_ROOT/curriculum/weeks/04/scripts/supervisor/setup.sh" "$CAP_SUPERVISOR_DEMO" && \
+cd "$CAP_SUPERVISOR_DEMO"
 ```
 
-The fixture's baseline intentionally fails these preference checks. Do not claim it is a finished app. The checks exercise module behavior; the later browser checkpoint checks integration and visible drawing.
+### If you use Claude Code
 
-The setup supplies a local demo commit identity only when you have none; it leaves your global Git identity unchanged. If a checkpoint commit fails because your existing signing setup is unavailable, stop and resolve it before running the loop. For disposable demo commits only, `git config --local commit.gpgsign false` disables signing in this nested repository.
+Add `--agent claude` before the path in the setup command. This installs Claude's native role definitions instead of Codex's.
 
-During setup, verify the printed results before continuing:
+If `ls` reports the setup script is missing, stop: your terminal is not at the CAP curriculum checkout. Return there and repeat this block. Continue only after **`PASS: independent fixture ready`**. The output must show your fixture path, branch `feature/paint-preferences`, and **Remotes: none**. If setup fails, resolve the printed error and choose a fresh path.
 
-- Repository root: `/Users/michaelmurray/code/cap/.demo-runs/supervisor-YYYYMMDD-HHMMSS` (the timestamp is your actual run).
-- Branch: `feature/paint-preferences`.
-- Remotes: no output from `git remote -v`.
-- CAP ignore check: `.git/info/exclude` supplies the `/.demo-runs/` rule; its line number may vary.
-- CAP status: no `.demo-runs/` entry. Existing curriculum changes may still appear.
+[Setup script](scripts/supervisor/setup.sh) contains the preparation steps and comments. [Fixture assets](scripts/supervisor/fixture/spec.md) contain the accepted specification, app, module checks, and native agent definitions. The baseline intentionally lacks working preference persistence.
 
-**If a check fails, stop:** keep the fixture intact, open a new terminal, and repeat setup with a fresh demo directory. Do not run the remaining blocks until the repository root, branch, remote and ignore checks pass. For later terminals, restore `$CAP_SUPERVISOR_DEMO` to the printed repository root and `cd "$CAP_SUPERVISOR_DEMO"` before following commands.
+**Git isolation:** the setup preserves CAP's current branch and adds `/.demo-runs/` to CAP's local `.git/info/exclude`. Your fixture has its own repository and feature branch, no remote, and a local baseline commit. Only its disposable repository gets a demo Git identity and signing disabled. No command pushes anything.
 
-## 2. Define the native roles
+Setup prints copyable `export CAP_ROOT=...` and `export CAP_SUPERVISOR_DEMO=...` commands with your actual paths. Paste **both printed exports into every new terminal** before using this guide's commands. Each demo uses its own folder and server port.
 
-Copy the following exact custom-agent configuration. No role pins a model; all inherit the session's model. The file ownership is a cooperation contract, not an operating-system restriction on individual files.
+## 3. Open the baseline app
 
-```bash
-cat > .codex/config.toml <<'EOF'
-[agents]
-enabled = true
-max_concurrent_threads_per_session = 3
-EOF
-cat > .codex/agents/ui_worker.toml <<'EOF'
-name = "ui_worker"
-description = "Implement the accepted paint toolbar in app/toolbar.js only."
-developer_instructions = """
-Read spec.md. Own only app/toolbar.js. Implement renderToolbar(preferences).
-Do not access storage or change other files. Preserve the exact IDs/schema.
-Report changed file, interface, checks actually run, limitations, and handoff.
-Do not commit, push, or invent passing evidence.
-"""
-EOF
-cat > .codex/agents/storage_worker.toml <<'EOF'
-name = "storage_worker"
-description = "Implement injected-storage preference helpers in app/settings.js only."
-developer_instructions = """
-Read spec.md. Own only app/settings.js. Implement loadPreferences(storage) and
-savePreferences(storage,prefs), exact defaults/key/schema and safe failures.
-Do not touch toolbar/main or other files. Report actual changes and checks,
-limitations, and the integration handoff. Do not commit or push.
-"""
-EOF
-cat > .codex/agents/integrator.toml <<'EOF'
-name = "integrator"
-description = "Connect completed toolbar and settings modules in app/main.js only."
-developer_instructions = """
-Start after actual UI and Storage reports. Read spec.md and their actual code.
-Own only app/main.js. Load preferences, render the toolbar, save every change,
-and implement pencil/eraser drawing while retaining the chosen color.
-Use the accepted APIs exactly. Run node checks.mjs and report real output.
-If another module is wrong, report its owner instead of editing that file.
-Do not commit or push. Give evidence and limitations, not assumed acceptance.
-"""
-EOF
-cat > .codex/agents/reviewer.toml <<'EOF'
-name = "reviewer"
-description = "Independently review the integrated preference change without editing."
-sandbox_mode = "read-only"
-developer_instructions = """
-Read spec.md, actual changed code, and git diff. Do not edit any file.
-Run node checks.mjs if the inherited runtime permissions allow it.
-Check default/invalid storage, tool/color persistence wiring, visible color
-risk, eraser behavior, event handlers, and ownership. Return findings with
-file/line evidence and actual commands/results; explicitly list unrun checks.
-Human browser acceptance remains pending. Do not rubber-stamp Worker reports.
-"""
-EOF
-git add .
-git commit -m "Prepare native-agent paint-preferences classroom fixture"
-```
-
-Parent runtime permissions can override an agent's requested sandbox. Confirm the Reviewer is behaving as a reader during rehearsal; both its prompt and role contract prohibit edits. [Custom agents and permissions](https://learn.chatgpt.com/docs/agent-configuration/subagents)
-
-## 3. Open the app before class
-
-In a separate terminal:
+In a second terminal, paste both export commands printed by setup, then run:
 
 ```bash
 cd "$CAP_SUPERVISOR_DEMO"
 python3 -m http.server 4174 --bind 127.0.0.1 --directory app
 ```
 
-If the environment variable is not set in that new terminal, paste the actual fixture path printed by `pwd` in the setup terminal. Open `http://127.0.0.1:4174`. Draw once to show the baseline is real. Leave the server running. The Python server is an instructor process, not an agent tool.
+Open <http://127.0.0.1:4174>. The baseline shows only **Pencil / Navy**. Draw one navy stroke; preference persistence and its checks are expected to fail until the Workers implement them. Leave the server running while you use the first terminal for the main conversation.
 
-## 4. Live: brainstorm and accept the graph — about one minute
+## 4. Brainstorm and approve the task graph
 
-Start the interactive main session in the setup terminal:
+In the first terminal:
 
 ```bash
-cd "$CAP_SUPERVISOR_DEMO"
 codex --sandbox workspace-write
 ```
 
-If Codex asks whether to trust this project, review and accept this isolated fixture during rehearsal. Paste:
+For Claude, use this command instead:
+
+```bash
+claude --agents "$(cat .claude/agents.json)"
+```
+
+Review any project trust prompt before proceeding. Paste this into the main conversation:
 
 ```text
 You are the Supervisor for this classroom fixture. Read AGENTS.md and spec.md.
-Let's briefly reason about the user experience of remembering paint preferences.
-Give one concrete example of pencil/teal after reload and a separate eraser
-persistence example. Then show the accepted task graph and why UI and Storage
-can run concurrently. Do not edit files or launch Workers until I say GO.
-Keep your response short: this is a live demonstration.
+Let's briefly reason about remembering paint preferences. Give one concrete
+example of Pencil/Teal after reload and a separate Eraser persistence example.
+Show the accepted task graph and why UI and Storage can run concurrently.
+Do not edit files or launch Workers until I say GO. Keep the response short.
 ```
 
-**Checkpoint:** the plan uses the exact two APIs and file owners. Correct mistakes in chat before launching anything. This is the human approving a concrete boundary.
+**Checkpoint:** UI owns `app/toolbar.js`; Storage owns `app/settings.js`; Integration owns `app/main.js`. Both Workers must finish before Integration; Review follows Integration. Correct mistakes in chat before starting.
 
-## 5. Live: fan out and stay in the conversation — about two minutes
+## 5. Fan out, then intervene in the same chat
 
 Paste:
 
 ```text
-GO. Spawn ui_worker and storage_worker concurrently using the native roles.
-Give each its owned file and the accepted spec. Do not perform their edits
-in the main session. Keep the other files fixed. Report the actual launched
-threads and their work, then wait for both real reports before integration.
-When both finish, record their actual reports and close completed child threads
-if needed to free capacity. Delegate app/main.js to integrator. Record its actual
-report and close its completed thread before spawning reviewer separately. Do not publish or commit.
-If a check fails, route one bounded repair to the owner and review again.
-If that repair fails, stop and hand me the actual failure; do not keep retrying.
+GO. Spawn ui_worker and storage_worker concurrently using the named native
+roles. Give each its owned file and accepted spec. Do not do their edits in
+the main session. Keep other files fixed. Show the real launched threads.
+Wait for both actual reports before delegating app/main.js to integrator.
+After Integration's actual report, spawn reviewer separately. For Codex,
+close completed child threads when needed to free capacity. Do not commit
+or publish. Route one bounded repair to the responsible owner if a check
+fails, then review again. If that repair fails, stop and report the failure.
 ```
 
-While the Workers are active, paste this intervention into the **same main conversation**:
+For Claude, add:
 
 ```text
-Quick steering update: preserve our three-color palette; do not add a color
-picker or more tools. Keep the saved color when eraser is selected. Confirm
-which Workers are still running using actual thread state, and communicate
-this constraint to any affected Worker. Keep going with the accepted graph.
+Run UI and Storage in the background so I can keep chatting. Use the four
+named Claude subagents. The Reviewer cannot run commands; I will run the
+checks. Omit the Codex instructions about closing threads and freeing capacity.
 ```
 
-Then use the actual CLI command:
+While both Workers are active, paste:
 
 ```text
-/agent
+Steering update: keep our three-color palette. Do not add a color picker or
+more tools. Preserve the saved color when Eraser is selected. Tell me which
+Workers are actually running and pass this constraint to the affected Worker.
+Keep going with the accepted graph.
 ```
 
-Inspect a real Worker thread in the picker, then return to the Supervisor thread. Show its task, owned file and actual report. The main chat is an active coordination surface; the Supervisor LLM is deciding when to launch, wait, route repairs and request review.
+Use **`/agent`** in Codex or **`/tasks`** in Claude to inspect actual Workers, then return to the main conversation. Show one task, its owned file, and its actual report.
 
-**Checkpoint:** two real parallel Workers, disjoint owned files, no Integration before their reports. If the Supervisor proceeds without delegation, paste: `Use the named native agents now; this demonstration requires actual child threads, not simulated role messages.`
+**Checkpoint:** two real Workers overlap in time and edit separate files. No integration starts before their reports. If delegation is skipped, say: `Use the named native agents now; show actual child threads rather than simulated role messages.`
 
-## 6. Live: integration, review and human acceptance — about three minutes
+## 6. Review the combined result
 
-Wait for Integration's actual report and the separate Reviewer's findings. Paste:
+After Integration and Reviewer report, paste:
 
 ```text
-Summarize actual handoffs: UI report, Storage report, Integration changes,
-and independent Reviewer findings. Include checks run and their real results.
-Do not treat module-check success as browser acceptance. Give me the exact
-remaining browser steps. If blocked, name the owner and concrete next action.
+Summarize actual UI, Storage and Integration handoffs, plus independent
+Reviewer findings. Include commands run and real results; name unrun checks.
+Module checks do not establish browser acceptance. Give me the remaining
+browser steps. If blocked, identify the owner and concrete next action.
 ```
 
-In a separate terminal, inspect the real integration:
+In a terminal inside the fixture:
 
 ```bash
-cd "$CAP_SUPERVISOR_DEMO"
 node checks.mjs
 git diff --stat
 git diff -- app
 ```
 
-The expected **successful** check output starts `PASS: module defaults...`; a failing command is evidence to route back to the relevant owner, not something to skip. Run these browser steps:
+Successful checks start **`PASS: module defaults...`**. Route failures to the relevant owner.
 
-1. Select **Pencil / Teal**, reload, and confirm both controls still show those values. Draw a new stroke: it must visibly be teal.
-2. Select **Eraser** while retaining **Teal**, reload, and confirm **Eraser / Teal** remain selected. Reload clears the canvas: only preferences persist. Switch to **Pencil** and draw a teal stroke; switch to **Eraser** and erase part of that new stroke. Switch back to **Pencil** and draw again: it must still be teal.
-3. In the browser developer console, paste:
+Then check in the browser:
 
-```js
-localStorage.setItem('cap.paint.preferences.v1', '{broken'); location.reload();
-```
+1. Choose **Pencil / Teal**, reload, confirm both choices remain, and draw a visible teal stroke.
+2. Choose **Eraser / Teal**, reload, and confirm both remain. The canvas is cleared by reload. Switch to Pencil and draw a teal stroke; switch to Eraser and erase part; switch back to Pencil and draw teal again.
+3. In the browser developer console, run `localStorage.setItem('cap.paint.preferences.v1', '{broken'); location.reload();`.
+4. Confirm **Pencil / Navy** defaults and working drawing.
 
-4. Confirm **Pencil / Navy** defaults and that drawing still works.
-
-Report the real browser outcome to the Supervisor. If something fails, use this exact repair routing prompt with the actual symptom filled in:
+Report the actual browser outcome in the main chat. For a failure, paste:
 
 ```text
-Browser acceptance failed: [PASTE ACTUAL OBSERVATION]. Delegate a bounded repair
-to the owner of the faulty file. Preserve the accepted contract and other files.
-Make only one bounded repair attempt; if it still fails, stop and report it.
-Then get a separate Reviewer report again. Do not declare acceptance until I
-repeat the browser checkpoint and report it passed.
+Browser acceptance failed: [PASTE ACTUAL OBSERVATION]. Delegate one bounded
+repair to the faulty file's owner, preserving the accepted contract and other
+files. Get a separate Reviewer report. Stop if the repair fails. Acceptance
+remains pending until I repeat the browser check and report it passed.
 ```
 
-## 7. Presenter debrief and stop
+## 7. Explain the pattern and stop
 
-- **Best fit:** a small, changing feature where human steering and parallel specialization help.
-- **Strength:** one conversational entry point; explicit roles and a separate review pass.
-- **Limit:** the Supervisor's context carries scheduling decisions. Worker availability, reports, integration and permission handling still need attention. More agents do not imply faster or better results.
-- **On the loop:** the human accepted the contract, intervened during execution, inspected findings, and performed the final visible behavior check.
+**Explain what you observed:** “The Supervisor is an LLM session. It chooses when to launch Workers, wait, integrate and review. I can steer it during the work. A larger task graph puts more coordination into that conversation.”
 
-Quit Codex normally and press `Ctrl+C` in the Python-server terminal. Changes remain local in the fixture's feature branch. No command above pushes anything.
+Best fit: a small feature with changing requirements and a human nearby. Native roles help separate work and review; thread capacity, permissions, and handoffs still need attention.
 
-These are complete runnable instructions, not a claim that the agents or browser checks have been executed here. Current CLI/thread behavior: [Codex subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents).
+Quit the agent normally. Press **Ctrl+C** in the server terminal. All edits remain in the isolated fixture.
 
-## If you use Claude Code
+## Ask an agent to prepare a similar demo
 
-This is the easiest demo to follow natively with Claude. Set `CAP_DEMO_AGENT=claude` during the prerequisite check, complete the same fixture and server setup, then use this launch command **instead of `codex`** in section 4. The Codex TOML files are unused by Claude; the session-scoped definitions below supply its roles.
+Copy this prompt into your normal CLI conversation:
 
-```bash
-cd "$CAP_SUPERVISOR_DEMO"
-claude --version
-claude auth status
-claude --agents '{
-  "ui_worker": {
-    "description": "Implements the paint toolbar only.",
-    "prompt": "Read AGENTS.md and spec.md. Edit only app/toolbar.js. Honor renderToolbar(preferences), the exact tool/color contract and selected options. Do not edit other files, commit, start servers or spawn agents. Report actual files and unrun checks.",
-    "tools": ["Read", "Glob", "Grep", "Edit", "Write"], "background": true
-  },
-  "storage_worker": {
-    "description": "Implements paint preferences storage only.",
-    "prompt": "Read AGENTS.md and spec.md. Edit only app/settings.js. Honor loadPreferences(storage), savePreferences(storage, preferences), exact key/fields/defaults and denied storage behavior. Do not edit other files, commit, start servers or spawn agents. Report actual files and unrun checks.",
-    "tools": ["Read", "Glob", "Grep", "Edit", "Write"], "background": true
-  },
-  "integrator": {
-    "description": "Connects the completed toolbar and storage.",
-    "prompt": "Read AGENTS.md and spec.md. Edit only app/main.js after UI and Storage finish. Preserve drawing and implement event/persistence wiring. Do not edit other files, commit or start servers. Report actual integration and unrun checks.",
-    "tools": ["Read", "Glob", "Grep", "Edit", "Write"]
-  },
-  "reviewer": {
-    "description": "Independently reviews the combined paint feature.",
-    "prompt": "Read AGENTS.md, spec.md, checks.mjs and app source. Report supported issues with file evidence, including color/eraser persistence and storage failures. Make no edits. You cannot run shell checks: say not run, and have the Human run node checks.mjs and the browser acceptance steps.",
-    "tools": ["Read", "Glob", "Grep"]
-  }
-}'
+```text
+Prepare a small native multi-agent demonstration for a paint app that remembers
+its tool and color after reload. Put it in a fresh independent Git repository
+on a feature branch with no remote; keep my source checkout untouched. Create
+one accepted spec and exact shared module interfaces. Define native UI and
+Storage Workers with separate files, an Integrator that waits for both real
+reports, and a read-only Reviewer after integration. Set enough thread capacity
+and close completed Codex threads when needed. Keep the main Supervisor chat
+available for steering. Include a runnable baseline, module checks, and exact
+human browser acceptance steps for Pencil/Teal, Eraser and malformed storage.
+Put setup implementation in actual scripts and assets. Give me instructions
+and copyable launch, steering and review prompts. Do not run agents or publish
+until I approve the concrete setup.
 ```
 
-Paste the same planning prompt from section 4 and the GO prompt from section 5. Add: **"Use the four named Claude subagents above. Run UI and Storage in the background so I can keep chatting. The Reviewer is read-only and cannot run commands; I will run the module and browser checks."** Keep ownership, dependency order and the one-repair limit unchanged.
+## What has been checked
 
-For Claude, omit the GO prompt's instructions to close child threads or free capacity; those describe the Codex thread lifecycle. Use Claude's completion notices and `/tasks` to follow the subagents while preserving the same task order.
+The setup script and extracted assets have syntax and static parity checks. Native model jobs and browser acceptance are **not claimed as rehearsed here**. Complete the Worker and browser checkpoints above to verify them on your account. Ownership is a cooperation contract; the Reviewer's read-only permissions depend on the parent runtime.
 
-Use `/tasks` to inspect running subagents, rather than Codex's `/agent`; return to the main prompt to steer the Supervisor. Run `node checks.mjs` yourself in the fixture terminal, and perform section 6's browser acceptance steps. Permission prompts can still reach the main session; rehearse and approve the actual fixture operations. Do not report concurrent work unless you observe both real Workers.
-
-[Claude custom subagents and session definitions](https://code.claude.com/docs/en/sub-agents), [CLI authentication and flags](https://code.claude.com/docs/en/cli-reference)
+Official references: [Codex subagents and custom roles](https://learn.chatgpt.com/docs/agent-configuration/subagents), [Codex authentication](https://learn.chatgpt.com/docs/auth), [Claude subagents](https://code.claude.com/docs/en/sub-agents), [Claude CLI](https://code.claude.com/docs/en/cli-reference).

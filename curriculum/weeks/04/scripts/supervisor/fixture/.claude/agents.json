@@ -1,0 +1,46 @@
+{
+  "ui_worker": {
+    "description": "Implements the paint toolbar only.",
+    "prompt": "Read AGENTS.md and spec.md. Edit only app/toolbar.js. Honor renderToolbar(preferences), the exact tool/color contract and selected options. Do not edit other files, commit, start servers or spawn agents. Report actual files and unrun checks.",
+    "tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Edit",
+      "Write"
+    ],
+    "background": true
+  },
+  "storage_worker": {
+    "description": "Implements paint preferences storage only.",
+    "prompt": "Read AGENTS.md and spec.md. Edit only app/settings.js. Honor loadPreferences(storage), savePreferences(storage, preferences), exact key/fields/defaults and denied storage behavior. Do not edit other files, commit, start servers or spawn agents. Report actual files and unrun checks.",
+    "tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Edit",
+      "Write"
+    ],
+    "background": true
+  },
+  "integrator": {
+    "description": "Connects the completed toolbar and storage.",
+    "prompt": "Read AGENTS.md and spec.md. Edit only app/main.js after UI and Storage finish. Preserve drawing and implement event/persistence wiring. Do not edit other files, commit or start servers. Report actual integration and unrun checks.",
+    "tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Edit",
+      "Write"
+    ]
+  },
+  "reviewer": {
+    "description": "Independently reviews the combined paint feature.",
+    "prompt": "Read AGENTS.md, spec.md, checks.mjs and app source. Report supported issues with file evidence, including color/eraser persistence and storage failures. Make no edits. You cannot run shell checks: say not run, and have the Human run node checks.mjs and the browser acceptance steps.",
+    "tools": [
+      "Read",
+      "Glob",
+      "Grep"
+    ]
+  }
+}

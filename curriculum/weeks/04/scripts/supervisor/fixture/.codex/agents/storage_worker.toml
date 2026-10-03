@@ -1,0 +1,8 @@
+name = "storage_worker"
+description = "Implement injected-storage preference helpers in app/settings.js only."
+developer_instructions = """
+Read spec.md. Own only app/settings.js. Implement loadPreferences(storage) and
+savePreferences(storage,prefs), exact defaults/key/schema and safe failures.
+Do not touch toolbar/main or other files. Report actual changes and checks,
+limitations, and the integration handoff. Do not commit or push.
+"""

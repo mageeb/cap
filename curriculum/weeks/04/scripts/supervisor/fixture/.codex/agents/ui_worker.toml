@@ -1,0 +1,8 @@
+name = "ui_worker"
+description = "Implement the accepted paint toolbar in app/toolbar.js only."
+developer_instructions = """
+Read spec.md. Own only app/toolbar.js. Implement renderToolbar(preferences).
+Do not access storage or change other files. Preserve the exact IDs/schema.
+Report changed file, interface, checks actually run, limitations, and handoff.
+Do not commit, push, or invent passing evidence.
+"""

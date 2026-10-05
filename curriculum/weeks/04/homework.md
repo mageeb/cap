@@ -11,7 +11,7 @@ Before implementation, write a short product brief with a target user, one compl
 For a paint app, candidates include tools, selection, layers, undo/redo, and save/load. For a slide editor, consider slide organization, object editing, presentation, and persistence. These are prompts for your specification, not a requirement to implement every feature.
 
 ## Harness Requirement
-Choose a script-driven, instruction-driven, or hybrid harness, including an instructor-provided setup if useful. You may adapt an existing orchestrator; buying a specific product or writing one from scratch is not required.
+Choose a script-driven, instruction-driven, or hybrid harness, including an instructor-provided setup if useful. You may adapt an existing orchestrator; buying a specific product or writing one from scratch is not required. A single interactive supervisor with native delegation is valid when it meets the responsibilities and handoff requirements below.
 
 - Define at least two distinct agent responsibilities and a coordination/integration responsibility. They may execute sequentially; concurrent agents are not required.
 - Provide each responsibility with a task contract: inputs, outputs, context, tools, ownership, acceptance checks, and stop conditions.
@@ -43,6 +43,13 @@ All instructor references are available publicly to students. Disclose reuse; ex
 | Engineering defense, supervision decisions, and honest limitations | 20% |
 
 Agent count, impressive personas, elapsed run time, and code volume are not quality scores. A documented partial result earns credit for demonstrated criteria but is not full completion.
+
+For the engineering defense, use the [pattern comparison](reference.md#choosing-a-pattern):
+identify who owns execution and task status, how worker context reaches the supervisor,
+and how a blocker or user decision reaches the right recipient. Explain how an approved
+scope change would be applied and which recovery or notification capabilities your
+setup actually implements. Defend why your chosen pattern is sufficient; a separate
+controller or live notification system is not an additional assignment requirement.
 
 ## What Happens in Week 5?
 You may continue this project if it fits the production curriculum or start a new application. Week 4 does not require a specific backend, database, or migration framework. Retain the workflow lessons and artifacts either way.

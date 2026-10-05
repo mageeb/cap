@@ -1,0 +1,6 @@
+Implement app/settings.js only.
+Export loadPreferences() and savePreferences(preferences).
+Use browser localStorage under cap.paint.preferences, with {tool, color}.
+Tools: pencil/eraser. Colors: #152536/#188D91. Defaults: pencil/#152536.
+Missing, malformed or invalid saved values return defaults. Handle storage
+errors without crashing the app. Do not touch the DOM or attach events.

@@ -1,0 +1,6 @@
+Implement app/main.js only, after reading toolbar.js and settings.js.
+Import renderToolbar, loadPreferences and savePreferences. Render the toolbar
+inside #toolbar using saved preferences. Select changes update and save the
+complete {tool, color} object. Pointer drawing on #paint uses the chosen color
+for pencil and white for eraser. Keep canvas-relative coordinates correct.
+Reload must restore both selectors and the drawing mode; strokes may clear.

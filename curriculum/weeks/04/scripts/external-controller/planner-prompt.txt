@@ -1,0 +1,17 @@
+Help me plan a tiny paint-app improvement. Read app/ and graph-example.json.
+The app currently draws black strokes. Add a pencil/eraser selector and a
+black/teal color selector; remember both choices after a browser reload.
+Canvas strokes do not need to survive reload.
+
+Start with one useful product question and discuss the answer with me.
+Then write a short prd.md and graph.json using graph-example.json's shape.
+Keep the four nodes: UI and storage independently, integration after both,
+then a read-only reviewer after integration. Keep their listed file ownership.
+Update the corresponding prompts/*.txt to match our agreed requirements.
+
+Keep the shared interface tiny: renderToolbar(preferences) returns HTML;
+loadPreferences() returns {tool, color}; savePreferences(preferences) persists
+it. Tools are pencil/eraser, colors are #152536/#188D91, defaults pencil/black.
+Integration owns DOM events and drawing. The reviewer reports pass or issues.
+Use plain JavaScript and browser localStorage, with no new dependencies.
+Do not implement the app or run the controller. Tell me when the plan is saved.

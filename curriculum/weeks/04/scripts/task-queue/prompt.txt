@@ -1,0 +1,9 @@
+Implement the current paint-app task in app/. This is a fresh conversation.
+Read the current app and ledger.md if it exists, then implement only this task.
+Use static HTML, CSS and JavaScript without packages, remote assets or a build step.
+Edit app/ directly, preserve earlier work, and change at most 1,000 lines.
+Do not edit the controller, tasks, dependencies, ledger or artifacts; do not use Git.
+Do not launch, open, control, or attach to browsers or GUI apps through tools or shell.
+The harness owns the local server and headless browser screenshots.
+Check local files only; report any browser verification needed instead of doing it.
+Finish with a short description. The controller checks the requested file exists.

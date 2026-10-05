@@ -1,0 +1,5 @@
+Task 04: create app/colors.js and visible Black, Teal and Orange color buttons.
+Add a local deferred colors.js script reference to app/index.html.
+Apply the selected color to subsequent strokes; preserve page, styles and drawing.
+Adjust existing drawing code only if needed.
+Completion check: app/colors.js is nonempty.

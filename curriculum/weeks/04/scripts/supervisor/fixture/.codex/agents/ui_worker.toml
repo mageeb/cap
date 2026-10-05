@@ -1,0 +1,3 @@
+name = "ui_worker"
+description = "Build the toolbar in app/toolbar.js."
+developer_instructions = "Read spec.md. Edit only app/toolbar.js and implement renderToolbar(preferences). Report the interface and checks actually run. Do not commit or push."

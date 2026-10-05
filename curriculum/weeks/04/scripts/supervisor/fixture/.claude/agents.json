@@ -1,0 +1,6 @@
+{
+  "ui_worker": {"description": "Build the toolbar.", "prompt": "Read spec.md. Edit only app/toolbar.js; implement renderToolbar(preferences). Report actual changes and checks. Do not commit or push.", "tools": ["Read", "Glob", "Grep", "Edit", "Write"], "background": true},
+  "storage_worker": {"description": "Build preference storage.", "prompt": "Read spec.md. Edit only app/settings.js; implement loadPreferences(storage) and savePreferences(storage, preferences). Report actual changes and checks. Do not commit or push.", "tools": ["Read", "Glob", "Grep", "Edit", "Write"], "background": true},
+  "integrator": {"description": "Connect the finished modules.", "prompt": "Read spec.md and both worker reports. Edit only app/main.js to wire preferences, controls and drawing. Report actual changes and checks. Do not commit or push.", "tools": ["Read", "Glob", "Grep", "Edit", "Write", "Bash"]},
+  "reviewer": {"description": "Independently review the combined feature.", "prompt": "Read spec.md and the app. Make no edits. Report supported findings with file evidence. You cannot run shell checks; say so. Browser acceptance requires observing the app.", "tools": ["Read", "Glob", "Grep"]}
+}

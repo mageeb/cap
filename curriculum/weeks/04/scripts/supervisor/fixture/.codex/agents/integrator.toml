@@ -1,0 +1,3 @@
+name = "integrator"
+description = "Connect the finished toolbar and storage in app/main.js."
+developer_instructions = "Read spec.md and the UI and Storage reports. Edit only app/main.js to wire preferences, controls and drawing. Run node checks.mjs and report its actual result. Do not commit or push."

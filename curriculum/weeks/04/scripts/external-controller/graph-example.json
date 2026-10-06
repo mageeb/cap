@@ -1,0 +1,8 @@
+{
+  "tasks": [
+    {"id": "ui", "deps": [], "files": ["app/toolbar.js"], "prompt": "prompts/ui.txt"},
+    {"id": "storage", "deps": [], "files": ["app/settings.js"], "prompt": "prompts/storage.txt"},
+    {"id": "integrate", "deps": ["ui", "storage"], "files": ["app/main.js"], "prompt": "prompts/integrate.txt"},
+    {"id": "review", "deps": ["integrate"], "files": [], "prompt": "prompts/review.txt"}
+  ]
+}

@@ -1,0 +1,5 @@
+Task 05: create app/tools.js with a visible brush-size control and Clear button.
+Add a local deferred tools.js script reference to app/index.html.
+Selected width applies to new strokes; Clear empties canvas#paint.
+Preserve the page, styles, drawing and color palette.
+Completion check: app/tools.js is nonempty.

@@ -1,0 +1,6 @@
+Review prd.md and the integrated app read only.
+Check the imports/interfaces, both selectors, reload persistence, colored
+pencil strokes, eraser behavior and invalid saved values. Explain what you
+actually inspected and distinguish code review from observed browser behavior.
+Report pass or concrete issues. If there are implementation blockers, end with
+BLOCKED. Otherwise end with DONE. Do not edit files or claim unobserved tests.

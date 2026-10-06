@@ -1,0 +1,13 @@
+Improve the browser paint app in app/. This is a fresh conversation.
+Read the current app and ledger.md if it exists, then choose and implement
+one useful improvement. On the first pass, build a usable drawing canvas.
+
+Use static HTML, CSS and JavaScript with app/index.html and canvas#paint.
+Keep it usable without a build step, packages, remote assets or services.
+Edit app/ directly, preserve earlier features, and change at most 1,000 lines.
+Append a short ledger.md entry explaining what changed and what could come next.
+Do not edit the controller, prompt, dependencies, or artifacts; do not use Git.
+Do not launch, open, control, or attach to browsers or GUI apps through tools or shell.
+The harness owns the local server and headless browser screenshots.
+Check local files only; report any browser verification needed instead of doing it.
+Finish with a short description of the improvement.

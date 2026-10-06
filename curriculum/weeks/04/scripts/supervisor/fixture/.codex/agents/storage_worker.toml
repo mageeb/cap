@@ -1,0 +1,3 @@
+name = "storage_worker"
+description = "Build preference storage in app/settings.js."
+developer_instructions = "Read spec.md. Edit only app/settings.js and implement loadPreferences(storage) and savePreferences(storage, preferences). Report the interface and checks actually run. Do not commit or push."

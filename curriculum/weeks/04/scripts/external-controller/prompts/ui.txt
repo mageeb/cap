@@ -1,0 +1,5 @@
+Implement app/toolbar.js only.
+Export renderToolbar(preferences), returning HTML with labelled select#tool
+(pencil/eraser) and select#color (Black #152536 / Teal #188D91).
+Select the supplied {tool, color} values. Do not attach event handlers or
+access storage; the integration worker handles both.

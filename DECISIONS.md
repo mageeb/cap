@@ -208,3 +208,105 @@ Statuses: **Pending user review**, **Confirmed**, or **Redirected**. Passing che
 - **Effects:** Week 03 skills, README, reference, instructor outline, one presentation sentence, and PR description. The other weeks' skills remain unchanged.
 - **Technical verification:** Independent review of the exact staged diff passed with no blockers. All four skill files are removed; the staged skills diff against `origin/main` is empty. All 107 local links/anchors, 95 shell examples under both bash and zsh, and staged whitespace checks passed. The presentation change is one shorter introductory sentence; no slide layout changed.
 - **User response:** Folder removal explicitly requested; delivery and wording choices not yet reviewed.
+
+## DEC-019: Completion criterion in the introductory task queue
+
+- **Task / scope:** Week 4 Demo 1B teaching example.
+- **Status:** Pending user review.
+- **Choice:** Queue page, stylesheet, and drawing-code tasks; advance when the CLI succeeds and the task's promised output file is nonempty. Allow two fresh attempts per task.
+- **Reason / alternative:** This makes the completion-and-retry control flow readable in one short Bash script. Browser behavior checks or cumulative prior-task checks would provide stronger evidence at the cost of more teaching code.
+- **Effects:** [Demo 1B](curriculum/weeks/04/demo-01b-task-queue.md) explains the limited criterion; [queue.sh](curriculum/weeks/04/scripts/task-queue/queue.sh) saves logs and a screenshot for each attempt. File presence does not establish working drawing behavior. The user's simpler automatic-demo direction is settled; this entry records the specific teaching criterion.
+- **Technical verification:** Bash syntax and guide command-block parsing passed. The three queue rows point to existing prompts. No live coding-agent or browser-app run was performed for this revision.
+- **User response:** Not reviewed.
+
+## DEC-020: Small task graph completion rule
+
+- **Task / scope:** Week 4 Demo 3 external controller.
+- **Status:** Pending user review.
+- **Choice:** Run UI and storage in parallel, then integration, then review. Treat a successful process, declared output files, and a final `DONE` or `TLDR: DONE` report as task completion; stop on failure.
+- **Reason / alternative:** This exposes graph dependencies and the handoff from planning to a program without a scheduler framework. Independent product checks and automatic repair would strengthen the controller and are left as hardening comments.
+- **Effects:** [Demo 3](curriculum/weeks/04/demo-03-external-controller.md) and its [controller](curriculum/weeks/04/scripts/external-controller/controller.py) explain the small example. Its completion rule does not establish browser acceptance. The user's KISS direction is settled; this entry records the graph and completion protocol chosen for teaching.
+- **Technical verification:** Python source parsing, graph JSON parsing, and graph-to-prompt path checks passed. No live worker execution was performed for this revision.
+- **Failure follow-up:** The user's `.demo-runs/03` execution produced both declared output files and both worker replies ended `TLDR: DONE`; the exact `DONE` comparison rejected these replies before integration. Source and copied controllers now accept only final `DONE` or `TLDR: DONE`, retaining process/file checks. Both updated files passed `ast.parse`; no worker rerun or browser check was performed for this fix.
+- **User response:** Not reviewed.
+
+## DEC-021: Personal configuration in demo child calls
+
+- **Task / scope:** Week 4 Demo 1 and 1B browser-control fix.
+- **Status:** Pending user review.
+- **Choice:** Skip personal Codex configuration per child call and disable plugins, apps, browser use and computer use. Workers edit/check local files; the harness owns headless screenshots.
+- **Reason / alternative:** The observed workers used CUA for visible Chrome verification. Prompt-only restrictions would leave those personal tools available.
+- **Effects:** [loop.sh](curriculum/weeks/04/scripts/loop/loop.sh) and [queue.sh](curriculum/weeks/04/scripts/task-queue/queue.sh) also skip personal model/settings for these calls. Authentication still uses `CODEX_HOME`. Personal configuration and the existing live demo copy remain unchanged.
+- **Technical verification:** Installed `codex exec --help` documents `--ignore-user-config`, repeatable `--disable`, retained authentication, `--ephemeral`, and the workspace-write sandbox. No live child call or browser acceptance was performed for this fix.
+- **User response:** Not reviewed.
+
+## DEC-022: A sample stroke in queue screenshots
+
+- **Task / scope:** Week 4 Demo 1B screenshot visibility across the five-task queue.
+- **Status:** Pending user review.
+- **Choice:** Use one small headless Playwright capture script to drag the same zigzag on a visible canvas before each screenshot; absent canvases are captured as-is. The user-requested five tasks build the page, styles, drawing, palette, and brush/Clear tools.
+- **Reason / alternative:** Untouched canvases hide the visible effect of adding drawing code. Static screenshots alone show only the HTML and CSS stages.
+- **Effects:** [capture.mjs](curriculum/weeks/04/scripts/task-queue/capture.mjs) adds visual evidence; [queue.sh](curriculum/weeks/04/scripts/task-queue/queue.sh) keeps its nonempty-file completion gate. No pixel assertion or browser acceptance gate is added. Existing app files and captures remain unchanged.
+- **Technical verification:** Static syntax, five queue-to-prompt paths, and link review only; no browser or coding-agent execution for this capture revision.
+- **User response:** Not reviewed.
+
+## DEC-023: Separate viewing port for Demo 3
+
+- **Task / scope:** Week 4 Demo 3 result identification.
+- **Status:** Pending user review.
+- **Choice:** Serve the completed `.demo-runs/03/app` on port `4303`; retain `4173` for the other demos.
+- **Reason / alternative:** A prior demo server on the shared port can show an older app. Reusing `4173` requires identifying and stopping that server first.
+- **Effects:** [Demo 3](curriculum/weeks/04/demo-03-external-controller.md) names its folder, URL and observable preference checks; [README](curriculum/weeks/04/README.md) records the port exception. App files and harnesses are unchanged.
+- **Technical verification:** Guide/README shell blocks passed `bash -n`; local file-link targets exist. No server or browser was started for this documentation change.
+- **User response:** Not reviewed.
+
+## DEC-024: Real scenarios beside the orchestration demos
+
+- **Task / scope:** Week 4 explanatory additions to the five demo guides.
+- **Status:** Pending user review.
+- **Choice:** Add two concrete examples and a single-session cue per guide: dashboard/script improvement for repeated calls; documentation/API migration for ordered queues; settings work/browser-server investigation for a native supervisor; release preparation/client-server upgrades for a stored graph; editor expansion/product backlogs for a native runtime. Each section says the small classroom app fits in one session and distinguishes the pattern's need from its limits.
+- **Reason / alternative:** Connect the existing mechanisms to larger practical work while preserving the user's instruction to leave the actual demos unchanged. The alternative was more abstract explanations without named scenarios.
+- **Effects:** Introductory prose only in [Demo 1](curriculum/weeks/04/demo-01-loop.md), [Demo 1B](curriculum/weeks/04/demo-01b-task-queue.md), [Demo 2](curriculum/weeks/04/demo-02-supervisor.md), [Demo 3](curriculum/weeks/04/demo-03-external-controller.md) and [Demo 4](curriculum/weeks/04/demo-04-gas-city.md).
+- **Technical verification:** Original guide text and fenced blocks were preserved exactly outside the insertions; local file-link targets and whitespace were checked statically. No tests, models or browsers were launched.
+- **User response:** Not reviewed.
+
+## DEC-025: Planner/controller explanation and pattern choice
+
+- **Task / scope:** Week 4 conceptual material across the overview, reference, lesson outline, and homework.
+- **Status:** Pending user review.
+- **Choice:** Put the detailed planner/controller explanation and six-pattern comparison in the [reference](curriculum/weeks/04/reference.md#planner-and-controller); link it from the [README](curriculum/weeks/04/README.md), align the [lesson](curriculum/weeks/04/talk-outline.md), and add a short [homework](curriculum/weeks/04/homework.md) engineering-defense criterion. Use an API contract, two services, and iOS/Android clients to illustrate real dependencies and decision routing.
+- **Reason / alternative:** Keep one clear explanation of execution ownership, separate worker contexts, programmed scheduling, and two-way messages instead of duplicating it in every guide. The user's conceptual direction is already approved; this entry records organization and scenario mapping, not a new controller requirement.
+- **Effects:** Recognize one-session sufficiency and all demo patterns. Distinguish the broader architecture from Demo 3's planner-exits/static-graph implementation and capabilities only present when implemented. Explain user-requested external graph/state durability, independent process lifetimes, recovery and multi-machine possibilities through a GitHub Issues example; distinguish graph persistence from recorded claims/completion and actual recovery. GitHub remains conceptual, with no demo backend change. Demo 3 guide receives only this prose distinction; its code/prompts stay unchanged. Prepared Demo 4 remains local, with full recovery/distribution unverified. Distinguish the 60-minute deck from the existing three-hour workshop. Preserve runnable commands, prompts, scripts, and demo scenarios.
+- **Technical verification:** Read current Demo 3 controller/graph and official subagent/Gas City architecture sources. All six existing fenced blocks in the four edited documents are byte-identical to the pre-edit snapshot; 19 local links/anchors and document whitespace passed static checks; scoped `git diff --check` passed. Git index hash was unchanged. No tests, agents, browsers, or native runtime commands were launched. The durability/distribution follow-up freshly checked the official GitHub dependency/API pages; all ten fenced blocks across README, reference, outline and Demo 3 stayed byte-identical to the pre-follow-up snapshot. All 52 local links/anchors in those documents and this ledger, whitespace and unique decision IDs passed. No GitHub state or demo backend changed. Independent read-only review accepted the latest presentation delta against its exact pre-pass snapshot: all 24 slides, frontmatter/CSS, headings, embedded images and timing notes were preserved. Fresh slide 13/23 screenshots were inspected and readable without overflow; the supplied seven-slide layout findings reported none. This conceptual/artifact review does not establish runtime acceptance.
+- **User response:** Not reviewed.
+
+## DEC-026: Two native Studio Board releases and bootstrap tooling
+
+- **Task / scope:** Expanded Week 4 Demo 4 and supporting course material.
+- **Status:** Pending user review.
+- **Choice:** Use two coherent Studio Board releases, each with a native graph generated from its accepted product scope and an estimated 60–80 meaningful implementation tasks. Keep each drain below the pinned hard 100-member cap. Require verified prerequisite imports and one explicit local integration owner; Release 2 starts from integrated, checked Release 1 code.
+- **Reason / alternative:** Give native orchestration substantial real work without padding administrative beads or inventing a custom controller. A single 150-member drain exceeds the runtime cap; stock separate task worktrees alone do not deliver an integrated product. A shared single-lane drain is simpler but does not demonstrate parallel implementation.
+- **Effects:** [Demo 4](curriculum/weeks/04/demo-04-gas-city.md) and its product brief describe Studio Board. [Setup](curriculum/weeks/04/scripts/gas-city/setup.sh) projects unmodified stock scripts/schemas into the local app, commits them for item worktrees, prepares PyYAML and test-only Playwright/Chromium, supplies an explicit worker helper interpreter because native GC prepends its binary directory to worker PATH, and configures six city sessions/four implementation-role sessions. [README](curriculum/weeks/04/README.md), [reference](curriculum/weeks/04/reference.md#what-the-expanded-demo-4-requires), and [talk outline](curriculum/weeks/04/talk-outline.md) distinguish the larger example from the early small apps. Final agents must supply meaningful `check` and `browser:check` commands and actual evidence; the starter's syntax check is not product acceptance.
+- **Technical verification:** Inspected pinned GC 1.4.2 drain limits, nested session-cap enforcement, native session environment layering and gate PATH construction, plus cached stock worktree/check/validator assets. Setup passed `sh -n` and `bash -n`; its embedded Python parsed, representative generated native TOML parsed with caps 6/4, worker PATH and absolute `GC_DEMO_PYTHON`, and fixture package JSON/check target resolved. Git index hash remained unchanged. No setup installs, native initialization, workers, tests, or browsers ran for this revision. All 47 local links/anchors in the setup support documents/ledger, six existing fenced-block locations, unique decision IDs and whitespace passed static checks. Supervisor lifecycle inspection confirms gates need a newly started supervisor's venv-first PATH; a reused process retains its old environment, so the guide must describe stopping only the selected demo-home supervisor when preparing a fresh earlier run. Worker environment inspection confirms workspace PATH alone does not select the helper Python; fixture instructions require the supplied absolute interpreter. The config/staging failure guards passed shell syntax checks. The later documentation pass checked 52 local links/anchors and ten preserved fenced blocks. Independent static setup/guide review by planner_controller_slides completed with no remaining supported blockers. It confirmed the absolute worker helper interpreter and matching instructions, stock scripts/schema layout, native caps, scoped shutdown/archive migration and failure guards, plus meaningful product checks, verified prerequisite imports, explicit integration and the Release 1-to-2 handoff. Shell syntax, embedded Python, package/check-target, link and whitespace checks passed. This was static review only: no native setup, jobs, tests or browser acceptance ran; expanded end-to-end execution, full crash/restart recovery and multi-host execution remain unrehearsed.
+- **User response:** The larger actual demo is requested; these implementation and material choices are not yet reviewed. The expanded two-release build has not been rehearsed end to end, and no runtime or acceptance duration is promised.
+
+
+## DEC-027: Isolate the Demo 4 city Git repository
+
+- **Task / scope:** Week 4 Demo 4 startup source and student runbook.
+- **Status:** Pending user review.
+- **Choice:** Initialize `city` on local `feature/city-demo` before native `gc init`, separately from the already isolated paint app. Start the student setup block at the CAP checkout root and chain commands so failure stops the sequence. Older or failed setups use the existing optional cleanup instructions after saving wanted results, then Step 1.
+- **Reason / alternative:** Without its own `.git`, the nested city discovers CAP's Git repository and origin; Beads initialization then refuses remote history. Giving the city its own local repository preserves the native safety check. Disabling that check or moving the demo outside CAP would add risk or another path to explain.
+- **Effects:** [Setup](curriculum/weeks/04/scripts/gas-city/setup.sh) adds one guarded Git initialization. [Demo 4](curriculum/weeks/04/demo-04-gas-city.md) simplifies preparation and fresh-start help; product scope and launch prompts stay unchanged. This ledger records the local isolation choice. No live city, app, service, tasks or agents are changed.
+- **Technical verification:** Read-only diagnosis with installed Gas City 1.4.2 / Beads 1.3.1 found the city lacked `.git`, inherited CAP's origin and encountered the remote-history refusal. Source inspection confirmed `gc init` previously ran without a city Git boundary. Verification is limited to static syntax/document checks; the startup fix and enlarged two-release build have not been run or accepted.
+- **User response:** Not reviewed.
+
+## DEC-028: Prepare the Week 4 PR from the current default branch
+
+- **Task / scope:** Landable Week 4 orchestration PR preparation.
+- **Status:** Pending user review.
+- **Choice:** Start `feature/week4-orchestration-ready` at default-main commit `e8134a4`, carry the six reviewed Week 4 content commits unchanged, and append source decisions DEC-009–017 as DEC-019–027.
+- **Reason / alternative:** Keep the PR focused and preserve the merged scaffold and Module 03 work. Publishing the older working branch would include thirteen unrelated governance/scaffold commits; replacing main's ledger would lose its decisions.
+- **Effects:** Week 4 teaching materials and this ledger only. Main's existing ledger is preserved byte-for-byte; the original branch and live demo remain untouched.
+- **Technical verification:** All 51 Week 4 file blobs and modes match the reviewed source. Fresh-base static checks passed for three shell files, seven JavaScript files, one Python file, four JSON files and five TOML files; 124 local links/anchors and whitespace also passed. No application tests, live demos or remote writes were performed for this preparation; advanced Gas City/Claude acceptance remains unverified.
+- **User response:** One mergeable PR requested; fresh-base and ledger-mapping choices pending user review.

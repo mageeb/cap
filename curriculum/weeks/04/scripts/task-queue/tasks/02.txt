@@ -1,0 +1,3 @@
+Task 02: create app/style.css to style the page and canvas clearly.
+Preserve the canvas and page from task 01.
+Completion check: app/style.css is nonempty.

@@ -1,0 +1,8 @@
+{
+  "name": "cap-paint",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node --check app.js"
+  }
+}

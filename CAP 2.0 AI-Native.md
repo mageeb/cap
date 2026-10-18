@@ -47,7 +47,7 @@ To prevent students from relying on simple "one-shot" prompts, the residency dev
 ## **The Standardized Agentic Workspace (SAW)**
 Students create or fork their own applications and configure explicit engineering checks. This repository supplies curriculum, teaching examples, and a [continuing classroom project](project/README.md), currently a scaffold to develop during teaching. Branch protection and review policy must be enabled in their own repository; copying a workflow alone does not prevent merging.
 *   **Structure:** `/src`, `/tests`, `/infrastructure`, and specifically `/docs/prompt-logs`.
-*   **Automated checks:** Week 6 teaches students to configure dependency installation, tests, security checks, frontend builds, and evidence-log validation for their own projects. The existing workflow file is an illustrative template requiring adaptation, not a ready-to-run application pipeline or an AI grader.
+*   **Automated checks:** Implementation exercises require project-specific dependency installation, tests, security checks, frontend builds, and evidence-log validation. Weeks 5–6 prepare product and architecture documents; they do not establish passing runtime checks. The existing workflow file is an illustrative template requiring adaptation, not a ready-to-run application pipeline or an AI grader.
 
 ---
 
@@ -56,7 +56,7 @@ Mentors evaluate working demonstrations, engineering decisions, and verification
 
 The repository includes an optional **LLM-assisted review prompt**, not an implemented model-calling GitHub Action. An instructor may supply the week, assignment, diff, and selected evidence to that prompt using an approved tool, then verify the resulting provisional assessment. Student text and code are untrusted evidence, not instructions to the reviewer.
 
-Use the shared dimensions: context management, validation/correction, structural oversight, and system integrity. Week 1 has an exploratory rubric; Weeks 2–4 use their homework rubrics; Weeks 5–12 use the four dimensions equally. Mentors spend an initial 5–10 minutes per review and use the weekly 30–60 minute coaching allocation for unresolved gaps. Require a working demonstration, an architecture explanation, and a truthful account of what the student trusted, checked, and corrected. Do not promise employment or production readiness based on course completion alone.
+Use the shared dimensions: context management, validation/correction, structural oversight, and system integrity. Week 1 has an exploratory rubric; Weeks 2–4 use their homework rubrics; Weeks 5–12 use the four dimensions equally. Mentors spend an initial 5–10 minutes per review and use the weekly 30–60 minute coaching allocation for unresolved gaps. Require evidence appropriate to the weekly deliverable: Weeks 5–6 use reviewed product/UX and architecture/contract walkthroughs; implementation weeks add working demonstrations and architecture explanations. Always require a truthful account of what the student trusted, checked, and corrected. Do not promise employment or production readiness based on course completion alone.
 
 ---
 
@@ -71,8 +71,8 @@ Use the shared dimensions: context management, validation/correction, structural
 
 ### **Phase 2: Production (Weeks 5-8)**
 *Focus: Building, testing, and deploying the core cloud application to ensure functional skills are gained.*
-*   **W5 | Production Entry:** Start a new cloud application or carry forward a suitable Week 4 project; establish architecture, data model, migrations, API contracts, and an integrated frontend.
-*   **W6 | Quality & Access:** Contract-focused tests, access policy, coverage, security/dependency checks, and evidence-based quality gates.
+*   **W5 | Product Discovery:** Use the translation review case study to define personas, a one-reviewer MVP, success criteria, a PRD, and annotated UX. Each student prepares their own artifacts; architecture and implementation follow.
+*   **W6 | Architecture:** Trace client/server responsibilities, APIs, durable storage, scaling, and consistency; compare database technologies, defend a schema, and define book/paragraph resource routes. Detailed service implementation and work items follow after design review.
 *   **W7 | CI/CD:** Infrastructure (Optimized multi-stage Dockerfiles, `docker-compose` networking, GitHub Actions).
 *   **W8 | Deployment:** A bounded demonstration with managed persistence, explicit access controls, service identity, budget alerts, verification, recovery, and cleanup.
 
@@ -87,7 +87,7 @@ Use the shared dimensions: context management, validation/correction, structural
 
 ## Weekly Materials and Delivery
 
-Each weekly folder links to its talk outline and homework. The outline contains the agenda, teaching prompts, and demonstration plans. Weeks 2–4 also include reusable reference procedures; Week 3 includes pre-class setup and two alternative Excalidraw live-demo runbooks. All materials are visible to students; disclose reuse in submissions.
+Each weekly folder links to its talk outline and homework. The outline contains the agenda, teaching prompts, and demonstration plans. Weeks 2–6 also include reusable reference procedures; Weeks 5–6 preserve their full automated transcripts alongside organized session notes; Week 3 includes pre-class setup and two alternative Excalidraw live-demo runbooks. All materials are visible to students; disclose reuse in submissions.
 
 | Week | Start here | Homework |
 |---|---|---|
@@ -95,8 +95,8 @@ Each weekly folder links to its talk outline and homework. The outline contains 
 | 2 | [Guided practice materials](curriculum/weeks/02/README.md) | [A fresh application](curriculum/weeks/02/homework.md) |
 | 3 | [Terminal and sustained-agent materials](curriculum/weeks/03/README.md) | [Agentic development workflow](curriculum/weeks/03/homework.md) |
 | 4 | [Orchestration materials](curriculum/weeks/04/README.md) | [An open-ended hard build](curriculum/weeks/04/homework.md) |
-| 5 | [Week 5 materials](curriculum/weeks/05/README.md) | [Assignment and assessment](curriculum/weeks/05/homework.md) |
-| 6 | [Week 6 materials](curriculum/weeks/06/README.md) | [Assignment and assessment](curriculum/weeks/06/homework.md) |
+| 5 | [Product discovery materials](curriculum/weeks/05/README.md) | [PRD and UX proposal](curriculum/weeks/05/homework.md) |
+| 6 | [Architecture materials](curriculum/weeks/06/README.md) | [Database, schema, and API proposal](curriculum/weeks/06/homework.md) |
 | 7 | [Week 7 materials](curriculum/weeks/07/README.md) | [Assignment and assessment](curriculum/weeks/07/homework.md) |
 | 8 | [Week 8 materials](curriculum/weeks/08/README.md) | [Assignment and assessment](curriculum/weeks/08/homework.md) |
 | 9 | [Week 9 materials](curriculum/weeks/09/README.md) | [Assignment and assessment](curriculum/weeks/09/homework.md) |
@@ -106,4 +106,4 @@ Each weekly folder links to its talk outline and homework. The outline contains 
 
 Week 2 introduces project instructions and skills with a small example; Week 3 develops them into tools for maintaining context across sustained work. Week 4 extends supervision to multiple agents. Gas Town is a possible instructor demonstration, not a required student purchase or a finalized course dependency. The instructor brings one working orchestrator setup and contrasts it with three harness designs.
 
-The Week 4 problem need not become the production capstone. At Week 5, students may begin anew or continue if their project fits the production learning objectives. Do not assume a Week 4 Python backend, SQL schema, or migration history. Week 5 establishes a narrow slice and initial migration; Week 7 teaches follow-up migration and PostgreSQL transition.
+The Week 4 problem need not become the production capstone. Week 5 uses the translation review application as a shared product-discovery exercise; students develop individual PRD and UX proposals without replacing their previously approved capstone domain. Do not assume a Week 4 backend, schema, or migration history. Week 6 produces a defended database/schema/API proposal, not an application. Before the Week 7 containerization and migration exercises, an instructor-supplied or separately implemented runnable baseline with checks and an initial migration is required. This implementation prerequisite is explicit; design documents alone do not satisfy it. Week 7 teaches follow-up migration and PostgreSQL transition. Access enforcement and tests must be verified before deployment rather than attributed to the Week 6 design assignment.

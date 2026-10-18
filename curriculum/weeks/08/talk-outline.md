@@ -4,7 +4,7 @@
 Deploy a bounded demonstration that can be verified, observed, recovered, and shut down without confusing a public URL with production readiness.
 
 ## Entry Check
-Bring a working container image, PostgreSQL migration evidence, and the Week 6 access policy. Instructor rehearses one cloud path; students arrange cloud access and a personal budget before class. A cloud account is additional to the day-one LLM requirement.
+Bring a working container image, PostgreSQL migration evidence, and a reviewed access policy with verified enforcement. Instructor rehearses one cloud path; students arrange cloud access and a personal budget before class. A cloud account is additional to the day-one LLM requirement.
 
 ## Exit Evidence
 A deployed synthetic-data demonstration, release evidence, least-privilege identity decisions, and a runbook for verification, recovery, and cleanup.

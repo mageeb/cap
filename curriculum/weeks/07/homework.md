@@ -3,7 +3,7 @@
 ## Goal and Starting Point
 Containerize the production project, verify it on PostgreSQL, and add one safe schema evolution. Extend CI to build the app image; document how the application and schema versions remain compatible.
 
-Bring the Week 6 application, passing local checks, initial migration, and access policy. Install Docker before class; a setup blocker must be recorded rather than hidden behind a successful local run.
+Bring the Week 6 architecture/schema/API proposal. Containerization additionally requires a runnable application, passing local checks, and an initial migration; Weeks 5–6 do not claim to produce that code. Use an instructor-supplied baseline or a separately implemented approved project, and record the remaining gap if your own baseline is not ready. The 5–10 hour assignment budget covers containerization and migration work, not an unplanned full application build. Install Docker before class; record setup blockers explicitly. Verify an access policy and enforcement tests before any public deployment.
 
 ## Required Acceptance Evidence
 - A repeatable multi-stage image build and a local Compose run with app and PostgreSQL separated.

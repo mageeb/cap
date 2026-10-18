@@ -1,0 +1,331 @@
+﻿Session 06 - Oct 16
+
+Full automated transcript, unedited. Timestamps refer to the original recording. Recognition errors and incidental chatter are retained.
+
+
+
+[00:00:00] Show and tell. I'm going to start with show and tell. Mark on the side, he did the assignment. Maybe you could present your PRB and what is. We have Helena ready with her assignment. So maybe Helena can start. And if you guys want to show anything, just write in the chat why Helena shared her discoveries. And also if you can, OK, to switch is a fun way of reading so that you can.
+
+[00:00:34] Did it? Sorry. Sorry. And then you use my speaker. Pink. Can you guys hear me? Yes. Yes. Click it. What's the problem that I am trying to solve? So first I explained that we're trying to translate text. Yes. So I think I planned that we want to translate text from Arabic to English and that we're just trying to do the verb in a moment where we're just
+
+[00:02:49] uploading the whatever file it is and then it takes it and it translates.
+
+[00:03:51] for starters we're just going to do PDF and then it started explaining to me which is something that I was shocked that it started explaining which is that some, it was saying that most Arabic text is actually scanned so it was like are you sure you want to go with the PDF? And I was like yeah I'm just starting so like I just want it to be a PDF. I gave it the thing that we wrote last time and then
+
+[00:04:23] It started asking like... Did you get to asking? Did you use a greenie skill? No, I just at first just explained what I was trying to do. And then it started asking questions before I told it my uncle is to create your email. It was like in order to create those I need to answer some questions. And then I started answering. And then I noticed with the questions that it was asking I started coming up with more things to share.
+
+[00:04:55] So then I started giving it more and then it created the PRD. Honestly, I did not get time to read it, so I'm not sure. But like I skimmed it and it seemed to be decent. And then I asked it to kind of design it and I kind of told it what to do. So I told it like I want the text, the Arabic text to be on the side and I want the English to be on that side. And when you do a change, I want you to show
+
+[00:05:26] the change that you did. And I had it create, like, I don't want it to do it in a sequence, so I wanted to, like, the flow from start to finish. So that's why there are numbers on the side. So first things are up here. And then if they put, like, a file that's not supported, it kind of changes about that. And then it's kind of giving you, like, evidence translating. Kind of a review process. At first it didn't create the,
+
+[00:06:31] check marks and then they also asked me like if some are not checked you still want people to be able to export and I told it no and then I after that I asked it to show the diff and then it started showing the things that it changed. This is how it would look like if there was one paragraph that failed.
+
+[00:07:10] And I did some which is printed by paragraphs and to have the first few words of that paragraph so that users would know which paragraph they're referencing. And then once it's all checked, if you see that the done explorer is not available. Done question, will it get those verses from the view of the unit or the hour? No. So when I first told it, it was like it just generated like, and then after that, I was like, I want it.
+
+[00:07:44] So then it took that and assumed that anything that you're going to see that is going to be from the Bible. So I was like, no, this is what we're trying to do. It's going to be any text. They tried to scale it into generalizing. Yes. These are called fire frames. They usually happen at the very minimum delivery project.
+
+[00:08:28] I said, out for quite a short time. Hey, you guys, I actually like this. I'm going to change it later. That's why I didn't want it until it works. Anybody else? Let's show us the wireframe or any work from last week. No, just the wireframe. The initial mohams.
+
+[00:09:08] Is that to find out what was the space? Well, I did it, but it's not as polished as it was. I just gave it to AI. It was like two iterations. I could show it if you guys want. Sure. I don't know if there's anything else to get to. It might be more important. I see. Anyone online wants to show up here, the or wireframes. Maybe that was our case study for today. Then we can review the book next time in five minutes and then we'll start it.
+
+[00:09:47] Okay, so very quickly, yes. So last time we talked about how to start a whole project, right? I think our objective from this is how can we be software engineers in the age of AI, not just bio-fooders? I think the bio-fooding business is a total failure.
+
+[00:10:33] that can give you very little things, but you can't even that enterprise project or a company's project with a five-quillet. So this is the intention of these few weeks. We said anytime you sit down to design a project or plan, actually no design, it's not user-level. Plan to start a project, you start with the specs, right? Requirements and specs. And in the specs, for everybody, for majority of how people on blogs themselves, is to define the personas.
+
+[00:11:03] Because we can't continue this forever. We can come up with features and innovations forever. But defining the personas is actually how you start from the user and work back. You say that you'd like to say this a lot so that you're not biased by cooling engineering stuff or what the team wants to do. You start from the user. If the user succeeds, everybody succeeds. So that's why the persona is a multi-important thing. We also said you can't boil the ocean and do everything.
+
+[00:11:31] That's why we listed all the personas and we make the public top priorities and so we focus on these. And for an hour case, we said the most important thing for now is the reviewer, we called the user, we said located generalize for now and eventually specialized, but at least number of ourselves who said we started the persona. Even with one persona, you can see there's too many things. So it's a spirit of cutting unnecessary things. We talked about the concept of MVP for minimum.
+
+[00:12:00] viable product or what is doable for most valuable or tractable in a short time frame just to read the product out and talk about the objective from all of this whether it is an internal test or a private preview with a customer as in a written wide glove agreement with a customer, wide glove like you are onboarding the customer yourself, it's not that for sale or self-serve. And from there we'll start to talk about the specs and priorities.
+
+[00:12:30] which is the way you talk about specs after you have defined the persona is to look at use cases use cases or jobs to be done so very common concepts and from there we have a few things I think it's actually the order upload raw material auto translate and then review on it is a translation even though the review on it is a translation we have to focus on only a few things but more those list of things so that we don't
+
+[00:13:00] get dragged in too many things that do not use in the first version. We also talked about technology and some of the compromises and this is where we started to actually get into our AI system and started to compare things because this is where it says F. As you might have seen, Elena actually used this to generate the PRD and it's totally legitimate. I think you might have noticed
+
+[00:13:31] I'm not believing in you, Belina, but you said I may have the time to read it. This is a struggle actually in this phase in our career. There's too many things to read. And I'm going to start to say, is the job shifted from reading code to, sorry, writing code to reading code, from writing in spits to reading in spits. So this is where we actually need to be smart. I told you, my preference is in the very beginning to generate a vertical document, something that I can look at for technicality. So short of phrase is short of bullet points that I can iterate on seven times.
+
+[00:14:00] So getting tired or I have I fatigue or really or cognitive load once I have confidence, I would say, okay, maybe some official PRD. This is just a minor comment. I think everybody has their, their, uh, their style, but I think this way we're working for me. You have a PRD. The PRD is really not for just a routine step. It's for the team agreement. Maybe there might be customer feedback, crazy studies and so on. So human reasons is really important. It's beyond the items quite.
+
+[00:14:29] Also a trick that I found that was really helpful is, I told them before it does anything, like now I want to understand what do you understand that the project is all about. After it did that a couple times, I'm like, no, like you're focusing too much on the translation part rather than this is not really translation app. This is more of like what folks on their review report. The translation is by another LLF. After all that, and it's on, on, on, I was able to pretty much get my image of the whole web app.
+
+[00:14:59] to it. And then I told them, okay, do it if you're ready. That's actually really, really good because we made too many assumptions sometimes. I don't think the name just leads our mind. People in the room might read your mind, might have the context of the ground. So yes, thank you. This is the good one. Context is clean and marvelous. Okay. Any questions from folks online before we get into today's session?
+
+[00:15:33] No, no, no. Okay. Anything? No? Okay. So today we'll talk about architecture, execution, and work items. We're preparing to execute, right? No, this is a dispute. So this means... We're doing together. Yes, we're doing together. But how do you want to start? What? I'll say three more. Three more. So maybe at a higher level, is there a throw in the last one and then you can report?
+
+[00:16:19] So at the high level, if we looked at what in inabend there is a web app, right? And the web app needs to communicate to some back end, right? Big server. We covered so this will call there will be a bunch of codes from the web app to the server. So if you look at the pattern text, this will be coming from some back end.
+
+[00:17:35] edit there will be some calls to the two Maybe we should talk about the fact that should we cover that client and same client There were different trends in the industry or something called fact client and think lines the idea is The client is very very thin. You don't have a lot of logic in the client Everything is happening in the server and then the client is just doing very minor stuff
+
+[00:18:07] just UI. But most recently it shifts. I'm sure you heard about server side, the Act and stuff like that, Node.js, they are moving some of the front end logic into the backend. It has benefits and drawbacks. And the other approach is, no, you have a very sick client. It has most of the logic. Remember when we did the game?
+
+[00:18:34] Most of the game was what happened in the front end. You don't need to have any of the logic in the back end. So this is a very thick line. Most of the logic you find lots of code in the web app. But it has some drawbacks. So what would be drawbacks if you put everything in the web versus putting it in the back end? So it's a few. Sorry. OK. We're going to tonight is a female. We're going to come back. So we will come in a bit of code so it's not as secure.
+
+[00:19:15] It was limited by the computer of wherever the machine is. Exactly. This is a big picture right here. Compute, right? And if you have a server, you control the computer and memory and everything. So if you have heavy things, whatever you can distribute, the server the way you want. What else? OK. The most obvious thing is updates. If I have to update my server, this is a deployment. If I have to update clients, users want to ensure the updates. What about compute, update, and security?
+
+[00:19:47] have a good day.
+
+[00:20:00] What do you mean by that? Sensuality. So like if you want to, in the future, to do the same thing, let's say from your phone and from Wada, if you have everything on the server, it's better.
+
+[00:20:36] Are you talking about updates, Nazar or something else? Extensibility, like in the future if you want to add a front end desktop, like an iPhone. So this is a very, very good point. So we have always been discussing a web app, but if you decided to build that iPhone, if the iPhone, if you're a web, if you're a client, a set client, this means that you need to repeat the logic.
+
+[00:21:08] on iOS and Android and Web app. So this is one of the most popular problems. So we'll learn new frameworks that allows you to build once and deploy on multiple clients, but the experience will not become as great on the native apps because now you're making a trade-off between the quality of the front end and the extensibility of multiple platforms. This is all the two platforms.
+
+[00:21:37] So one of the decisions you need to make is you need to find the fine balance between what you put in the web app and what you put on the server. So maybe in the MVP, the decision is not that critical, but while you're doing the MVP, you need to think ahead of what are the things you need to consider post MVP if it became a big success. So what would be the next steps?
+
+[00:22:09] would we have the back end do have the splitting so that way it's always saved rather than the front end it would get the paragraph each time and split the paragraph the paragraph every time that's a very good point keep it in a because right now we just drew big boxes with the losses we're gonna dig a little bit into some of these boxes do we need other boxes you're gonna this is part of it but
+
+[00:22:50] Is the web app really going to connect to the server in the back end right away? Should there be a secure API? Sure. So we have some data here for the other personas. So this would be for authentication and also addition. Is this layer in the server or is the web app permitted here? It's middle because here the web app sends to the
+
+[00:23:34] the API verifies using some sort of a token or some verification method that we're going to build. And then once it's verified, it gives it the data, the server. It's the middle name that gets the data from the server and sends it to the web. So not everyone can just access the server. So yes and no. So at the end of the day, you need to call a server, right? So you would be responsible for deploying this code.
+
+[00:24:08] So your point is you want to put it on a different server, correct? No, sure. That way with this code run, that will be part of the server. So it has to be a server. So I would call it here, this is a server, so it will be some component here for us.
+
+[00:24:46] for authentication and authorization. So this could be actual logic that you built. If you decided to build a sign up flow and a sign in flow, this would go here. Or if you decided to connect to Gmail or Outlook or LinkedIn, so you delegate this authentication to a server party, but again, this component in the backend would be responsible for these kinds of addisins. So I have a question. How does it connect from the web app to the server?
+
+[00:25:17] Like is it like is it built into the server? Is it built into the web app? Like where exactly does it go? Like your question. So you would use one of the protocols for the front end back end communication. So the most popular protocol is just what does it say? What's your number? That's the same question. So it has a few messages.
+
+[00:25:51] get, put, post. Post, thank you. Yes. So who, who is that? So maybe in the way you can give us an overview of what all the four APIs do. So get, get as like, you know, you're treating data, what is to modify all the posts is created, delete is to delete like a resource. Great.
+
+[00:26:35] You can also batch. You could do batch in one of those APIs. Those are the only four APIs for this. So the rest you're trying to use, the rest idea is you have a source in the back end and you want to access this resource from the front end. So the very popular example is if you want to get the students in this class.
+
+[00:27:06] So you will have an API called students. So the resource is students. So you will do a call for get for a student. If you want to add a new student, you will use post and the protocol define what to put in the body and what to put in the API. The body is some JSON objects that you send to watch. Why don't you tell us this is on the actual program? Sure, that's a good point. So let's talk about using, are you using
+
+[00:27:38] What is the next one after this? Gafql? Gafql? Yeah. We'll not get into Gafql here. So let's talk about reads. Let's say, let's assume we already have the parallel text somewhere in the record. And you want to read. So in the UI that Lily showed, she should.
+
+[00:28:06] one one paragraph and and on the left left pin there were a bunch of paragraphs. So here it would be a get. So most likely it would be a paragraph API need to clean this one. Is there a and they are on top? So let's assume there is a paragraph API and it takes some. So you say get paragraph one, but how would I know which paragraph there might be multiple books, right?
+
+[00:28:43] So this means that most likely the structure would be book ID and then paragraph, paragraph ID. It is a little distinct. Anybody know what this is called? This concept? API routers. You define your API routers. You say everything that's the translate.com, slash book, slash ID of the book that progress on a demo, right? And you have to prove that this will apply to any case in your city to become your API router.
+
+[00:29:17] I think we covered this in capital weight. So you do get book ID, paragraph ID. Wanted at the beginning will be post because I just give it the raw data will be post right when the other translates it or the other side of it where we like in the first language, the second language and then after that we'll get it correct so I was just correct this is that this is a flow for post
+
+[00:29:49] But I was covering here, we were talking about the genetics. But you're right, as Firo mentioned, how would you actually insert this? So this is where you use the POST API. So most, what would happen is you would post a book first, and this book would have some decent jobs that explain, like, this is a book, maybe the name is blah, it's an OCR, and then a bunch of metadata around this one.
+
+[00:30:22] This will return back an ID for this book. So you use this ID to post the paragraphs and then you pass the text of the paragraph. And most likely you'll hear you're going to post the Arabic and the English paragraph. So what if you found a mistake? Like Lady Show does that. There is an issue of failed translation. So this is where you use the port API to update one of the paragraphs or if you decided to update one of the books.
+
+[00:30:54] This is where you use the put API to update the content of one of the metadata of the book. And obviously it will be book by the paragraph ID code. So how does this connect back to the authorization? So as Philo mentioned, the authorization is a layer on top. So when you send this API,
+
+[00:31:22] there will be a middle tier in the back end that checks are you an authorized user or not. So how would you know your authorized user? So there is a header that will pass with some authentication token. Do you guys remember what we covered in one app 1.0 in Australia? Yes. So you ask for when you sign in, you get a token and this token will have 30 minutes lifetime and it comes with also a refresh token. So in Facebook,
+
+[00:31:52] or in Instagram or anyone of those apps, it's always connected. Those ideas, when this token expires, you use a fresh token to ask for another access token. You pass this as a header, and then when you go in the middle tier, the middle tier will check, is there a token? If it's available, then it checks. Is it expired? If it's not expired, it cracks open this header and sees what are your supplies to do. If you are not an admin,
+
+[00:32:22] You won't be allowed to post the book or put the paragraphs. If you are a reviewer, you have access for get, you define what the access pattern writes for this person based on your access to. I also want to say, is there another layer of authentication to which you yourself have access to because there's limited users. True, but this would be more of a business topic.
+
+[00:32:50] Like here you're just protecting the APIs from intruders or from wrong access rights. And there is a different one that is based on what books you have. So this would be decisions based on your business. Patch? You never use patch? Actually. No, not at all. You message it as a patch. And then group of things. Group of things together. Group requests as well.
+
+[00:33:24] I think it's just like a menu.
+
+[00:33:59] I think it's useful when there's a lot of data. There's also another thing called batch mode where we can group multiple requests of the reserve in one big batch of right performance. But this is no batch. It's not an API, it's a moon above all of these APIs. That's what you said. Cool. Where is our data? Do you guys see our data? So this is our data. It's a big picture.
+
+[00:34:29] This is always the second thing you think about when you make a design. So you will be a persistent storage. So this is where when we talk about persist, this is where it goes. So and upload the raw material. So the UX, the life in the mini shows.
+
+[00:35:07] You upload the raw material and then it gets stored. So where do you store the storage? Where do you store the witchbox? I'm going to test. Right. I'm asking you. Witchbox? Witchbox. I don't know why I'm declining. I will start with beta base first. I feel like that just helps me break down like either like the specs or just like understand
+
+[00:35:42] project of the home and how I'm going to be storing data and then I do a backend and then I go down. I have seen in my left, my career, people in the new left will define the API of the contractors and interfere everything for the sake.
+
+[00:36:14] So they do the API, which we know did now. And then from there, they say, OK, what does this mean for data before the actual design of server? So the fact of a job. But the design, the database, it is also the schema and storage choice. And you say either mysepa, is it the data lake, is it relational? And then you design the schema. When you design the schema, you have the schema API, you get a full picture of that. So should we maybe choose the storage, five minutes, and then design the schema?
+
+[00:36:44] What's what are the available storage types? Storage, like database, disk, like caching. It's not persistent storage. It's a temporary. Sorry. I didn't know you're doing it. So, what do you mean?
+
+[00:37:42] But this is a technology. It's not. So two basic options with the storage, like if you were on a pick up, you know, the database in Azure or something, right? The document TV, sound structured or structured, it's more like Postgres. And the Postgres. So before we get into this one, I don't know, Nazar?
+
+[00:38:23] was asking like disk so what do you mean by disk here? You could store the text there and like... Yeah, like pop that in. Yeah, so where can you find disk in this?
+
+[00:38:53] Is this a... So it could be a 12... S3 somewhere? S3 somewhere? This is a very good point. So what is the problem if we store it on the server? That's what if we... Well typically if you have a server you're using your cloud provider which means the server is running on VM and those get rebooted all the time, they go down, they go up, you sometimes might have three if you have not trapped it.
+
+[00:39:27] So typically you're going outside of your interaction with servers at this point. So as you mentioned, the biggest challenge of all providers that you're going to use is you use commodity hardware and you could move your data, you can shut down your servers, you need to build your system with full term money. Everything could fail at any moment in time. So anything that's transient could act.
+
+[00:39:55] could live on those kinds of servers. I just keep the icos at the end.
+
+[00:40:00] We put some ways to replay them or repeat them. And most likely they are also running for few minutes seconds. But when you want to store your raw data, this is something that should persist forever. So you could put it in the database. But as Nazar mentioned, this is not really a structured data. You need to put it in some, some, data is very expensive. So you want to pull out those expensive texts out of the database.
+
+[00:40:28] So hard disk is the best technology for this, but hard disk fails. So there is something called Blobstore. It's their own different VMs with larger disk. The compute is very minimal. It's just to grab the data from those hard disks. But it is guaranteed to be available 5.9999% of the time. Other thing is...
+
+[00:40:55] You can actually have on the device of the user because think of it this way. Okay. Like that one, I'm already completely ready. It's all saved online. I want to work offline. Yes. So that's a good point. What is the problem? What could be a problem of this approach? This could work well for the MVP, but beyond the MVP, why would this be a problem? Okay. How do you update the app? How do you update the app?
+
+[00:41:30] Okay, that's a good point. But if it's a little app, can you update the app? Can you tell me where? Like if you update how you're front-end, I guess, docs, the server and the data, if you update any of that process and then you try to follow the whole way, you have the data on this desktop, it might not, like the process won't work.
+
+[00:42:02] So this is a problem and it's a very popular problem but the way you work around it is you make sure that you're always backwards compatible. Like your application when it updates, it could read the previous files that you've read. So you could work around this one but there are other problems. Collaboration. Collaboration, okay. Anytime you want, you know, you have multiple users to be able to see something, but you want to see the data if it's stored in a client device then...
+
+[00:42:30] They could uninstall your app, they could do whatever. And then you don't have access or anyone else who doesn't have access. Correct. So in the MBQ, we said one user. But Hany mentioned last time that we want to have multiple reviewers. And we have someone who could see. So if you store it on the user's device, you're not able to access it from somewhere else. And also remember, the LLM translation is a very expensive operation. If you put it on the user's desk, what if
+
+[00:43:00] their machine crashed or their machine went offline. So now we actually lost the most expensive operation because we put it on a user device. My thought was actually all that for a second I was actually thinking about not just having it as a work app but having it as a map on the computer device. So once you get that data and you want to like you want to travel to the internet for something, you can do it and then later on the computer is connected to the network.
+
+[00:43:29] all those updates that you changed are now forwarded onto the database. It's updated system where they will pull it and update it to whatever it changed. So that's where I was thinking the hard drive is resistant. But you would give this part of the MVB, it's called the offline mode, so the technical flight. Would you give this part of the MVB? No, not this. That version is the MVB, honestly, because it's a capacity curve for very
+
+[00:43:57] special use case when you are traveling or flying, but the majority of the people even in the company, they are usually connected. I see the point and I mean, it comes down to the point about how can you start from the customer and work back, rather than our immediate excitement. This has been in any unit, it's a good safety thing, we know, or I gave you a reminder, we keep pushing to stick to that MVP or what the customer actually needs. But I see a point, but to me, this is a very, very good.
+
+[00:44:27] From a concept perspective, like yes, this is most likely you're not gonna do it and then you will be. But from a concept perspective, this is called caching. So there will be different layers of caching. You could cache on the web front end, you could, sorry, web app, you could cache on the web front end, which is a layer we've been covered here, you could cache on the server. And this is a very good example of caching and have other issues when not being covered. Yes.
+
+[00:44:52] You talked about the block storage and people talk a lot about disk because disk almost turned into folders and files that we understand. There's some other technology that are so similar to folders and files that can be candidate for this, not the VIST, like Delta Lakes. But it's not the VIST technology in this case. The Delta Lakes is exactly that your local machine has a dry-ish and then folders and files. But the point is it's totally on the cloud.
+
+[00:45:23] And it's what is tolerant, you will not have to keep replicating if the server crashes, you will maintain it and all of that. Like it's a cloud managed server. I'm trying to say this because most topologies and most toy projects focus on the client too much. And the very first approach that we have started with is a training client. The client should have nothing, could have nothing other than rendering what the server is doing. And in this case, if we really further the term of organization,
+
+[00:45:52] You go blog storage which is not for us it's big blogs that jobs or you go with the data which is for the result file. Yeah blog store give you a folder like for the latest data. There's one more candidate for this data. Oh why would you use blog storage like why not shoot the database on the data. Because another mention the data is big so the little is usually used for fields and metadata.
+
+[00:46:23] That name that addresses and stuff That's why you know it was a one paragraph that if there is no enter that the enter character And this takes me to the next one kind of thing is a kind of database for the white phone of the babies that Google Bigtable and eating Cassandra
+
+[00:46:54] Why things they think moving in big difference version think but it's that for very very long strings Why it's because it has to be optimized for this one the beginning otherwise it will not be performed in well This is optimized for small at least a person But you could store it in the database so let's get into when you structured versus unstructured or dog the leaves or white calls so
+
+[00:47:29] structured databases like SQL Server, Postgres, and Adobe. There are lots of databases. And usually those are, you will hear that those are scale up systems. Does anyone know what scale up system means? Like they're easy to scale. Yeah, what does it mean scale up? Yeah, how would you expand it in this case?
+
+[00:48:03] There are two concepts here. There is a concept called vertical scaling and there is a concept called horizontal scaling. So vertical scaling is you have one server and you put everything on the server. So let's say it has four GBM and two cores. So you start putting more stop in the database on the server and then you run out of recurrent or compute.
+
+[00:48:42] or storage. So what you do, okay you add more RAM or 16 GBM and make four cores and so on. And then you run out of this, you put 32 GBs and then you add more compute and so on. So eventually there is an end, you cannot do this forever. So this is where the added concept of horizontal scaling. And the idea here is you have a bunch of smaller machines, each one has four GBM.
+
+[00:49:19] You can see my hand writing. Can you imagine that? Yeah, for GB. And we say, OK, if all the users from A to D will live on this server, and then all the users from E to G lives on this server, and all the users from H to M live on this server, and so on. Users of the program for anything. Anything. Yeah, yeah. It's just an example. Well, you have to make all these machines with my own bare hands. And actually, how would you out those?
+
+[00:49:50] If I request, come this way, you have a book, paragraph 1 to 10 goes here, paragraph 10 to 20. So how would you make this decision? I remember this one, I can't remember. The brain actually routes you to the, these don't connect to each other, they all connect to one brain in the correct route. So there needs to be a layer here that were route to these things. Routing could be done with different ways. One way is partition-based routing.
+
+[00:50:23] another way is hash piece, droughting based on the hash it goes somewhere what is the problem with this approach? It has to be our system, like you have to decide that it has a micro source, which one?
+
+[00:50:53] The ads will be like Microsoft's request details has to be retried, retried out, no one will like this data happens. Let's assume that each one of those is actually an equivalent to this one. That's a good point.
+
+[00:51:34] First problem, open-vote server. So let's say that most of the users are with an EtherM because M is very frequent. So most of the load is actually happening on M versus all the other servers are. This is a little bit more complicated, but you, at least with Visible specifically, you have to scale compute and storage. Look at this at a good point. With this approach, you need to scale compute and storage. How do you fix this?
+
+[00:52:06] There's options. What are the options? I should just set up one. So one option actually is to move the hard disk outside. Yeah. This is one option where you consider a compute scaling from storage scale. What if one of those servers actually partaking down, timing all eight to the B. That's a great point. So okay, what is our redundancy story? So that's a very good point because those are commodity hardware.
+
+[00:52:39] What if this one went down? This means that e to d is a problem. So this is an availability problem. So this is an availability problem. What do you do when one of the rows pull down? The good thing is you're able to serve the other partitions, but the best thing is now I'm done. So how do you solve it? I remember this. You have like a backup where the...
+
+[00:53:15] two storages and the V's color. We could actually have a server, another server, where each one... Back up for each server. So each server will have... Usually you actually might have more than two players. So if one of them falls, you could fall back on the other. I guess that's our first problem. We add a... Valble mount. Yes. And overflow server to be server. Overflow, okay. So...
+
+[00:53:48] No, it's a very good point. This is actually one of the approaches to handling this problem. And this solve is also the problem that Firo mentioned. When you overload one server, what would you do? So one way to solve the problem is when you see that the partition between A and B is overloaded, you actually get another server. And you allow it A to be to one server and then C to be to another server.
+
+[00:54:15] But the problem is you could continue doing this and this actually depleting your resources. Maybe this server is free, but you're adding more servers to handle a smaller partition. So maybe one other approach is what Amir mentioned is you could actually move some of the nodes to here. But this goes to Nazaris problem that, okay, like how are you actually storing those partitions? Most likely you have another database here.
+
+[00:54:44] That says or or some cash going to watch here. No, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no, no
+
+[00:55:17] Do you have an A of? Why do we have to do A through D, E through G, H? Why can't we just have the port as is, but balance out between every data that comes in, see which partition is empty, and send one to it. And since we already have an API.
+
+[00:55:46] storage that tells you A through D goes to this, it could also say for this go to this, uh, wrap. Like, does that make sense? You know, can you repeat it again? Like, why do we have to do it that route of like A through D goes into one? Why can't we just have them all balanced? Like, like, Ron's all the way to A through D. I think this question is like, why not just for whatever each call, send it to the lowest? Uh, I see.
+
+[00:56:17] So this would work for APIs without persistence. Let's assume you, it's a upload API. We have two servers and one of them is overloaded. You could actually move it to the other one, or you could use round over as the server mentioned, or you could do load-based balancing. But here, what it about, like you said, give us a good point around taking the persistence out, but in most databases,
+
+[00:56:45] the storage is within the database. The reason why the storage is in the database is because there is like capturing the data from disk, it's very, very critical. You want to do it under one millisecond in microseconds. So once you move it out, you will have network overhead and other stuff. So it becomes very slow. So most of the time the storage is actually inside your server. In this case, if your data is inside your server,
+
+[00:57:13] A to D is in the server. You cannot route it anywhere else. If you go to any other server, it doesn't even have the date. I get that. But wanting is instead of having A to D in that specific server, let's just say I got two As, why not just have the first server would have the first A, the second server would not have the second. That's a good point. So what would be the problem with this approach? So what you're saying, what Piro has mentioned is
+
+[00:57:47] You would have something like this. A would be here. There is another A here. There is another A here. Session management. Session management. What does this mean? Yes, close. What does this mean? The app to keep persistent, persistent, persistent. The user, the user is the normal. So the router has the web app, session, app, session. It's connected to which?
+
+[00:58:17] Yes, that's a good point. Let's say you all know SQL, right? Okay, you know SQL. So if we do select, start from users where user like starts with A. This means that there's a little balance with not three, it's all the servers. Yes, you do a scatter gather. You need
+
+[00:58:57] As I mentioned, you need to open a bunch of sessions or a bunch of RPC requests to all the servers to grab the bit. This is not the only problem. The other problem is what if you want to join the bit? So what if you want to do select from users and classes and you join with user ID, user ID is any class, class of the student ID or whatever. And these classes actually are
+
+[00:59:27] like they are not co-located with the same user. So now we need to do cross joins between servers and it gets very complex. That's a very good question. Do I need to build all this logic for me to build a paragraph and edit one more and save it? That's a very good question. Do I build all these things? I build the whole branch? No, you don't need to do it. Okay, what do I do? The prompt. Wait, I build these things?
+
+[01:00:00] No, will it build this actual coordination between the VM and the SCAE out and all of that? No, no. We will have to do that. No, but I will build in this. I will build it for you. For you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for you, for
+
+[01:00:33] that excellent engineers are shifting from excellent code to excellent infrastructure for the region, in addition to being for the region. So the whole thing for VMs, for example, in a different algorithm, there's something called the VM scale set. I said to VM that scale together, you say your minimum three, your maximum state, this is how you go up or go down, you leave it. So it's not as crazy as this that we need to brainstorm the way we need to brainstorm it to choose what configuration at the end.
+
+[01:01:03] to know what you are doing. And this is not something that you can take a little bit. Can't, cannot take a little bit. Because it doesn't know your user, the view, distribution, your objective, what will be on the moon load, is it the paragraph anything, will it take a retrieval, right? It depends on the information on our head, hopefully in the PRD. If you broke AI for sure, it would not have been handled, but you really have to be under the right of seat. And at the end of the day, all this brainstorming will take us
+
+[01:01:33] to choose the letter means and it's a configuration, distribution and the end and scale sets and whatever but you need to know the being this and hopefully when we talk about infrastructure we'll talk about categories of the most common uh infor types and patterns on how they are used to this. I mentioned a very good point here around uh the NNM doesn't know your geo distribution and other stuff so when Facebook started they needed to do something like this this kind of project so what did they do they created a server
+
+[01:02:03] per university. So Stanford has its own server, Harvard has its own server. So this is how you were able to scale. But then after you became bigger, this is the MVP and post MVP. It became a problem because Harvard students cannot talk to Stanford students because they are totally different. Data-based and you had this issue. How could you get those two things from the beginning? So you have to revamp the whole
+
+[01:02:32] because they go bigger, which justifies the industry. I love the stuff like scales and then you just go family-saving. As you grow in size, you end up having entire teams, sometimes even poor, just on storage. It really is like an eval like, where are we at now? Where are we going to be in the foreseeable future? Let's go for that.
+
+[01:03:02] If then we get bigger or finer than we should grab, or move to something else. To this point, you know this command? Our team is 50 people working on this. Just to do some next stuff for me. Why? Because you need to go get from all the different servers. We need to do it in a very efficient way. The thing that's on I will use when we take this in the opening.
+
+[01:03:32] But they're just optimized, also Google's case of many of the things. Before we move into this one, there is a major issue of this architecture. So we captured the cache, also the store for the routing. We captured the field over for availability. There is a bigger point of failure. The system could fail.
+
+[01:04:06] If the loop dancer goes down, correct. If you see one box and anything, this means that it's a point of a single point of view. So most likely there is another loop dancer. This is what Hany mentioned. It's something in Azure and Google and all of the providers, something both active, active or active passable. There are different options. This is something you need to be aware of when you set the top. Why is it actually an active asset?
+
+[01:04:35] you make sure that one goes down, there is another. And there has to be communication with them so that way if currently the load launcher goes down while it's trying to redirect the user, the other can take on the appropriate. So most likely you can redirect. Those two servers are sending each other some tick points. Are you alive? Are you alive? Are you alive? And then when it gets back, if it doesn't get back, this means that it's down, I need to tick open. The good news is, I think it's saved on a regular. No.
+
+[01:05:06] It's one of the most enjoyable things in the process of it might seem a whole new. The whole new. We do this. We don't do it in a sense, but you have to understand it. But back in the day, just before three years ago, you would have an infrastructure engineer who knows how to convert this into something called out of the 10 minutes. And then I would guess, or get a phone. This are things called infrastructure as cool. It's not cool. It's like a template that you see CSS.
+
+[01:05:34] or any declarative language where you let INI files or the other files, you see this, your time, how same as actually was work. Terraform is like an open source finder shared across the last ones that work with the Macros and Google and Google, automatically for Azure, at the end of the day, you want them and contain all your infrastructure, okay? And you can take it, Google Cloud or AWS.
+
+[01:06:04] and see the blue exists. And imagine, I am saying this because after doing all these experiments for me, you can take your A-L-M and say, Geneta Terraform 5-Purview. People would take days and weeks to write on the thickness and terraform and survival zone and the blue zone will go back and forth. You can tell your A-L-M, Geneta Terraform 4-Purview and you're done. It's called ALYAC or ALYAS in a blood structure at school. And it is one of the most
+
+[01:06:34] I think the highest benefits of having an individual is that you don't have to go on the bits and pieces of what is the protocol. No balance are one and then you put it in the name and at the top and you don't correlate to the right server and the names can sit and one letter can take the letter to the brain. Then it is the name given with the, the volume of five. Yeah, yeah. Anyone who is young and you know that page. Yeah.
+
+[01:07:04] The reason why we went here is we were talking about database structured or unstructured. So we talked about vertical scaling versus horizontal scaling. So one of the big differences, okay, we'll capture here horizontal scaling versus vertical. And you put one of them out. Yes. This is a relational database and this is what you call NUC code.
+
+[01:07:39] which is an umbrella for document database, column-wide database and so on. The other difference is by name, this is use a SQL and this is use some API. The good thing is SQL is very, very powerful because it's declared if you just declare what you want and then the system takes care of it. So if you have very complex, you want to grab data from lots of different tables and stuff, SQL is very easy to do. You could still do it with both SQL, but most likely you would.
+
+[01:08:14] You will normalize. We'll ignore this one for now. So you put everything in one document and you store it. So it becomes easy when you make a code to the API. So in this case, you will have the book with all the paragraphs in one document, or you need to repeat for every paragraph. You have to put all the books meta data with it to be sent for when you grab the data. Can you draw something for?
+
+[01:08:43] The structure versus no sequel, a case of books left after the owing. If I crack open database and I did it in terms of what? If it is relational versus no sequel. So very simply, let's say we have books and types. So this is a book, the type of it. So we have book and each book has paragraph IDs. Yeah, so this is one too many relationship. For every book there would be many
+
+[01:09:13] paragraphs, but each paragraph belongs only to one book. So, code one to N. So this one would have some ID. This will be the primary key. So in relation to database, it's very important to call out what the primary key is. It would have the title, it would have the author, and so on. The paragraph, it would have a primary key, which is the paragraph ID. And then it would have
+
+[01:09:46] What does it have in the fact that you have the actual paragraph? Okay, one thing at a time. So what is the actual paragraph? Yes, great. So this is the same thing. So actually instead of the text, we would have a block, some reference to a bucket in SC.
+
+[01:10:16] And instead of storing the text itself, then they mentioned you have the book ID book. And this is very important because this is how you would link. And then when you want to grab the paragraph, you will do select from paragraph where book ID. And this is coming from the API code. This one gets the ID here. You put it here. And you would also sort by
+
+[01:11:00] ID descending correct so we forgot here this is a very important one order ID so paragraph one paragraph two paragraphs three this would be order so the primary key the paragraph ID would not be correct I would say that no I mean the primary key of the paragraph ID if it can be the code box then it has to be a good or what like order and ID would be different that's what you're saying no
+
+[01:11:29] I'm talking so here's the thing every time a paragraph is made the ID gets increased by one so if only we're getting like paragraphs three six and twenty they're already ordered by the ID number that they just got from the thing so they just get ordered by their ID not by an order ID. So this is a very good point like the primary key could be your order ID but not all databases have auto encrypt. So some databases will get you a
+
+[01:11:59] Random do it for the primary but most of the popular ones have the auto-intuitions. The data is a work one, does it have auto-intuitions? No, the one I'm talking about. The type of NDB or the JSON? Yes. JSON is interesting, you move all the... You have to maintain your orderings. Sorry, no, no, no. The ID is random. Some databases are random and...
+
+[01:12:29] Some database has the auto increment feature and you start to buy zero or one or something like that. SQL server hasn't. Has Postgres has it? Or Mongo doesn't. Google Steller doesn't have it. If the primary key is the order, how would we determine, like for example, say the order is like 200 and this is one book.
+
+[01:12:57] So how would we know like 101 is in the book for example? So the book I wait for you. Yeah, what is it? So you will filter these on the book ID and get all the IDs. Oh, that's it. And then you sort by primary key or most likely in your query it will be automatically sorted by primary key and you know you're mapping to and there is something cool to this. Both IDs right?
+
+[01:13:34] The paragraph table as paragraph ID and a book ID. Two different fields, right? Correct. The book ID, it has primary key, this would be the paragraph ID. So Henry was asking like, okay, if it's a no-seq or database or a document, how would we store it? So this would be a JSON. So the book would be, it's one JSON, so it would have a book ID, some ID.
+
+[01:14:11] the author, same stuff. And then the paragraph, you have paragraph, this is paragraph one, for example, what you have, you need to set the paragraph ID here, be one, and then what I need, and so on. Then the question is, what if I want all this information, you need to make a decision based on your API code, you need all the book information with the paragraph or not. If you need it, this means that you might need to do two calls, as the database, or
+
+[01:14:46] you might actually need to store the same blog inside each paragraph, which would be a lot of storage, but it simplifies your code. So you need to make some trade-offs and decisions based on your API and how you design your API. Does talk to the support reference fields now? Yeah, you could put a reference here to the, yeah, which is mainly the whole idea in this case.
+
+[01:15:17] that is still that is seriously motivated to do to call it in the code. I know DynamoDB now supports joins. Like now some nosy code databases will join but there's not a comment button. So this is the interface is where you call is different. The other thing is what we call assets. So this is availability, consistency, durability.
+
+[01:15:50] And isolation. And isolation. And isolation. So, and this one is doesn't have any of those things and it's mainly eventual consistency. So the idea here is because remember, we talked about no SQL as horizontal, relational is vertical. So when you try to insert something into the data views, it goes to only one machine. So you will be able to store it in one, in one go. Versus a no SQL.
+
+[01:16:20] Your call actually, one call could go into multiple servers in the same one. So how would you get at these if everything gets inserted at the same time? So you might not. It's very hard. It's a very hard distributed system problem. So what happens is, and the other thing also is, because we have this kind of, maybe I should change the code, because you have one server here and one server there, right? So maybe,
+
+[01:16:51] When you store it, you store it here. Okay? But when you make the request, you make the request here. So actually, we're not sees a bit. It's one of the problems of the NoSQL database. You could have one server, you insert one server, and then when you try to call, it's not there because that application didn't happen yet. Are you saying that NoSQL databases provide a lot of basis for scale, but it over-communicates the limitation? So this is why you need to be aware of those characteristics.
+
+[01:17:22] There is something called Read After Bright. What is Read After Bright? Let's say, Firo posted on Facebook and then I pressed like. So I added a comment. And then I added another comment. So for Henry added another, I made the post, Firo added a comment and then Henry made a comment based on your comment. Okay. And then when Lady shows her post, she will see Henry's comment first before yours.
+
+[01:17:53] Exactly, it's not guaranteed, it's an eventual consistency. There is no guarantee of order or no sequence of difference. And actually I see it in WhatsApp sometimes. In WhatsApp sometimes I send a message, like the order changes. Some lazy engineer didn't say the word. So it's a very hard problem. Are you saying that infrastructure choice can impact as a feature or outcome under it? Yes.
+
+[01:18:24] That's why you need to understand these things when you're building it. Because your choices, maybe your main focus, like no SQL database are great for MVP. With MVP because you just use everything and in a document base, you get it fast. But you don't think about all of these problems, which is fine for MVP. But beyond MVP, you need to start saying like, let's say someone added a review and another reviewer reviewed this reviewer, but they came out of order. So what would happen?
+
+[01:18:51] You edit the whole thing. Yes. Exactly. Banking is a very big problem. That's why most of the banks use SQL. It has lots of other problems for them. But the assets part, the consistency, this one, I'm sure. We could smaller you see a bit. Yes.
+
+[01:19:22] Like a question about like AI and this can't we like start like this and tell AI start like SQL and then switch it to analyze with like couple problems. You can if you if your AI system has all the double text of your schema and not even better
+
+[01:19:56] which I do a lot. If you can get to your Azure subscription or cloud and say,
+
+[01:20:00] and replicate an unknown sequence. I think the biggest question would be how would you replicate your code? Not to replicate, migrate your code to move from one system to the other if you have already written the code. If not, then it would be easier. The other problem would be how would you migrate the data if you have already started to build serial data in your system from this data and you promise the customers you will not lose the data. You have to migrate it from the unknown sequence to the sequence. Your AI system from the way it would be expensive because you have to read a lot of things.
+
+[01:20:29] It will spread out of the scope of the region of writing, but it can do all of this. AI could create a tool for me to migrate. Can I create a tool? Yeah, that's actually a great idea. It would be a lot cheaper. But yes, you can do everything with AI, but when I use it, it's now a matter of choice and course.
+
+[01:20:57] Yeah, I was just going to say the industry now is moving away from like the tokens and usage like even now at Google I got banned from using LNN for two days because I exceeded my quota. So he told me next day is in the weekend. So and and and Google is a big company. So smaller companies would have a harder challenge. So you need to really justify some of your design decisions and and as we mentioned also, yes, it would be able to do it for you but
+
+[01:21:26] Some of the application logic will get list up once you move from one system to another. And the more we do this exercise is deeply the list tokens we'll use. Correct. For example, the other stuff we are doing will be very specific, will be incremental, will be in a place that goes to store. And I went, like there is a company called Neon, that could acquire for one billion dollars. And the reason is, it's a little bit. And the reason is, you use Neon? Yeah.
+
+[01:21:56] The reason why Neon picked up is when byte coding started, I want to build an app to do blog. So the agent will go and sleep the internet and find out in the edit that everyone is recommending Neon because few features in there. So started using Neon and suddenly Neon became the agent database. Everyone is using Neon as its own issues, but it's really good for certain scenarios. But if you go and ask the NNM no build,
+
+[01:22:25] This app using this database using this technology will become more prescriptive It gives you more control on on the system and and also if you want to pick stuff or Use some expertise neon is new nobody's using it. So now it's picking up on the agency's using it and it has lots of other challenges That's what actually happens with me because I didn't know where to store my data instead, can you search online on?
+
+[01:22:53] like a free database that I could use. It's a super base. It's a big super base. No, neon. Yes. It says neon gives you a gate for free. Yeah. It's very easy for agencies to put them. But yeah, you do too. Yes. And super bases are not the one that gets money. Yeah. Yeah. All projects. And you can imagine your project as pretty as a super base. And I have one every week for this.
+
+[01:23:19] If I'm asking, I would recommend, like, if I started a new project, like, it evolves almost based on my cost, all this. And this is the last one for you. Cost is a big aspect here. In these things, this is expensive, and this is cheap. Because big part of doing these things, so, Atoman, like, look up this term and look each one of them, the most important one, at least for Navas consistency.
+
+[01:23:53] This is very important for this app. The other one, I'm more critical for banking, but not critical for others. Should we stop here or continue? I think what is the next step? Like we talked about architecture choices. We haven't designed, we haven't designed yet. We haven't. We have talked about compromises. So, next step, we design women's architecture or we shouldn't have an exercise to build these on the work items. We're still early to build the work items. We're supposed to do the bridge and I'm going to get you to tell you.
+
+[01:24:25] Maybe next time do the makeup design makeup job. Well, what do you think? Yeah, I'm just very so much. Yeah, I think maybe every other concept of the right this team. Okay. Read about the different technologies and different technology. There are many solutions. One is that for sure choice is different than others, but different technology and they can't defend it. Say why you better this.
+
+[01:24:56] You can have your light be able to mute it and go to the top from your mind, see what you understand, come up with a schema and give it the APIs that we talked about, which is that book and paragraph APIs. It's not designing the internals of the service. OK, that's it. Yes, how do you, how about defining the routes? Defining the routes. Defining the routes as schema. So define the routes, the API routes, fully write it down, use it very, very in, go for it manually, fully write down the schema.
+
+[01:25:26] and make your Japanese books. I have a question about book structure. Like you said book ideas. What about chapter? Like... Like... I also do the MBB. Chapter is a paragraph from the chapter space three, full stop. So remember Nazar in our MBB who said we would avoid formatting. So chapter would be a one-liner paragraph.
+
+[01:26:02] That's it. Yeah, like like do we consider like like a structure where it accommodates all types of books or we Oh, I mean for the future? The books that we have like okay has book and paragraphs, right? Right now we can have simple books. But let's say you can explain to read anything from
+
+[01:26:36] any e-Pub book, like e-book, like, in the start translating here. Yeah, I think your objective is to try to stay forward compatible so that we don't break our schema because we're compatible on one thing, even if it is not in the MVP. Yeah. I think this deserves a deeper conversation, but the quick solution everyone wants to look at is that you can attach a beta data field
+
+[01:27:07] to every paragraph. If we know that the structure doesn't break, because all the paragraphs will be almost sequential. They are all with numbers. If we introduce a bit of it in the series, whether this is a shaktar or illu, level one, level two, level three, level three, you can still have a scheme that scales for the future or extends to the future. Make sense? I make it a work item if we want to extract it. A what? Your work item?
+
+[01:27:40] I already researched that. Your voice is fading away in the sound. Oh, sorry. Can you hear me? Sorry. We're about to be in the sound. Let's go ahead. Oh, OK. Sorry. Can we create a work item to investigate the book structure, like metadata, terms of like, we need to have
+
+[01:28:19] Okay, both chapter or more chapter sections are whatever like you want to add this as a post-MDP work item, is this correct? Yeah, like at least explore it now to see if it's something worth making it like at least considering it for future. Yeah, I think we should add it as part of the post-MDP.
+
+[01:28:59] Okay, so database schema database technology. My question is what are we making our decision based off like are we building this effort and tentative like oh they're gonna have reviewers from all over the world for the sake of the society want to stay yes
+
+[01:29:41] Even if you don't have like 700 servers, it's a little bit of the back end, but we want to make it scalable. For the sake of exercise, remove the same robot. Like, is it the concept of Wikipedia? Yeah, the concept is called crowdsourcing, where you have multiple working on the same thing and you can get together and get a little bit of a robot. Yeah, I mean for the sake of exercise, is you more building a crowdsourcing mechanism or system?
+
+[01:30:15] I wanted to stay. Okay, thank you so much. Thank you. Thank you. Have a good one guys.

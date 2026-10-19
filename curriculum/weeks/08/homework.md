@@ -1,9 +1,9 @@
 # Week 8 Homework: Deployment and Operating Boundaries
 
 ## Goal and Starting Point
-Deploy the production project as a bounded demonstration. Use either authenticated/authorized writes with the Week 6 tests or a read-only public mode. Do not expose unauthenticated write endpoints.
+Deploy the production project as a bounded demonstration. Use either authenticated/authorized writes with verified access tests or a read-only public mode. Do not expose unauthenticated write endpoints.
 
-Bring a working container image, PostgreSQL migration evidence, and the Week 6 access policy. Instructor rehearses one cloud path; students arrange cloud access and a personal budget before class. A cloud account is additional to the day-one LLM requirement.
+Bring a working container image, PostgreSQL migration evidence, and a reviewed access policy with verified enforcement. Instructor rehearses one cloud path; students arrange cloud access and a personal budget before class. A cloud account is additional to the day-one LLM requirement.
 
 ## Required Acceptance Evidence
 - A reachable demonstration URL, or documented cloud-access blockage plus a local release rehearsal; the latter is partial, not a completed deployment.

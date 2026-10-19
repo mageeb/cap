@@ -4,7 +4,7 @@
 Reproduce the application outside the development machine and make database changes without losing the evidence or data the system depends on.
 
 ## Entry Check
-Bring the Week 6 application, passing local checks, initial migration, and access policy. Install Docker before class; a setup blocker must be recorded rather than hidden behind a successful local run.
+Bring the Week 6 architecture/schema/API proposal. Containerization additionally requires a runnable application, passing local checks, and an initial migration; Weeks 5–6 do not claim to produce that code. Use an instructor-supplied baseline or a separately implemented approved project, and record the remaining gap if your own baseline is not ready. The 5–10 hour assignment budget covers containerization and migration work, not an unplanned full application build. Install Docker before class; record setup blockers explicitly. Verify an access policy and enforcement tests before any public deployment.
 
 ## Exit Evidence
 A containerized app connected to PostgreSQL, with explicit migration steps, data-preservation evidence, and CI image build checks.

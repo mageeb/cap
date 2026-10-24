@@ -1,5 +1,27 @@
 # Autonomous decisions awaiting user review
 
+## DEC-033: Backend implementation verification
+
+- **Task / scope:** Implement approved backend boundaries.
+- **Status:** Pending user review.
+- **Choice:** Start with framework-independent book/review/draft orchestration and a dependency-free executable regression suite under Backend/Tests while material import/storage/provider choices await user input. Isolate input parsing behind ISourceDocumentReader, as anticipated by the approved proposal. Allow intentional empty reviewed text; require a nonempty expected version. Translation uses Arabic-to-English and publishes only a complete draft, matching the approved proposal.
+- **Reason:** Makes progress on authorized behavior without silently choosing infrastructure or input policies. No test packages are needed for these deterministic service checks.
+- **Alternatives:** Wait for all choices, use vendor-specific implementation immediately, or introduce a package-based test framework now.
+- **Effects:** [Implementation tasks](project/specs/003-backend-implementation/tasks.md); backend classes and tests. No deployment or cloud resources.
+- **Technical verification:** Build and all 17 dependency-free service regressions passed. Independent service/test review found no supported blockers; affected links and whitespace checks passed. Exact commands, unimplemented adapters and remaining input dependencies are recorded in the task record.
+- **User response:** Not reviewed.
+
+## DEC-032: Proposed Translation backend boundaries
+
+- **Task / scope:** Reviewable C# service skeleton under the user-selected `project/src/Translation/` location, with Backend and Frontend folders.
+- **Status:** Confirmed.
+- **Choice:** Propose one backend contracts assembly organized by capability, with book, review and draft-translation use-case interfaces and narrow translation-provider/storage ports. Use locally installed .NET 8 for compilation of this proposal only; runtime release selection remains open before implementation.
+- **Reason:** Enables review of responsibilities and data flow without building infrastructure or multiplying projects prematurely.
+- **Alternatives:** Multiple layered assemblies, one broad service interface, or an HTTP-only proposal. These add ceremony or hide application/integration boundaries at this stage.
+- **Effects:** [Backend proposal](project/src/Translation/Backend/README.md), [task record](project/specs/002-backend-skeleton/tasks.md). No database, provider, identity system or completion policy is selected.
+- **Technical verification:** .NET 8 restore/build passed with zero warnings/errors; independent refuter review found and prompted repair of atomic translation-request ownership. Removed an unused Running state. Local-link and whitespace checks passed; actual commands and limitations are recorded in the task record. No behavior implemented or tested.
+- **User response:** Explicitly confirmed these boundaries on October 23, 2026. This approves the capability-organized assembly and five interfaces; it does not establish implemented behavior or resolve the remaining product/provider/storage choices.
+
 This log separates agent choices from user-confirmed requirements. It starts with the introduction of this workflow; it is not a retrospective audit of earlier sessions. Follow the [repository rules](AGENTS.md#autonomous-decisions-and-user-review).
 
 Each entry has a stable `DEC-###` ID, task or scope, status, choice, reason, alternatives, effects or links, technical verification, and user response. Add new entries without reusing IDs. Keep reviewed entries as history.

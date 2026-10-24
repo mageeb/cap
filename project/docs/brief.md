@@ -23,6 +23,6 @@ Build one application progressively while teaching, showing how requirements bec
 
 - Product rules and required behavior: TBD.
 - Platform, persistence, and access needs: TBD.
-- Technology stack: TBD — choose based on the first workflow and teaching needs.
+- Backend: C# .NET, as requested by the user. The [interface skeleton](../src/Translation/Backend/README.md) is proposed for review. Frontend framework, database, identity and translation provider remain undecided.
 
 Feature-level acceptance criteria belong in the [first workflow specification](../specs/001-first-workflow/spec.md).

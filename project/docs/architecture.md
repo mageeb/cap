@@ -1,6 +1,13 @@
 # Current architecture
 
-Status: Scaffold only — no application architecture or technology stack has been selected.
+Status: Approved boundaries with application-service implementations and deterministic
+regression checks. No runnable HTTP host or concrete adapters implemented.
+
+The user selected C# .NET and `src/Translation/Backend/` plus `src/Translation/Frontend/`.
+The [backend proposal](../src/Translation/Backend/README.md) describes three application
+services and persistence/provider ports in one assembly. Other technology and product
+choices remain open. See the [accepted ADR](adrs/001-backend-boundaries.md) and
+[implementation tasks](../specs/003-backend-implementation/tasks.md).
 
 ## Present structure
 

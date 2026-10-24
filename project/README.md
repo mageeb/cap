@@ -2,7 +2,7 @@
 
 One application developed progressively during CAP teaching. Its specifications, decisions, tasks, and implementation live together here.
 
-**Current state:** Structure and starter documents only. The application name, behavior, and technology stack are still to be defined; there is no runnable application yet.
+**Current state:** The [approved C# backend boundaries](src/Translation/Backend/README.md) now have application service implementations and an executable regression suite. Real adapters and an HTTP host remain unimplemented. Implementation lives under `src/Translation/Backend/` and `src/Translation/Frontend/`.
 
 ## Start here
 
@@ -38,7 +38,7 @@ project/
 └── infrastructure/
 ```
 
-`src/`, `tests/`, `infrastructure/`, `docs/adrs/`, and `docs/prompt-logs/` contain only `.gitkeep` placeholders so Git retains the scaffold. Replace the placeholders as those directories gain real content. Runtime configuration and dependency manifests will live under `project/` when a stack is selected.
+`src/Translation/` contains the backend proposal and reserved frontend folder. `tests/`, `infrastructure/`, and `docs/prompt-logs/` remain placeholders. Runtime configuration belongs with the implementation under `src/Translation/`.
 
 ## Document conventions
 
@@ -51,7 +51,7 @@ project/
 
 ## Setup, run, and checks
 
-No runtime, dependencies, build, or application tests are configured. Add exact commands here when the first implementation introduces them. For now, review Markdown links and use `git diff --check` from the repository root for tracked changes.
+Build from the repository root with `dotnet build project/src/Translation/Backend/Translation.Backend.csproj` using the .NET 8 SDK. Run service regressions with `dotnet run --project project/src/Translation/Backend/Tests/Translation.Backend.Tests.csproj`. There is no HTTP host yet. Review Markdown links and use `git diff --check` for tracked changes.
 
 ## Classroom checkpoints
 

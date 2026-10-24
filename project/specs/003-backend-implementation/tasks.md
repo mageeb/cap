@@ -21,3 +21,8 @@ restart recovery remain unverified.
 Next: await the pending user answer before implementing format/limit or real storage/provider
 adapters. Generic BookService orchestration is implemented and tested; AC-5 remains partial
 until a real reader enforces the agreed input policy. No HTTP service is runnable yet.
+
+Documentation follow-up (2026-10-23): user confirmed AGENTS.md/MEMORY.md in Backend,
+Frontend and the six backend capability folders. Added 16 files with local instructions,
+dated rationale and links to approval/evidence records. Scope, local links and whitespace
+checks passed; independent documentation review recorded no supported blockers.

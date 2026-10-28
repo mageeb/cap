@@ -1,5 +1,38 @@
 # Autonomous decisions awaiting user review
 
+## DEC-033: Backend implementation verification
+
+- **Task / scope:** Implement approved backend boundaries.
+- **Status:** Pending user review.
+- **Choice:** Start with framework-independent book/review/draft orchestration and a dependency-free executable regression suite under Backend/Tests while material import/storage/provider choices await user input. Isolate input parsing behind ISourceDocumentReader, as anticipated by the approved proposal. Allow intentional empty reviewed text; require a nonempty expected version. Translation uses Arabic-to-English and publishes only a complete draft, matching the approved proposal.
+- **Reason:** Makes progress on authorized behavior without silently choosing infrastructure or input policies. No test packages are needed for these deterministic service checks.
+- **Alternatives:** Wait for all choices, use vendor-specific implementation immediately, or introduce a package-based test framework now.
+- **Effects:** [Implementation tasks](project/specs/003-backend-implementation/tasks.md); backend classes and tests. No deployment or cloud resources.
+- **Technical verification:** Build and all 17 dependency-free service regressions passed. Independent service/test review found no supported blockers; affected links and whitespace checks passed. Exact commands, unimplemented adapters and remaining input dependencies are recorded in the task record.
+- **User response:** Not reviewed.
+
+## DEC-032: Proposed Translation backend boundaries
+
+- **Task / scope:** Reviewable C# service skeleton under the user-selected `project/src/Translation/` location, with Backend and Frontend folders.
+- **Status:** Confirmed.
+- **Choice:** Propose one backend contracts assembly organized by capability, with book, review and draft-translation use-case interfaces and narrow translation-provider/storage ports. Use locally installed .NET 8 for compilation of this proposal only; runtime release selection remains open before implementation.
+- **Reason:** Enables review of responsibilities and data flow without building infrastructure or multiplying projects prematurely.
+- **Alternatives:** Multiple layered assemblies, one broad service interface, or an HTTP-only proposal. These add ceremony or hide application/integration boundaries at this stage.
+- **Effects:** [Backend proposal](project/src/Translation/Backend/README.md), [task record](project/specs/002-backend-skeleton/tasks.md). No database, provider, identity system or completion policy is selected.
+- **Technical verification:** .NET 8 restore/build passed with zero warnings/errors; independent refuter review found and prompted repair of atomic translation-request ownership. Removed an unused Running state. Local-link and whitespace checks passed; actual commands and limitations are recorded in the task record. No behavior implemented or tested.
+- **User response:** Explicitly confirmed these boundaries on October 23, 2026. This approves the capability-organized assembly and five interfaces; it does not establish implemented behavior or resolve the remaining product/provider/storage choices.
+
+## DEC-031: MVP work-item hierarchy
+
+- **Task / scope:** Convert Weeks 5–6 into an Excel implementation plan.
+- **Status:** Pending user review.
+- **Choice:** Use MVP → seven capability epics → fourteen stories → forty-eight provisional task slices, with stable IDs, dependencies, completion checks, source keys and editable status/evidence. Put unresolved product/design choices before dependent implementation. Save the workbook under `outputs/mvp-plan/` with a scope/use worksheet.
+- **Reason:** The recordings establish a bounded reviewer journey but leave execution planning and several requirements open. This structure makes the proposed plan usable without treating alternatives as approved decisions.
+- **Alternatives:** A flat checklist, feature-only list, or a stack-specific backlog. These lose hierarchy or prematurely resolve product/technology questions.
+- **Effects:** [Workbook](outputs/mvp-plan/mvp-implementation-plan.xlsx), whose Scope and use sheet links this decision. Existing project specs and curriculum remain unchanged. Five-minute slice targets require further splitting whenever selected technology exposes larger work; they are not a delivery estimate.
+- **Technical verification:** Artifact Tool export and both-sheet visual previews; reopened XLSX with openpyxl to confirm sheets, filter table and frozen header. Programmatic checks cover unique IDs and valid parent/dependency references. Independent source and adversarial review found no supported blockers. No application behavior was implemented or tested; Excel desktop rendering was not checked.
+- **User response:** Not reviewed.
+
 This log separates agent choices from user-confirmed requirements. It starts with the introduction of this workflow; it is not a retrospective audit of earlier sessions. Follow the [repository rules](AGENTS.md#autonomous-decisions-and-user-review).
 
 Each entry has a stable `DEC-###` ID, task or scope, status, choice, reason, alternatives, effects or links, technical verification, and user response. Add new entries without reusing IDs. Keep reviewed entries as history.
@@ -332,3 +365,14 @@ Statuses: **Pending user review**, **Confirmed**, or **Redirected**. Passing che
 - **Effects:** [Week 6](curriculum/weeks/06/README.md); `transcript.txt` in both weekly folders; Week 5's next-stage paragraph; course overview, delivery plan and shared handoff; narrow prerequisite corrections in Weeks 7–8. Later containerization requires an instructor-supplied or separately implemented runnable baseline; access tests remain prerequisites before public deployment. No application, cloud resource, or revised full downstream schedule is implemented. Subsequent workload/rehearsal remains unverified.
 - **Technical verification:** Independent source and adversarial review found no supported blockers. Static verification passed for 19 Markdown documents, 86 local links/anchors, balanced fences, whitespace, 20 preserved Week 5 slides and 24 Week 6 slides with speaker notes, unique decision IDs, and current branch users/hanyg/week5and6. Raw transcript files are byte-identical to the original outputs; SHA-256: Week 5 b1c51de21d27e399c02dd191d4241278b7542ff2612bd35f2950a3da83355c5e, Week 6 3614a999765689404c468a31d2f92fd9163af72d9eabf214079468c4d2544e04. Week 6 has five chronological chunks, 163 segments and 11,899 recognized words, with speech timestamps through 01:30:31.82 of the 01:30:37.70 recording. Raw recognition artifacts are retained, not certified word-for-word against audio. PostgreSQL text/ORDER BY and MongoDB transaction documentation support reference clarifications. Git no-index whitespace checks passed for modified existing teaching/transition files; full Git status remained unavailable in this environment. The prior Week 5 homework, slides, reference and session notes are byte-preserved. No application or infrastructure ran, no remote audio upload/API transcription charge was used, no commits or remote Git writes were made, and slide visual rendering remains unverified. The new source-backed Week 6 assignment supersedes DEC-029's provisional quality/implementation handoff.
 - **User response:** Week 6 transcription/replacement and full reference transcripts for both weeks explicitly requested; editorial packaging and adjacent transition choices remain pending review.
+
+## DEC-034: Source-grounded Week 7 materials
+
+- **Task / scope:** Transcribe Session 07 (October 23) and replace the Week 7 curriculum folder using the established Weeks 5-6 teaching structure.
+- **Status:** Pending user review.
+- **Choice:** Prepare the full unedited automated transcript, organized session notes, lesson overview, instructor agenda, slides, reference prompts and assessed homework from the actual recording. Keep curriculum edits within Week 7; do not implement the previously discussed Weeks 7-12 proposal. Use feature/week7-session-materials from the current backend checkout while preserving its existing uncommitted ledger entry and outputs.
+- **Reason:** The recording, rather than the old containerization outline or a hypothetical future schedule, is the source for this week's material. A separate branch avoids adding curriculum work to the backend branch name; the existing checkout contents and history remain intact.
+- **Alternatives:** Retain the obsolete outline, enact the full proposed downstream schedule, or modify the backend implementation. These are outside the requested transcription/material update.
+- **Effects:** [Week 7 folder](curriculum/weeks/07/README.md), the appended decision record, and the existing planning workbook/source/previews under outputs/mvp-plan. The branch retains all four existing backend-practice commits; no application source is duplicated or changed. Other weeks, course overview, delivery plan, temporary PR copies and generated caches remain untouched.
+- **Technical verification:** Local transcription completed in four chronological chunks (151 segments, 11,417 recognized words); last speech timestamp 01:17:49.06 of 01:17:49.31. Raw transcript is byte-identical to its original output, SHA-256 7ef0bc7c8652d79054fbaf3bdaeafdaee24b43d0cac5b6faa1e53b60d0a68dcc. Seven Markdown files pass all 36 local link/anchor checks, balanced fences and whitespace checks; 22 slides retain speaker notes. Fresh backend build passed with zero warnings/errors and all 17 deterministic service regressions passed. Independent source/content and refuter code reviews found no supported blockers; one optional test-strengthening suggestion remains non-blocking. Workbook ZIP integrity passed. Full slide rendering, real adapters, HTTP behavior and end-to-end deployment remain unverified. Exact staged scope and Git whitespace are checked before commit.
+- **User response:** Week 7 transcription and folder update requested. The user then explicitly clarified that the existing code is Week 7 practice and asked to check everything in together. The branch therefore includes the original backend history and the new curriculum/planning package; publication of unrelated scratch files is not implied.

@@ -377,6 +377,44 @@ Statuses: **Pending user review**, **Confirmed**, or **Redirected**. Passing che
 - **Technical verification:** Local transcription completed in four chronological chunks (151 segments, 11,417 recognized words); last speech timestamp 01:17:49.06 of 01:17:49.31. Raw transcript is byte-identical to its original output, SHA-256 7ef0bc7c8652d79054fbaf3bdaeafdaee24b43d0cac5b6faa1e53b60d0a68dcc. Seven Markdown files pass all 36 local link/anchor checks, balanced fences and whitespace checks; 22 slides retain speaker notes. Fresh backend build passed with zero warnings/errors and all 17 deterministic service regressions passed. Independent source/content and refuter code reviews found no supported blockers; one optional test-strengthening suggestion remains non-blocking. Workbook ZIP integrity passed. Full slide rendering, real adapters, HTTP behavior and end-to-end deployment remain unverified. Exact staged scope and Git whitespace are checked before commit.
 - **User response:** Week 7 transcription and folder update requested. The user then explicitly clarified that the existing code is Week 7 practice and asked to check everything in together. The branch therefore includes the original backend history and the new curriculum/planning package; publication of unrelated scratch files is not implied.
 
+## DEC-037: Container hosting preparation
+
+- **Task / scope:** Backend container and Kubernetes preparation, feature 004.
+- **Status:** Pending user review.
+- **Choice:** Add a separate .NET 8 health-only host referencing the existing backend, a multi-stage non-root Linux Dockerfile, and a single-replica ClusterIP Kubernetes template. Keep readiness at 503 until real business dependencies exist. Use the existing runtime target for compatibility; production rollout requires runtime-support review. Store artifacts only in the deployment worktree.
+- **Reason:** The current library cannot run as a server; selecting fake adapters or unauthenticated business APIs would invent unresolved product behavior.
+- **Alternatives:** Containerize a test executable, select demo adapters, or implement a full production API now. These do not match packaging the current backend or require unresolved choices.
+- **Effects:** Feature 004, Translation/Host, project/infrastructure and linked setup/architecture documentation. No cloud resources or live deployment.
+- **Technical verification:** Local publish and three HTTP smoke cases passed; 17/17 backend regressions passed. Renderer success/rejection checks and independent adversarial review completed. Docker/kubectl are unavailable; image and cluster validation remain pending. Exact evidence is in feature 004 tasks.
+- **User response (2026-10-30):** Confirmed scope: prepare container and Kubernetes files now; leave business endpoints blocked until adapters are chosen. This confirms the health-only preparation scope; runtime version, resource sizing and other implementation details remain pending user review.
+
+Verification update (2026-10-30): DEC-037's prepared image now builds and runs under the
+restricted container settings. HTTP smoke checks and non-root identity passed; see feature
+004 image evidence. Cluster validation remains pending. Approval status is unchanged.
+
+## DEC-038: OpenTelemetry host instrumentation
+
+- **Task / scope:** Feature 005 host observability.
+- **Status:** Pending user review.
+- **Choice:** Use OpenTelemetry SDK with ASP.NET Core/HttpClient tracing, built-in ILogger JSON console logs and custom bounded request metrics plus runtime metrics. Enable OTLP only with an explicit endpoint. Strip unapproved trace attributes and suppress framework request/error logs that can contain sensitive URLs; emit safe completion/error fields instead. Exclude health traffic from custom request telemetry.
+- **Reason:** Provides portable correlated signals while preventing document text, request secrets and unbounded raw URLs from entering observability.
+- **Alternatives:** Console logs alone, vendor-specific instrumentation or unfiltered framework defaults. These omit trace/metric portability or risk sensitive request data.
+- **Effects:** Host registration/middleware, Host.Tests integration checks, feature 005 and ADR 003. No business API/adapters or deployment changes.
+- **Technical verification:** Host build passed without warnings/errors; six grouped real-HTTP/OTLP integration checks passed, including all three exported signals, correlation/propagation, privacy, health filtering and exporter-failure isolation. Independent review accepted and reran the suites. Restricted Linux container smoke also passed; feature 005 tasks record exact evidence and limitations.
+- **User response:** OpenTelemetry implementation authorized; detailed defaults remain pending review.
+
+## DEC-039: Business HTTP contracts
+
+- **Task / scope:** Feature 006, business API transport and contract checks.
+- **Status:** Pending user review.
+- **Choice:** Use five Minimal API routes under /api/books, multipart import (title and one file), JSON review/draft commands, sanitized ProblemDetails outcomes, and an always-enforced prerequisite/identity gate. Missing any registered service returns 503; absent or ambiguous authenticated subject returns 401 when services exist. No production authentication adapter or fake services are registered.
+- **Reason:** Implement approved application boundaries without choosing input parser, persistence, provider or identity vendor. Gate before parsing avoids exposing unconfigured business behavior.
+- **Alternatives:** Enable demo adapters, accept caller IDs from headers/body, or require a selected identity vendor before contract testing. These either violate the requested production block or delay independently verifiable contracts.
+- **Effects:** Host/BusinessApi.cs, Host.ApiTests, feature 006 and ADR 004. Readiness remains 503 until separately implemented real dependencies.
+- **Technical verification:** API contract build and 13/13 grouped loopback HTTP checks passed, including sanitized dependency exceptions and cancellation. Independent review led to parsing-exception classification repair; final review status recorded in feature 006 tasks. No real identity/provider/storage integration is claimed.
+- **User response:** Explicitly requested business API contracts tested with doubles, while production access remains blocked. Transport/status details await review.
+
+
 ## DEC-040: Tests and deployment worktree setup
 
 - **ID provenance (2026-11-01):** Reassigned from this worktree's original DEC-035 to avoid collision with DEC-035 for source-grounded Week 8 materials on the concurrent branch. The setup choice and review status are preserved; task links now use DEC-040.

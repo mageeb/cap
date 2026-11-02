@@ -376,6 +376,7 @@ Statuses: **Pending user review**, **Confirmed**, or **Redirected**. Passing che
 - **Effects:** [Week 7 folder](curriculum/weeks/07/README.md), the appended decision record, and the existing planning workbook/source/previews under outputs/mvp-plan. The branch retains all four existing backend-practice commits; no application source is duplicated or changed. Other weeks, course overview, delivery plan, temporary PR copies and generated caches remain untouched.
 - **Technical verification:** Local transcription completed in four chronological chunks (151 segments, 11,417 recognized words); last speech timestamp 01:17:49.06 of 01:17:49.31. Raw transcript is byte-identical to its original output, SHA-256 7ef0bc7c8652d79054fbaf3bdaeafdaee24b43d0cac5b6faa1e53b60d0a68dcc. Seven Markdown files pass all 36 local link/anchor checks, balanced fences and whitespace checks; 22 slides retain speaker notes. Fresh backend build passed with zero warnings/errors and all 17 deterministic service regressions passed. Independent source/content and refuter code reviews found no supported blockers; one optional test-strengthening suggestion remains non-blocking. Workbook ZIP integrity passed. Full slide rendering, real adapters, HTTP behavior and end-to-end deployment remain unverified. Exact staged scope and Git whitespace are checked before commit.
 - **User response:** Week 7 transcription and folder update requested. The user then explicitly clarified that the existing code is Week 7 practice and asked to check everything in together. The branch therefore includes the original backend history and the new curriculum/planning package; publication of unrelated scratch files is not implied.
+
 ## DEC-037: Container hosting preparation
 
 - **Task / scope:** Backend container and Kubernetes preparation, feature 004.
@@ -412,3 +413,29 @@ restricted container settings. HTTP smoke checks and non-root identity passed; s
 - **Effects:** Host/BusinessApi.cs, Host.ApiTests, feature 006 and ADR 004. Readiness remains 503 until separately implemented real dependencies.
 - **Technical verification:** API contract build and 13/13 grouped loopback HTTP checks passed, including sanitized dependency exceptions and cancellation. Independent review led to parsing-exception classification repair; final review status recorded in feature 006 tasks. No real identity/provider/storage integration is claimed.
 - **User response:** Explicitly requested business API contracts tested with doubles, while production access remains blocked. Transport/status details await review.
+
+
+## DEC-040: Tests and deployment worktree setup
+
+- **ID provenance (2026-11-01):** Reassigned from this worktree's original DEC-035 to avoid collision with DEC-035 for source-grounded Week 8 materials on the concurrent branch. The setup choice and review status are preserved; task links now use DEC-040.
+- **Task / scope:** Create the two requested Git worktrees.
+- **Status:** Pending user review.
+- **Choice:** Use `outputs/worktrees/tests` on `feature/tests` and `outputs/worktrees/deployment` on `feature/deployment`, both from current main commit `3a768466ed05daea9c5b0e0548238fa72a1f8106`. Keep this setup record in the tests worktree.
+- **Reason:** Separate branches support independent work; repository-local paths stay within the writable workspace and preserve the original checkout.
+- **Alternatives:** Sibling directories outside the workspace or another base commit.
+- **Effects:** Two registered worktrees and branches; no test implementation or deployment performed. Existing untracked outputs remain in the original checkout.
+- **Technical verification:** `git worktree list` confirms both branches at the intended commit; both new worktrees were clean before this record. The original checkout remains on main. Ledger whitespace checked with `git diff --check`.
+- **User response:** Two worktrees requested; names, paths and base pending review.
+
+## DEC-041: Backend unit coverage and component workflows
+
+- **ID provenance (2026-11-01):** Reassigned from this worktree's original DEC-036 alongside DEC-035 to DEC-040, reserving distinct IDs for concurrent work. Original choice, evidence and pending review status are preserved; task/memory links now use DEC-041.
+- **Task / scope:** User-requested unit tests at 80% coverage followed by passing component tests.
+- **Status:** Pending user review.
+- **Choice:** Retain the dependency-free executable runner; separate unit/component selectors. Measure unit-only line and branch coverage across the entire production `Translation.Backend` assembly with pinned Coverlet console 6.0.4, enforcing at least 80% for both. Prioritize access validation, request ownership, ordering/alignment, conflicts, complete publication, sanitized failures and cancellation. Component workflows combine real application services with a stateful test-only store, reader and provider.
+- **Reason:** The backend has no concrete adapters or HTTP host. This tests implemented behavior without selecting infrastructure or counting component execution toward the unit target. Coverlet 6.0.4 runs on installed .NET 8 while leaving production/test projects package-free.
+- **Alternatives:** Replace the runner with a NuGet test framework; measure only selected service files; treat fake storage as integration evidence. Those add migration work or weaken the evidence.
+- **Effects:** Backend tests, reproducible coverage command/tool manifest, README, backend memory and feature 003 evidence. Generated tool caches/reports stay ignored. No production behavior, deployment or adapter selections change.
+- **Publication (2026-11-01):** User authorized pushing the tests branch and creating a PR. Prepare three coherent commits: executable test suites, coverage tooling, and documentation/evidence; keep the mutually referenced runner and test suites together with an explicit commit-size exception.
+- **Technical verification:** Baseline 17/17 passed at 94.52% line / 87.17% branch. Expanded reproducible script passed: build zero warnings/errors, 28/28 unit tests, 145/146 production lines (99.31%), 77/78 branches (98.71%), 6/6 component tests. Unit-only gate has no production source/type exclusions. Deliberate 100% threshold rejected line/branch coverage; invalid multi-argument selection returns exit 2. Independent unit/tooling review and separate component review found no supported blockers. Real adapters/HTTP/concurrency/durability remain unverified; see feature task evidence.
+- **User response:** Background test work, 80% unit target, business-risk prioritization and component tests explicitly requested; tooling and measurement choices not reviewed.

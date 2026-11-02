@@ -6,3 +6,8 @@ __pycache__/
 .coverage
 **/bin/
 **/obj/
+/outputs/appdata/
+/outputs/coverage/
+/outputs/dotnet-home/
+/outputs/packages/
+/outputs/tools/

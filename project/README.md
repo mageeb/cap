@@ -53,6 +53,10 @@ project/
 
 Build from the repository root with `dotnet build project/src/Translation/Backend/Translation.Backend.csproj` using the .NET 8 SDK. Run service regressions with `dotnet run --project project/src/Translation/Backend/Tests/Translation.Backend.Tests.csproj`. The API host and telemetry are verified separately; see [container setup and checks](infrastructure/README.md). Review Markdown links and use `git diff --check` for tracked changes.
 
+Run the unit coverage gate (80% line and branch) followed by component tests with
+`powershell -NoProfile -ExecutionPolicy Bypass -File project/src/Translation/Backend/Tests/Test.ps1`.
+See [backend verification](src/Translation/Backend/README.md#verification) for scope and reports.
+
 ## Classroom checkpoints
 
 Lessons link to this application and its feature documents. Use Git tags such as `demo/week-02-start` and `demo/week-02-end` when saving actual classroom checkpoints; no checkpoint tags have been created by this scaffold.

@@ -65,7 +65,28 @@ dotnet run --project project/src/Translation/Backend/Tests/Translation.Backend.T
 
 The suite exits nonzero on failure. It verifies orchestration with deterministic fakes,
 not concrete database durability or identity enforcement. Those require adapter tests.
-There are no external NuGet packages in either project.
+There are no external NuGet packages in either project. Coverage uses the pinned
+[Coverlet console tool](https://www.nuget.org/packages/coverlet.console/6.0.4), restored
+from NuGet through the repository's tool manifest.
+
+Run unit tests with a minimum **80% line and branch coverage** across the entire
+production backend assembly, followed by component tests:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File project/src/Translation/Backend/Tests/Test.ps1
+```
+
+This command restores tooling, builds, fails on unit/coverage errors, then runs component
+tests separately. Reports are written to `outputs/coverage/unit.cobertura.xml` and
+`outputs/coverage/unit.json`; test-double code is outside the measured production assembly.
+For independent execution, append `-- unit` or `-- component` to the `dotnet run` command.
+Omitting the selector runs both suites. Unit coverage never includes component execution.
+
+Priority is access validation before side effects, atomic request ownership, paragraph
+alignment/order, preservation of corrections, conflicts, sanitized dependency failures,
+and cancellation. Component tests connect the real services to a stateful in-memory
+boundary double; passing them does not establish production storage authorization,
+concurrency, durability, HTTP behavior or real provider compatibility.
 
 See the [specification](../../../specs/002-backend-skeleton/spec.md),
 [task evidence](../../../specs/002-backend-skeleton/tasks.md), and

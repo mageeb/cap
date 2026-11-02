@@ -1,0 +1,11 @@
+**/bin
+**/obj
+**/Tests
+**/TestResults
+**/.env*
+**/*.user
+**/MEMORY.md
+**/AGENTS.md
+Frontend
+Host.Tests
+Host.ApiTests

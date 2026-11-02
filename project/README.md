@@ -2,7 +2,7 @@
 
 One application developed progressively during CAP teaching. Its specifications, decisions, tasks, and implementation live together here.
 
-**Current state:** The [approved C# backend boundaries](src/Translation/Backend/README.md) now have application service implementations and an executable regression suite. Real adapters and an HTTP host remain unimplemented. Implementation lives under `src/Translation/Backend/` and `src/Translation/Frontend/`.
+**Current state:** The [approved C# backend boundaries](src/Translation/Backend/README.md) now have application service implementations and an executable regression suite. Real adapters and production identity remain unimplemented. Business API contracts and host telemetry are implemented; production business access stays blocked. See [deployment instructions](infrastructure/README.md) and [telemetry setup](infrastructure/observability.md). Implementation lives under `src/Translation/Backend/` and `src/Translation/Frontend/`.
 
 ## Start here
 
@@ -38,7 +38,7 @@ project/
 └── infrastructure/
 ```
 
-`src/Translation/` contains the backend proposal and reserved frontend folder. `tests/`, `infrastructure/`, and `docs/prompt-logs/` remain placeholders. Runtime configuration belongs with the implementation under `src/Translation/`.
+`src/Translation/` contains the backend proposal and reserved frontend folder. `tests/` and `docs/prompt-logs/` remain placeholders; `infrastructure/` contains container validation and Kubernetes preparation. Runtime configuration belongs with the implementation under `src/Translation/`.
 
 ## Document conventions
 
@@ -51,7 +51,11 @@ project/
 
 ## Setup, run, and checks
 
-Build from the repository root with `dotnet build project/src/Translation/Backend/Translation.Backend.csproj` using the .NET 8 SDK. Run service regressions with `dotnet run --project project/src/Translation/Backend/Tests/Translation.Backend.Tests.csproj`. There is no HTTP host yet. Review Markdown links and use `git diff --check` for tracked changes.
+Build from the repository root with `dotnet build project/src/Translation/Backend/Translation.Backend.csproj` using the .NET 8 SDK. Run service regressions with `dotnet run --project project/src/Translation/Backend/Tests/Translation.Backend.Tests.csproj`. The API host and telemetry are verified separately; see [container setup and checks](infrastructure/README.md). Review Markdown links and use `git diff --check` for tracked changes.
+
+Run the unit coverage gate (80% line and branch) followed by component tests with
+`powershell -NoProfile -ExecutionPolicy Bypass -File project/src/Translation/Backend/Tests/Test.ps1`.
+See [backend verification](src/Translation/Backend/README.md#verification) for scope and reports.
 
 ## Classroom checkpoints
 

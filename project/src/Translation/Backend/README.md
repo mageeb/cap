@@ -2,7 +2,7 @@
 
 Status: **Boundaries approved by the user on October 23, 2026**. Book, review and draft
 application services are implemented against injected ports. Real input-reader, storage
-and translation-provider adapters await user choices. No HTTP host exists yet.
+and translation-provider adapters await user choices. A separate host exists in `../Host` with business API contracts and OpenTelemetry; production business access remains blocked until adapters and identity are configured. See the [container runbook](../../../infrastructure/README.md).
 
 One service and one assembly, organized by capability:
 
@@ -18,7 +18,7 @@ Translation/
   Frontend/         reserved for the future web frontend
 ```
 
-Future HTTP handlers call the three application services. Those services enforce access
+The separate host maps HTTP contracts to the three application services; tests supply doubles while production registrations remain blocked. Those services enforce access
 and coordinate the storage/provider ports. Infrastructure implements the ports. Keep
 HTTP types, database models and provider SDK types outside these public contracts.
 `ISourceDocumentReader` isolates format/size/segmentation policy; its real adapter awaits
@@ -50,8 +50,7 @@ Accepted formats/size, identity provider, storage engine and translation vendor 
 
 ## Verification
 
-The proposal targets locally available .NET 8 to permit compilation. Select a supported
-deployment target and SDK policy before adding a runnable host.
+The proposal targets locally available .NET 8 to permit compilation. The preparation host preserves this target; review runtime support and SDK policy before production rollout.
 
 ```powershell
 dotnet build project/src/Translation/Backend/Translation.Backend.csproj
@@ -65,7 +64,28 @@ dotnet run --project project/src/Translation/Backend/Tests/Translation.Backend.T
 
 The suite exits nonzero on failure. It verifies orchestration with deterministic fakes,
 not concrete database durability or identity enforcement. Those require adapter tests.
-There are no external NuGet packages in either project.
+There are no external NuGet packages in either project. Coverage uses the pinned
+[Coverlet console tool](https://www.nuget.org/packages/coverlet.console/6.0.4), restored
+from NuGet through the repository's tool manifest.
+
+Run unit tests with a minimum **80% line and branch coverage** across the entire
+production backend assembly, followed by component tests:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File project/src/Translation/Backend/Tests/Test.ps1
+```
+
+This command restores tooling, builds, fails on unit/coverage errors, then runs component
+tests separately. Reports are written to `outputs/coverage/unit.cobertura.xml` and
+`outputs/coverage/unit.json`; test-double code is outside the measured production assembly.
+For independent execution, append `-- unit` or `-- component` to the `dotnet run` command.
+Omitting the selector runs both suites. Unit coverage never includes component execution.
+
+Priority is access validation before side effects, atomic request ownership, paragraph
+alignment/order, preservation of corrections, conflicts, sanitized dependency failures,
+and cancellation. Component tests connect the real services to a stateful in-memory
+boundary double; passing them does not establish production storage authorization,
+concurrency, durability, HTTP behavior or real provider compatibility.
 
 See the [specification](../../../specs/002-backend-skeleton/spec.md),
 [task evidence](../../../specs/002-backend-skeleton/tasks.md), and

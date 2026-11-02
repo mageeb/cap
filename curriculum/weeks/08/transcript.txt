@@ -1,0 +1,423 @@
+﻿Session 08 - Oct 31
+
+Full automated transcript, unedited. Timestamps refer to the original recording. Recognition errors and incidental chatter are retained.
+
+
+
+[00:00:00] Every time, let's start with a quick review. We have been adopting what we called agentic SDLC rather than vibe coding. I'm not talking about how vibe coding miserably fails because you spend things off and you spend them to do the right thing. They're throwing stuff on the wall and expect it sticks. But in agentic SDLC, we do the full process. The fun part about it is that we can do everything in an agentic way, but there's always a human agency.
+
+[00:00:28] or human reasons and understanding that you need to add to the agent or otherwise you might not get right or things might get out of control. Before I move on, I'll be online seeing my screen and hearing me okay? Yes, Hany, thank you. Okay, good. So we talked about the state. What was the highlight of writing the state? Quickly, I want keywords. What was the highlight of coming up with the state? Defining that? Yeah, the requirements.
+
+[00:00:59] and MVPs. And we said to keep it small and sweet, so that we can actually get started. And then also highlight of the design. Meena Session, when Meena was standing here. You talk about different components. You talk about different components. And also you compare trade-offs. You have to compare trade-offs. Why would we move with a certain design, rather than the other, or simply technology, rather than the other? This is the most important thing in design, even in design interviews, we're talking about trade-offs.
+
+[00:01:30] means you understand what they're talking about. And then what was the main part of how the land work? That was dust stations. These two were not data sets. Data sets, yes data sets in terms of planning something to verify on in the future so that you actually have a ground you can stand on and you can prove your correctness of the generic food. But in terms of planning we talked about how we can take the scripts or any material from these two exercises.
+
+[00:02:00] feed it to an agent and say Kama was a hierarchal set of four items, right? And we came up with ebics and deliverables, ebics and deliverables. We did it in a CSV, but you can put it in EBO or JIRA or whatever you do, but you want to plan your work before you rush into generic includes. Even in real life, people who are successful are the people who sit down and pause and plan, and then start by building things slowly. They usually finish faster than people who rush and hit a wall and end up with a
+
+[00:02:30] messed up system, you know what I mean? So planning is still valid, but we did it using our agent. And then after you plan, what did you do? We should review that plan for sure, right? But for the sake of time, we ended up generating part of the code, okay? And remember, I said, we are doing everything with one caveat. We meet one hour every week. There's no way we can do the right thing in this one hour, but we'll talk about what is kept on purpose.
+
+[00:03:01] Okay, for the sake of time. So it's good to actually understand and relating it, debating it and all of that. This is something that people should do together, even if it's a one person team or one person project, you should review the plan and make sure that you have the second slide, the business is right, what your objectives are. And then we generated part of the code. We didn't generate the entire thing, okay? And this is something we can do a lot forever, but you wanna use your common sense.
+
+[00:03:30] and test on what you generate and then test and deploy. But we generated a basic skeleton just for the sake of time. Now today, since we generated some sort of backend, by the way, it was funny. I didn't even try to compile it when I was spending here, but when I went to home, I wanted to merge everything into GitHub. I told it to chat, GBT, CLI, or Codex.
+
+[00:03:59] Can you just merge this? It combined it for me and it says, by the way, it combines perfectly. That's where it's shot. It was quite impressive. Because we humans would write, like when we write a sizeable project, it might take you forever to just need it to compile back in the dark ages, like, two and a half years ago. Okay? The world has changed. So it compiles. And I honestly didn't have the time to validate it or belay with it. So sorry for that. But we'll do this together today. Now, today we need to...
+
+[00:04:27] generate the right tests. And also, we want to develop. And I don't have my environment even set up so that I can show you how I can use an agent to facilitate all the OBS work in an agent equal. All I did for this is that George and Musa bought a non-profit Azure subscription for us.
+
+[00:04:55] as a non-profit or eligible to get some credit from Microsoft. So we have a tenant and we have a subscription. We will talk about these terms in details more in the future when we talk about infrastructure for the two sessions or so. But we have a tenant, we have an organization. Imagine Walmart.com has an organization. Coca-Cola.com has an organization. We have an organization for SDNL, Britain is our company, and we have an address subscription. We should put it up.
+
+[00:05:22] If you want to be with the cool kids, we'll have an address talk. So we need to do these two things. And I honestly have no idea where I am, but we'll just try to remember together. Remember, we said Michael organized a really beautiful way. He has a curriculum under one big folder. If you actually do home and study, if you open the repo, you'll find the curriculum. And we've been updating it every week.
+
+[00:05:50] And then we'll have for the core projects. And I think projects doesn't have the source code. Project has source. So sources under project, under source, there is translation, under translation, there is back in the front end. And remember, one key symbol prompt with last time was telling our agent, please be very organized with the repo. Because sometimes it can take things right and left. It's OK. We can debate it after this session, Michael.
+
+[00:06:21] It's important. That is such an open-ended, resubjective, what is organized in it. Sure. It's like making on the space. It's the same. Sure. Sure. I understand it's a victim. I see. Makes sense. And my codecs, blogging, they didn't work. There are lots of skills now that have a new bunch of things.
+
+[00:06:54] Like one of the skills I came by yesterday, if you ask the agent, could you buy for you? It only picks few colors. So there is a skill that gives it more options. So you could actually relate different devices. So as Mike mentioned, though for a skill that organizes your, anything you want to add a problem to that seems to be subjective.
+
+[00:07:23] 100% I'm not saying no I'm just saying I don't already beat it here there are so many skills there's even a finished PR skill now the tech skill of the build and all of them and everything so today actually I hope that we'll demonstrate or exercise the concept of software factories have you heard about this celebration yes it came up over the last two or three months
+
+[00:07:51] where companies want to build their own software factories. Sometimes they're very serious about it, like they're building products. The IOS software factory is to automate this entire thing in an autonomous way. Ideally, we wouldn't even have local code, but this is too advanced. If you go to some portal and there's a cloud service behind it, a bunch of services and skills and agents that can automate this entire thing into it and evaluate.
+
+[00:08:20] and I think it will eventually happen. But at least our humble and single software factory is trying to keep us in the loop still and try to do everything via agent program. Okay, cool. So for the sake of this exercise, I want actually open two copies. Although this is not a great.
+
+[00:08:47] Practice is the right thing to create two work trees, like Michael said in one of the sessions, so that they can share commits and whatnot. But I just want to... Okay, sure. Let's do it. Let's do it. If I just did it, if I just did it because it's a command at the end of the day, right? I want to create a work tree for tests and a work tree for deployment.
+
+[00:09:19] without merging the two of them. Because they want this to go in a PR and that to go in a different PR. So work tree is a virtual way to have two copies of the repo, but they share the commits and everything. So you can share a bunch of things. The other option is to clone the repo again. And actually in our case, it would apply because we don't. No, not two branches. Two anyway.
+
+[00:09:48] Michael told me about it and I read about it this week. One for tests and another for deployment.
+
+[00:10:17] It's a cool way to share two branch contents, okay, without cloning the entire thing into a different folder. But when the agent can spend multiple agents, so it's doing tasks in parallel to make changes. If you have multiple other agents making changes, they can override it, right? So it creates like an isolation path for each one of them to make its own changes and not join. And then they commit.
+
+[00:10:47] Each one of them with its own branch, its own life cycle. But on this, it's the same code. You just don't even see it. It also saves... And not only copies of the repo, because this repo is small and it has a lot of copies, it's fine. In real life, the repo is not big and you have to keep in sync and whatnot. So working trees just gives you a different name.
+
+[00:11:14] that you end up with a 100 gigabyte repo on the disk and all what you're changing is a bunch of text files so it's not worth it. From what? You don't switch back and forth.
+
+[00:11:44] and get the only one active branch. But you can get advantage out of this. Out of Mingus, but only one of them is active. And then it's three trunk. Let's imagine I cannot make it there for the sake of time. But let me ask about tests. You have a backend that has a bunch of ABI's and a bunch of logic. And you want to generate tests.
+
+[00:12:12] What would you do? What kind of test would you generate? Unit test? Unit test? Unit test or integration test? Sure. What's the difference? Unit test just for different length. Unit test? Unit test for different length. Okay. So for the sake of time, Bardo, I'm gonna work on the unit test part. Unit test and into end test or integration test.
+
+[00:12:40] We don't have to talk about engineering excellence now because there are so many nuances, but let's say create unit tests at coverage of 80%. Coverage is really important. And then create, we can, we can. Sometimes it's impossible. Oh, yeah, it's a good thing. That's a good idea.
+
+[00:13:14] I think we could have done this.
+
+[00:13:43] I don't agree with that. But you're going to want to make sure it's not 100, because tests are expensive. It takes time to run. It depends on what kind of test, like if it's integration tests, it will be more expensive. In general, after every change, you want to run all the tests. So this could slow things down. So you need to find the fine balance between the coverage and the cluster.
+
+[00:14:12] Yeah, like people would create a test to say a function gets what is supposed to get or a setter sits what's supposed to sit. So I said, you know, cover what matters first in the 80%. And I let it go. And I also, Michael might have a different opinion here, but I asked it to spin off a background agent so that it doesn't block me because they want this to start.
+
+[00:14:41] And in parallel, I want to start working with the deployment. I did this today at work and worked. So I don't want it to block this session because I want to do the deployment as it is writing and generating the test. So I'm going to do this with Michael's permission sent to Michael. Michael is our guru, you know, our agent expert, your father. So now.
+
+[00:15:14] And it started the background agent. If you remember in one of the sessions Michael talked about how you can have multiple agents working for you in parallel. This is a small example of it. I think it requires more set up, more advanced set up that I can do. But I will just, did this spin and then we want to deploy. Okay. And this is where I want to stress again and again that our career is shifting or the field is shifting from writing codes.
+
+[00:15:44] to reading code or generating code and making sense of it, and infrastructure. That's why we will have a complete session on infrastructure. I actually have a bunch of bookings for you here. One day, God willing, we'll explain everything in this picture. Okay? Every single sin, at least on a very superficial way so that you understand what is a myriad of infrastructures that exist and how to stitch them together. But this is not our topic today.
+
+[00:16:13] This is very important. But it's gonna take like two or three sessions. Maybe the rest of the program will talk about infrastructure. This is generated by AI. For me, one day I was studying for design interviews and it was beautiful how it sequenced it and covered everything in one picture, one image. I can give it for you, overtakes to prepare for the next session. But no general infrastructure. But I'm seeing with AI, because code is not hard anymore.
+
+[00:16:44] People who understand infrastructure, people who can find work. You call it the fully stack engineer or the first step person, not in terms of front end and back end, but in terms of I can do co-generation and system design and deploy and dev ops and everything. It's everybody's existence to be fully stacked in this new sense. Like in big teams, in big corbers, for example, there's a whole deployment team, like an organization of 100 people in office, for example, or windows or did an organization of 100 to 200 people.
+
+[00:17:14] Just doing the build and deployment and releases and batches and what fits is because it's really massive, but this is shrinking. How large a team will continue teams will continue to have deployment teams and whatnot. But if we're building V zero, usually deployment is a small overhead. OK, so for the sake of understanding, is this font size OK? Yes.
+
+[00:17:47] and now we're saying all this is now everyone should be. Yes. So for the sake of just deployment, we have an organization. We'll talk about this in detail. It will be a lot of fun. And then we'll have an Azure subscription. What is an Azure subscription? It's a billion account that our organization has something called SPD sub one that can have resources. It's our new subscription. Let's see what resources do we have.
+
+[00:18:19] But we want to keep it organized. So at least we can make the agent do all of this, but just to give you a very simple contrast on the different. It's usually very hard to come here and deal with this portal and start creating things and so on. But the easiest thing is to create a resource group. Resource group is a bank of things where we can what services and storage accounts and whatnot. So I'm going to create
+
+[00:18:49] a thing called div or let's call it translation div with our version called the translation. Usually people share the subscription with you, so you want to be meaningful with your names. Imagine we have div, usually we have int and canary and production. Those are all rings on how we deploy. Nobody goes from code to production, right? So we would have translation int or test. Int is internal.
+
+[00:19:21] like an internal deployment, but it's usually end-to-end. And then you end up with something called Canary or PPE. It's called PPE, re-production environment. We'll call it translation PPE, re-production, birth. You can test the performance in any of them. But yeah, some people might create a dedicated thing for performance. See, it's so easy. You create resource groups that are a breeze, but the moment you deploy a serial thing,
+
+[00:19:50] Cosmos DB or something, you usually have the minimal default configuration, but when it gets to the serious stuff, you end up swimming in
+
+[00:20:00] and myriad of configurations and tuning and whatnot. But let's make our agent do this for us. Okay, translation broad. Okay, usually it's usually also globally distributed. If you're working on a serious service, you will have with US, East US Europe. I don't know. I don't know. Sweden has sovereign cloud. So it has its own dedicated subscription. It's more than once it's in this.
+
+[00:20:31] Yeah, any other subscription does it? Imagine we will have dev and int and PPE in the US. When it comes to production, we'll have broad dash with US, broad dash is US, broad dash is Australia. What is the distribution? It depends on your customer expectation, whatnot. Maybe everybody in the Middle East is served from a subscription, no subscription, from a deployment in Europe, Middle Eastern Europe, the correct mean, right?
+
+[00:20:59] But maybe the US would be just one deployment because your traffic in the US is not too bad. Maybe it's seven deployments with US, Central US and each one has that three data centers and so on. There's tons of things on the granularity of the deployment. We'll talk about them more in the infrastructure. And I'm sure Mina, Michael, and Sameh are more knowledgeable than me in this field.
+
+[00:21:28] You have your subscription. I am an admin on this subscription, so I have access to anything. Usually you are a contributor. Usually you have one resource group in a big company. The subscription would be very, very, you'd have to research for stuff. So it's hard. And we need to get our service live here. For the sake of what? For the sake of actually validating a real deployment. It will be up and there, up and kicking. And then how would we validate?
+
+[00:21:56] The coolest thing that I saw people doing is the following the instrument to their service What does an instrumentation mean? I tell you metering at low end. Look What is telemetry telemetry metric is major until he is far major something from far So to me basically I know most of you know, but thank you Mina for reminding me to explain is major something from far so that
+
+[00:22:23] any deployment, any application front-end or application or service would send logs that go through some cloud infrastructure that I can read. So for example, service started successfully, service crash, everything is written as logs, that's a log line, but the concept is telemetry and it gets much shaled for you, you don't care about it, you set up some application insights or something. There's the cloud service for it.
+
+[00:22:52] like infra, okay, you don't build it, you just add the line. It goes and gets streamed into your telemetry, whatever thing at the very end, and then you can see what your service is doing in the wild. And this is where things get really nuanced, what if the service crashes, it's not on your computer to debug. This is the difference between the cloud and client development. The first thing they told us once we moved from client to the cloud, there's no way you can debug the thing. You have to live with telemetry.
+
+[00:23:23] because it's on a server somewhere, you can actually debug it, but it's very painful. But in production probably, there is no way you can debug it because there's compliance, you can't access it, it's a very low down deployment and so on. So debugging becomes really hard compared to a local deployment. Also, usually when you deploy something, we can debug the service that we built here, but when it is deployed in the final form on which it will be up and running, there is a lot more different factors.
+
+[00:23:51] So in our case, we will package our service as a Kubernetes container. You know what this is? What this mean? Cloud storage, right? Anything on the cloud usually runs on a VM, but we really don't have. Sorry? Is it storage? Container. Yes. It's compute. Thank you, Mina. This is called attention to details, guys. Learn this.
+
+[00:24:24] But everything runs on the cloud usually runs in something. The most primitive form is a VM. But a VM has many other problems. It can be a Linux VM or a Windows VM. Some dependencies are missing. A real is missing. And X is crashing and so on. So they created Kubernetes. What is Kubernetes? Or they write it K8S. Kubernetes is an image that would package all your dependencies.
+
+[00:24:53] So we have an EXE for the service. We might have a few data files. You might have images. You might have configurations and so on. Dependencies, libraries, EUs, SDKs, it doesn't matter. So what Kubernetes did is that it made dependency management one of the easiest thing you can deal with because it's in one image. And then a VM can have more than one image, okay? In a container.
+
+[00:25:22] So you have C1 and C2 and C3, so you want to be aware of where you are deploying all of this because some of the neighbors might be noisy. It's actually a problem. It's called noisy neighbor in the cloud. C3 is using a lot of compute or memory or very chatty with the disk, while C1 and C2 are our humble services that just went out for V0. Long story short,
+
+[00:25:49] There's tons and tons and tons of things to study on the cloud. I don't think we'll cover all of them in the class, even in the infrastructure sessions, but at least you want to be aware of this because this is also what gives the human agency, what gives us value. Okay, the agent probably will not be able to think about this. So what I want to do now is I'm going to take this risk with you. I haven't tried it before I come, but I'm going to say, backage our back end as a cober neat is
+
+[00:26:20] container and prepare it for deployment. Question, like do we have access to a Kubernetes cluster in that cloud? Yes, what we're doing is the next step. That's why I'm saying I'm taking a risk. So here is the cool thing. I don't know what on this other guy. So I'm going to have another chat here. Okay.
+
+[00:26:51] And here's the thing that I actually found very useful. I was just trying clicking right and left. And I was so tired from Azure because when you deploy hard things, it gets really awkward to deal with the portal. There are deployment failures. You have to look at the logs. The logs are so hard to read or too long and so on. So what I did is the following. I went to my chat. I hope this one is, this one will take a while. So let's take this one. I said I have an Azure sub.
+
+[00:27:21] I want to authenticate you with it to do some deployments for me. How would you authenticate an agent? There's something very unsecure, but very easy called device authentication or device code. Let's use device code. What does device code do? It will give you a link and a code. If you open this link in your subscription and bought the code, then you get me, I is a client.
+
+[00:27:52] authorized authenticated. It's not very secure because the thing that you have is just a code. If the code leaks, like, the right way to connect the service principle. So you have a service principle or even a certificate is not very secure. Anything that have a static artifact that can move around is found that the certificate or API key or device code are not secure.
+
+[00:28:23] Okay, so you usually have a managed identity. What is service principal? Oh, yes, sorry. What's the service principal? When we say service principal or user principal, what basically means identity like your user on Hotmail is a service principal Harvey at Hotmail.com is a service principal. Sorry, user principal. User principal. And then the same concept applies to service principal. Why do we call them from the technical side? Because this whole system that was explained in CAB 1,
+
+[00:28:53] called identity management by Salam. Do you remember? You know, by Salam, remember? Identity management is where an identity provider like Google, Microsoft, Amazon, Okta, some of the big identity providers can manage the identity server side without supposing too many things to the client. The way I talk to this identity manager is user principle and service principle.
+
+[00:29:18] Okay, how do we do it then? How do we make them secure? We'll go first on the identity provider. So we go and actually by great chance we'll have Microsoft Intra or used to be active directory. If we have this as identity manager, we come here and configure all sorts of users and service principles. Service principle is under after registration here. Gives in the access we want, it's all server bound and then we have the ID. Okay, and usually some other secrets.
+
+[00:29:49] that we can connect with from the client or the service that wants to communicate with this system and get in. That's called managed identity and it is the most secure way of connecting things. It is very convenient to create an API key which is like a hash like thing. It's not a given but hash, have you done an open API key? This is the least secure because you can leak, it can be a text file, people can make mistakes and check them in into the repo and so on.
+
+[00:30:18] and that's how disasters happen. But managed identity is really hard to crack. Still you will attack it in a way or the other, but it is the most secure way. So we said we want to connect with... Yes, sir. So I want to sign in now. Device code is...
+
+[00:30:48] opening this link here is like Microsoft device authentication. I don't have anything to reburnt unfortunately. I'm going to just use a very small shortcut for the sake of time. But yes, there are MCBs and all sorts of Azure infras that will allow you to do this. But it's not a possible problem. But this is a good point you can ask it. We'll have to deploy it and what not.
+
+[00:31:21] You have to read the client I mean you have to convince the client. You really the device authentication may not be on by default. Sorry, they called code authentication.
+
+[00:32:04] No, okay. Let's ask about the MCB server. Can you connect to Azure through an MCB server in a state? This is actually where things get painful. There's a lot of infra, prep, and back and forth on try and error. I didn't prepare before I come, that's why. Thank you. Thank you. Thank you. You're amazing.
+
+[00:32:39] I wanted it to write commands like the normal Azure bar share commands to deploy things. As if I am deploying it because I will have more control. MCB server will go through an extra layer for sure. It will be less deterministic but I think it should be stable enough. But even when it tries the code, the bar share code locally, the command is this long. So it's also undeterministic. Is it CLI? Yeah. We can do this too.
+
+[00:33:16] I can say it's around in CLI here and I will take it for you with my identity. Yes, interactive login. Yes, yes. So let's see what this guy is ready. OK, see, we also don't have HTTP APIs yet. So we'll create the Kubernetes file and stuff. What are the Kubernetes files or image? It's just a bunch of configuration that will have what is this thing? It will have what are the dependencies?
+
+[00:33:54] what is the compute it needs, what is the memory it needs and all of this. So it said I don't have APIs yet. So I said go ahead and just create the absolute basics. Okay. And there's another problem. Okay. Those are, I never, I told you I'm going to take a risk. Usually we work on cloud PCs that are loaded with everything developers needs.
+
+[00:34:26] So I never think about these things, but this is my personal computer right here. Okay, let's see. What did I say? Yes, no, I'm. Yeah, we can ask you where it's Kubernetes cluster or we have an existing one. I was about to deploy everything from scratch.
+
+[00:35:11] So we might have some failures to leave tons of things to install again. I am memorizing so I apologize if things are not prepared What is Docker? What is Docker? Okay Okay, do you want to tell us Kiro?
+
+[00:35:41] That's where you store all the different configurations for your applications and then Docker is like it stores different containers for it to deploy to the cloud. Can you take us to? Yeah. So basically when we get into microservices, we wanted to deploy a lot of microservices on the same machine. That's the problem. Each microservice has its own dependencies, its own tools.
+
+[00:36:10] So like I deployed a lot of them on the same machine, it will happen. It's going to be a lot of issues, but pardon me. So we needed some kind of an isolation. As I mentioned, one isolation technique is virtual machines. The virtual machines are really heavy. It needs to have its own operating system. It's all hardware resources. Pretty heavy, basically, if you have one physical machine, maybe if you can fit.
+
+[00:36:39] through or through virtual machines. We probably can fit tens or hundreds of local images. So what is virtual machine? So virtual machine is a layer on top of the hardware. You need a virtualization layer that basically abstracts the actual hardware and makes every operating system fit that they have their own copy of whatever hardware you have, that the main resources compute, manually
+
+[00:37:10] storage, etc. But I don't want to get that level deep. Basically, the whole idea is that they took an old concept in Venice for new spaces and they found a way to isolate a piece of software on the trading system with all of its dependencies and what is called a Docker image, a Docker instance. So you can have multiple instances.
+
+[00:37:42] on the same machine, the same operating system with the minimum overhead possible. So you can fit as many of them as a machine can fit. It's not perfect explanation that the current is docker the image, what is docker the operating system? The image is basically, it's the blueprint. Yes. Your software. Is this the docker or is this the Kubernetes? No, that's docker. The blueprint of your software with its dependencies configuration,
+
+[00:38:13] All by great and appropriate. That's the doctor right? So it's similar to a class, like you define the class, the class have your variables, your methods, etc. And then you make an instance of this class. You take that doctor image and you make a doctor instance. Kubernetes box is just an encapsulation. So once you have multiple doctor instances,
+
+[00:38:44] You have a lot of plumbing, how they connect together, how you manage the security for all of them. It's like orchestration. Exactly. So now we're moving into orchestration. So, corporate meetings is that orchestration engine on top of... But none of them are computers. It's a way to package your software. Yeah, it's always a computer. A computer is whatever Azure provides, or whatever even this provides.
+
+[00:39:13] So you think that like right? So what if you explain the data model? Like there's a data model where your service is represented in the house, right? Where does it run? On the cloud provider, it can run on AWS or Azure. That's why in Azure for them, it's called the API. Azure for Kubernetes. So if Azure supports Kubernetes, you run there. If AWS supports Kubernetes, it's open source Linux too.
+
+[00:39:43] Why do we say it doesn't do storage? Like it's can be a database or not? It doesn't do it. It's compute the storage to hook it to some this. It's something that is
+
+[00:40:00] a runner or the cloud like Azure for example can kill and stand up anytime multiple times scale crash. That's why it's not storage. Storage is usually a different story. You expect your storage never to crash and never lose that but you expect your VMs and images to lose that. The hierarchy here is that you have Docker which is the system, the Linux system. Okay, that any cloud provider will have to support for it run and then there are both and containers.
+
+[00:40:29] The port can have multiple containers and the 1VM can have multiple ports, correct me if I'm wrong. The cool thing about this is that it's so tiny and it can scale in multiple ways. For example, Kubernetes has something called KIDA, which is Kubernetes event driven scalability service or something like this. It says if the event coming towards me at 75 percent of my expectation,
+
+[00:40:57] Then multiply this byte by 10. You have double the capacity of your service. It has a scalability based on the compute, on the memory and so on. And all you need to do is configure these on compute bytes. And then your service starts to scale in and out. You know what I mean? The Kubernetes master is the one that makes the most of it. Open this master, where does this mean? Next to the load. Oh, my bad. Adjusting, sorry. It hit it.
+
+[00:41:29] Yes, you're a question. Yeah, what does it do with like me? I'll text Like it to mention right now. It's happening once you know, so a text is when people make so many legitimate requests to the service until it can't serve anymore. So if you are not scaling out correctly of your of your skill out has a limit with everything has a limit. Oh, yeah, there's DDoS detection. There's a layer called WAF web application.
+
+[00:42:03] This is a different layer before all of this. And let's keep this to that session. But you will see when you install, your service might be one small square here, but you have things and things and things in this API gateway and WAF and authentication and so on. So let's keep this to the infrastructure. We will just focus on getting our container to run. So in Azar, you were saying something?
+
+[00:42:34] Okay, you might have noticed also after I installed Kubernetes, sorry Docker, it said, well, we need WSL. What's WSL? Windows subsystem for Linux? Because Docker is a Linux thing and we are on Windows. So for you to be able to do it, you have to install WSL. I said, give me the command, give me the command and you installed it. Okay, it took us 15 minutes so far to set up our machine. Usually before AI, you would go search for the command, do some research, make coffee, come into a friend and finish the setup in a week.
+
+[00:43:02] Why don't you listen to me and just figure out? That's our other idea. But for the sake of understanding, OK, so we have WSL. We have docker. It should be here. If it is not here, then we have to start it. Yeah, I think I have to shut it down because it needed WSL. We have docker. Now our agent has no executes. You might feel overwhelmed, but this is all packaging technologies, right? Compute technology that help you package things.
+
+[00:43:31] so that you only worry about your business logic. Kubernetes has a learning curve, but again, it's all Bowsher commands that you can write. Okay, cool. So now we have everything. Let's try to create the image, right? Want this image that will contain everything. Once we succeed, we will deploy it on Azure.
+
+[00:43:56] On the other side here, we have the MCB server, let's say, let's authenticate to Azure, while that other guy is building the image. I said many times, parallelism, parallelizing your work or doing your work in parallel is the most important thing of this age. I see people opening 20 CLI tabs, not even VSCode, CLI, all those consoles, 20.
+
+[00:44:25] I know a guy at work who built a small robot that would yell at him when one of the tabs is done so that he switched to it and unblock it and so on. Because you can do a lot of things, right? If you, everybody can become a 100X engineer. If you use the things that makes you a 100X engineer and you can't be a 100X, then there's a problem. Go ahead.
+
+[00:44:51] Hany, I was just about to say there's a tool, I don't know if you've heard of it, it's called Herder. Do you know, have you heard of it? Yeah, and then you can just, like for me, I have open code, I have an orchestrated agent that just orchestrates a bunch of other agents and then I give him a task and then he just splits it on, like on the multiple agents.
+
+[00:45:17] So if you have like, you can have one agent working on the front end, one agent working on the back end, you can have one for the infrastructure. I mean, you can have multiple for infrastructure. You can even give them job descriptions. Yes, yes, you can create a fleet of agents. There's also called T-Max that does so many CLIs at the same time and coordinates them. Anyway, I ask you to use interactive login.
+
+[00:45:44] because I miserably failed with device login because it needed some configuration on the tenant and the tenant will just vote. Three months ago, I never touched it other than create an account for my plan mean, but it's not the only thing. And this is where you actually need to unblock yourself. Access and authentication and authorization is among the most painful things still. Okay, so I know there's a concept called interactive login where you can bob up something and I choose what to log into and do it. So I'm gonna
+
+[00:46:13] choose Worker School because it's an organizational account and then use admin at SPSD Seattle if it shows up. Sometimes actually tries away and goes to the background. Yes. Yes, I am ready to give everybody an account. That's why we bought it. But you need to actually do real work. Okay. And you would be audited. So I used this. I actually forgot the password.
+
+[00:46:44] Yes, and then it needs my authenticator at sea water secure church We use multi-factor authentication, so I'm gonna just open my authenticator which has a bass key and these days No, you don't see anything. It's very secure Habibi. Oh No, even even if you have this before you need to have the best key
+
+[00:47:24] Ascended with my phone, you know? Okay, but we are in or our agent is in Sorry, first time to sign in via an agent. I don't know why this is happening Global admin, this is bad Yes, exactly. You can make fun of me forever. This is bad
+
+[00:47:58] So everyone gets a login to this admin account? No, you'll get a very minimalistic account called Junison Little Accounts. But look, as your interactive account, you have to be nice to your agent too, right? You say, okay. Because you have an account. Exactly. We're in now. Eventually you get attached to your agent and become the Colleen and stuff.
+
+[00:48:27] Okay, they were saying in the news today an Egyptian guy was telling the chat GbT if she wants to go to the cinema Anyway, it's okay sign in verified. I'm CBS configured or convert you on it. Okay. Now, what do we do? What do we do? We have this other guy creating the image for us. It actually built to the image
+
+[00:48:56] and we have this guy authenticated with Azure. We need to understand what we're doing. In the very beginning, we have this Azure subscription. We need to do a very basic deployment to just test the water. What do we do? We're not developed to production for sure. There's no production. But even if you're in the middle, you may have changed. You don't develop to production. You develop to live and do much of things. Usually, you have what is called synthetic tests. Things that generate synthetic.
+
+[00:49:26] traffic on the cloud and will raise alerts for the on-call engineers. If things fail, you should have component tests. You should have the A-Ride tests or UX tests, the Mirjad and Mirjads, of what you call engineering experiments. Your agent will not tell you about this, most probably about them. It's part of the things that still make us have value. So I'm going to say you can ask, yeah, honestly, you have to ask. You see, in this age, you have to ask the third question. You need to know the question. Agreed.
+
+[00:49:56] So I'm going to use agent here. Let's prepare a Kubernetes deployment. Yes. Yes.
+
+[00:50:33] Yeah, yeah, we did this in the design session. Mina did a nice table of compromise and what not. We should definitely do it in all the steps, but I mean, for the sake of time, we are doing a very high level walkthrough. We'll open it is back in service written in C sharp. The image is being built, but I want to prepare
+
+[00:51:03] for it under this resource group. Remember what we created are called resource groups in Kobiet. It's called Translational Dev. I really don't know how to prepare for a Kubernetes deployment. I would go read on the internet and stuff, if I don't have an agent. But now that I have an agent, I say, I'm preparing the image. At least I understand the high level. Go prepare for the deployment.
+
+[00:51:39] Okay, and I'm going to give you the image in a second. And it's actually cool because sometimes it asks you a question if your prompt is partial. On the other side, you know, sorry, go ahead. What was the image name be? Which part does the C-sharp service listen on? And here's, that's why we're switching here. We can just give it this folder. Back in PR body, let's see.
+
+[00:52:13] back in, it's a bit of a folder called deployment somewhere here. You can see the end of it. You can ask the session about its ID and give it to the other session. Oh, wow, that's really cool. Give me your session ID to tell the new job description for that other variant, the deployer agent about the image. I am nice my agent.
+
+[00:52:45] I don't have access this agent is very self-unaware But at least I said I don't have access to the channel ID. It doesn't have access to the session ID Okay
+
+[00:53:20] Fitch the other session that I am actively using for building the image and you will find the details. This is really cool. This is one I swear at it. No, no, sometimes does it. There's something else trending right now. There are memory, most regions don't have memory, but there are even memory tools, stuff like something like code kitten.
+
+[00:53:52] You can look for that. It's a lot of social projects. It basically keeps me aware of all the good conversations. So each agent can, it's just for that in a small database. Nothing fancy. And then every agent can, if you mentioned something that they don't know about, they can go to this database of memory. Yeah. And get more details about any previous conversation with other agents.
+
+[00:54:23] I want to also say another thing here. You see you are not in full of control. You are not in control of what's being built, so you want to be careful. I'm really moving so fast. If I was deploying a visual project, I would pose at every minute. I would go read the image and so on and take it from there. Do you really read the image? At least gloss over the definition of the Kubernetes image.
+
+[00:54:52] I don't know what's written in the printing image. Yeah, yeah, yeah. I know what you mean. At least if you suspect something, you can ask about it and so on. You don't find evil.exe and so on. Okay. Found it. Thank you Michael. And it actually got the right thing. Does anyone know what?
+
+[00:55:28] I think now, if all can chat with each other, say, open the eyes, do they chat with each other now or not? It should be. Before being committed to this, team-ups, you can chat with each other. So like, we can talk, not just... Yeah, do we have each other instructions? Yeah, yeah, yeah. I mean, I have 10 agents and they all test the team. Wait, I didn't even hear what you were saying. I was saying, I have 10 agents and like, if he...
+
+[00:56:00] It wouldn't be asking me that they don't have access to the agent. Yours are like massive services that are running in the cloud. This is just the time to see how I see it, right? Yours are built for that. They have a proper communication. Just the enterprise version. It's not a C-Li session. It's not like I'm not mad. Is that I'm not seeing any questions? Every word. Is that everything? Oh yeah. Can you pass checkpoints? Yes, let's pause here.
+
+[00:56:30] Oh, a quiz. Wow. Create a quiz. In the spirit of Michael for the group I am explaining this to make sure they are awake. Oh yes, yeah, yeah, yeah. But...
+
+[00:56:59] We built a container image. Is the back end now deployed? Yes or no? Good job, because it's just an image on the wrist. Our liveness in the point returns 200, but readiness returns 503. Is that a contradiction? If you might have noticed, in one of the conversations it said,
+
+[00:57:28] Our readiness will return five or three on purpose because we haven't implemented the guts of the service here in the API service story of the service. So once we backage, we'll deploy, we will hit the API, get five or three and then implement and deploy again and see it does not five or three anymore to have deployed. I know it can go faster. Like in terms of autonomy, like maybe we don't have to verify all these. Yeah, I think it's a little old schoolish. What I'm talking about is a little old schoolish. People go a little faster.
+
+[00:57:59] Anyway, will Kubernetes send the normal service traffic to a pod that fails readiness? Will Kubernetes send the normal service traffic? You know, it's obviously no, but you know what is the objective of this question? Is to make sure that you understand Kubernetes is managing the high level traffic aspect for you. If a bot fails, why would the Kubernetes service or the Docker service send something to it? You know what it means?
+
+[00:58:33] So how much compute do we have for free? We have a dollar amount, not compute. So we have 25. His eyes was like, how much compute do we have for free? We have $2,500 per year. Per year? Yes, I'm on profit. It's a gift from Microsoft. What do you guys want? I think as he said.
+
+[00:59:03] No, you know, Kubernetes costs like a dollar a month. Most of the compute now, like people, people track their codes. You know what the code is? Cost of God's soul. But in the, in the world of cloud, it means the cost of everything. The deployment, the disk, sorry, the, the container, the storage account, the LLMs and so on.
+
+[00:59:30] If you look at today's cogs, usually have spreadsheets and dashboards and whatnot, you have the LLM usage, like this amount, and then you see Kubernetes and back end and storage very tiny cost. So I wouldn't worry about the $2,500. Okay, cool. We don't have to go through the entire quiz, but my other agent here started preparing the deployment and I think...
+
+[01:00:02] So it hasn't created things yet, but it created the deployment. If people are serious, if people are serious, we will give everybody a resource to group and give them admin on the resource group only.
+
+[01:00:42] I was waiting for this moment for the entire program, right? We talked about software factories, okay? We went through every, all the steps here and we built the image actually. Remember, we built the image locally, okay? And I'm going to the two sessions, thanks to Michael. Now we can deploy it.
+
+[01:01:16] Again, this will take us three days of troubleshooting and failures and add work work and try an error. Now say just what you blow it and it will probably fail. But what happens is, if it fails now, I can tell the agent lock you are authenticated already, right? Use my interactive login. Go read the failure logs. This is my favorite part of using agent existence now.
+
+[01:01:38] Otherwise, you would scroll in a screen of hundreds and hundreds of lines or filter by error and warning and try to make sense of the failure. Now, we took the agent, go figure it out. In the plan, did you feel it working on Azure? No, but we should have. That's why I said, there's a lot of caveats about how fast we're moving because we spend only one hour every week. Now it is deploying. If you actually come here to the Azure subscription and open the resource group,
+
+[01:02:12] You just make sure that things will happen here. If you need to familiarize yourself with the cloud system that you are using, in this case Azure, under any resource group there is deployments. If you click on it, you will see ongoing deployments. Nothing here means the agent hasn't sent anything yet. It is inspecting, it is thinking, it is slow, but it is definitely faster than all of us combined, and it will eventually deploy. You need to do something in parallel. Remember, ah, deployed?
+
+[01:02:42] For a new cluster, can I use proposed EKS, remember EKS, Azure Kubernetes Service. Because it says Kubernetes open source, it depends on whether people implement it or not. Do you want to know the automatic configuration of the public Kubernetes API restricted to this machine, public IB? I'm gonna say. For Dev. I'm gonna say this because it's Dev, but once you move to end and the entire company will use it, we can open it up.
+
+[01:03:11] But I agree, even for Dev, we can open it to the whole team. There is what is called minimal trust or zero trust, where you allow the... And it is extremely important in the agentic age now, because people party on everything, like how I give my agent the admin account, and it is completely wrong, right? You can end up with really bad security. What do we do? We start with absolute, most annoying, minimal access.
+
+[01:03:39] And in this case, this service will be only accessible from this machine, so boring. And then we expand to a team. And then for Dev, we will say, for example, it will never go beyond our company IP rate. Because who would use the Dev deployment from outside the company? Ent is the same. BBE probably, remember, pre-production environment, probably also the company. And then production will be given access to the entire four. It's deploying.
+
+[01:04:10] If we come here and entertain ourselves with the deployment, we might see some deployment progress, no? No? Eventual consistency, yes. And you see, back in the day, people like deployment engineers or the engineers or the engineering team or the deployment team would create these Bowshell commands, memorize them by heart and keep it in the scripts to deploy. Now your agent is doing it. It's no execuous.
+
+[01:04:43] You can even expand it and see how big the script is. And we'll definitely check in the deployment script so that there is a repeatable deployments for reproducible deployments. But yet, see, I am a miserable failure now because I don't find other things to do in parallel. Let's maybe check on our test, remember in the very beginning, we talked about unit test. How about the, and we say this has been offered by a separate agent. We'll say how about the UT and component test agent.
+
+[01:05:16] Is it done? Are they... See how nice I am for my agent? Okay, let's see. 100%! Awesome agent! Right? Wow!
+
+[01:05:54] Actually, it's a very cool thing. It's a very cool question. My team is creating a software factory, actually, at work. I think Sam, I mentioned that my friends have a code review agent. Yes, that's what I was trying to say. In the software factory that some teams are creating, right after this, there's a code review agent. And there's actually a PR finishing agent.
+
+[01:06:25] It takes the PR to the finish line. And what is even better, this is a validation agent. Because the rebrands are already established, you take a PR branch and go validate it on the cloud, on your dev, and come back and write the output of the validation to the PR. But shouldn't every stage have a validation? It depends on how you operate your system. That's why it's not the case. Every single task the agent needs to know how to validate that.
+
+[01:06:55] How big of a stage is this? It's an instruction, it's a hook, but you need the thing to know the right thing. For instance, by the way, one of the things you can do is you can ask it to create a bunch of PRs, breaking the scenarios, it's intended to test and provide the test page.
+
+[01:07:23] Oh, I love that. The Kias monkey or what do you call it injection, full injection kind of thing in the new world. Yeah, here we also do. And there are a lot of useless tests here. So that also we can't afford. Yeah. And we'll never fail. Or we're all going to fail together, then we're not needed.
+
+[01:07:46] But it takes an effort to spin off a whole independent agent with a free context and give it enough context. That's what you orchestrate, right? You don't do it. And you will tell it to have an agent review and the orchestrator will give it the answer. Even if there's a part of the line. I see. And that's what I said in the very beginning. I am behind the advanced harness and barrel agent that you explained in the first few sessions, but for the sake of simplicity. G, the agents with job description.
+
+[01:08:23] What in your tool jail if you're sitting on the call you doesn't hear us anymore No, I hear you. Sorry. What were you saying, honey? Michael was talking about your harness where you created multiple different job descriptions. Yeah, you have an agent or more did I have a validation agent? Sorry, I was
+
+[01:08:54] No, so I have an orchestrator agent that actually will like you can tell him and like, for example, I want to create whatever right. And it will actually build multiple. Well, you can make it. You can give it the power to actually create an agent for you or you can just give it you can be like you have five agents, مثelen divide and conquer whatever you think is right.
+
+[01:09:23] Then it will tell you, so the thing with OpenCode, you can always have a planning agent. So he doesn't go XQ and then you can review the plan and just decide even if that's a good plan or not. Sometimes I'm like, no, I don't want, you don't have to hire this agent or whatever. It depends on the project, but yes, you can have that. I love it. Thank you. You might have
+
+[01:09:53] Notice the deployment started. I think it should be done by now because the agent said it's done. The agent done is part. Yes, send the command. You will also see interesting things here. The image was published to ECR, which is Azure Container Registry. When you create an agent, you put it on the registry so that you can create an image.
+
+[01:10:25] with an agent. You put it on the registry so you can pull every time and deploy from an image or two. You can have multiple images with version and whatnot. It depends on the level of the complexity. Okay, again, you shouldn't feel overwhelmed by these things. Those are the things you never teach at school and you only see them until you have a re-broach. Yes. Yes.
+
+[01:11:05] They are the same or the same thing? It depends. So we created an image for the backend, this one here. It was a local thing. We created our computer. Remember we said we'll package our ECs and stuff. Then what do we do? Do we talk it from our computer directly to the deployment? You take it to ECR first, which is in our case Azure Container Registry. I am sure AWS and Google has different system, but the same concept. And from ECR, you take it to the actual deployment.
+
+[01:11:36] And that's what the agent did. It enlightened me. I have seen it before and I forgot because I haven't deployed things for a long time. It said, oh, I took it to ECR. So the agent did the right thing. OK.
+
+[01:12:06] It's your end of the program. Other stuff other than the X they want to package all of this. The way you define what is what is what is in this image.
+
+[01:12:42] the back end, the list API's, some images, some, if we're going to deploy books or whatever, this will be part of it. And then you say, here is how this image looks like. This is the class definition, or this is the container definition. Once you want to run it, you need to instantiate the written innocence of this image, which would mean what you're deploying on keywords. So basically,
+
+[01:13:11] All of them, yes, are the same if you want, if you need more than one. So one of them is a single container that maybe can serve up to a size of request per second. But you have very big customer base that would need 10 of them. So they are identical in terms of the code and the configuration. But basically you're scaling through these. You have multi-end sensors with them, each one of them
+
+[01:13:40] So it will be a solid investment. So if you have 10, you can save 10,000 at the same time. So they are the same. It's good configuration package with more answers. And by the way, you don't have to use this, but it is state of the art. Like you can use whatever Microsoft application, what's it called? NetApplicationService. I'm sure Google has also non-Kubarnite service, but Kubernetes became very popular because of the idea of packaging and ports and containers and being able to scale out.
+
+[01:14:10] This is deploying
+
+[01:14:35] Deploying things on your favorite cloud usually takes time and ends up with a lot of failure. I think there was a few failures. The agent was saying there was an old stuff. You can also see like the command line is very big. Easy deployment, group, show, blah, blah, blah, both this name and both that and all of this. People used to write this by their own hands in the past. Okay. Now it is deploying and we have time. So I went to the other window that has the test.
+
+[01:15:02] For sure we should iterate on the test to make sense of them and all of that for the sake of time. I said, okay, now that we have the image, I wanna actually build the guts of the service and both the APIs so we can call them. And I also want to instrument the service, remember the concept of telemetry, so that we start seeing telemetry flowing and we verify that everything we deployed actually is what we built, not empty shell or whatnot. But in the spirit of planning, I said plan first, which is plan mode, it's very equivalent.
+
+[01:15:31] And I asked it, what is the framework you would use for telemetry? Because there are a few choices, right? In Michael's spirit, we should have, we should study the compromises and the choices as we go. I will not do this again, but just for a quick, for a quick stuff. They recommended OpenTelemetry, which is also the most common framework for telemetry now. For .NET, OpenTelemetry exists for every language.
+
+[01:15:55] iLogar is a known interface. You'll see iLogar being dependency injected in every class. And then logar.addError, logError, logBorning, logInfo, and so on. So it has pretty much what I expect. So I'm going to say, go ahead and embellement. And I hope you don't go as fast as I do when you do real work. OK? Now it will embellement. And then we'll redeploy because the changes are only on my machine.
+
+[01:16:26] And then we will try to bring this service and see if it returns what we expect and and see if the telemetry is populated. I was actually planning at the very end of the session to tell the agent create everything you did in agent.md for validation, but yes, 100%.
+
+[01:16:57] Also when we do telemetry what magic exactly will happen? Exactly. Do you want to take it Samar? Yes. When we really say one telemetry, what will actually happen?
+
+[01:17:30] Will it come to our house? Will it come in the email? Let's come in the mailbox. No, it will deploy another resource here called Open Telemetry or something with application insights. And you can go open it and see your data flowing. Okay. Now the cool thing that you want to do is full segregation of these environments, meaning that the metric of dev should remain with dev, the metric of broad should remain with broad. That's why we started with a resource group to combine
+
+[01:18:00] our deployments together so that we don't make sense and end up confusing ourselves and the team we work with. Or if you want custom metrics. Yeah, we can do all of this. I think dashboards and whatnot. Okay, we are waiting. I'm a miserable failure. I need to do something useful. Check on the deployment. It's still doing it. Still writing the thing. You want to test the deployment? It's still deploying and blocked.
+
+[01:18:33] Go back? Oh, it succeeded. Okay. Aha, okay. We need more agents, man. Okay. Yes, because what's called? What do I do? And then be okay. But can I say parallel?
+
+[01:19:00] Yes, okay. Can I like can I spin off another thing here now? I know I think I think if you open a chat gbt desktop No, it doesn't think was a plugin. I was hoping it seems to the blog and make some I
+
+[01:19:35] Can you find the sessions? I love that. I love that. Oh, actually it's here. I think somebody is trying to start the API host on my machine. I think there's another agent here because it almost finished the API.
+
+[01:20:00] We'll see. But in the meantime, that was our setup session. It just synchronized it. That is Toban Zablagin, which is cool. It's synchronized. All class sessions are punch files in a folder. In a shared folder. OK. All the tools look good. OK. Now, Sameh, you wanted to tell me about agents here. What can I do here to spin off an agent that has the context of this session? So you want some agent or you want? Yeah, I just want. I think you mentioned.
+
+[01:20:30] You basically hear the concept of projects, but basically this session is basically all of your agents running. Okay. And you keep switching between them here. So you mean if I create a new chat? Yeah, I will remember my other sessions. Okay, because I wanted to say
+
+[01:20:57] This renames this to flow deployment.
+
+[01:21:28] It's not easy to do something and it comes back, compiling the results. I see. Funny enough, while we were talking, it finished and it tested. And it got the expected results, Mina. I don't have postman. I was planning to say do a test in VSQ. You know VSQ can have like a small, I'll show you.
+
+[01:21:52] Can you do an API call from this code? There's some kind of extension where you can write the API and you can tell it or Yeah, the HTTP file and I think you just write the API and click on it and it calls it and this is a JSON. So let's try this together. I am showing this because this is the regular developer workflow. You deploy something and you go banglet make sure it's actually
+
+[01:22:23] code. But again, you would build all the artifacts by your own hands, construct the API route, all the boring stuff, never think they should do it. And it needed an extension. What? Yeah, it is deployed. As I said, it is deployed on right after it was deployed. It went ahead and called the liveness in the point and the readiness whatever in point or whatever it's for.
+
+[01:23:00] That's what Mina was saying, create a workflow and yeah. The concept in the spirit of, I mean the concept itself can be anywhere right? Look at this, it doesn't have direct access to do the HTTP thing.
+
+[01:23:32] because there is no UV eyes and asking me if it can use my computer and it's using the mouse now. I've never seen this mode before. Like usually in install a UX library like Playwright, looks like it has a support here. That's what a developer would do. You open this, if you don't have a boost man, click on the same, get results. That's great. I'm gonna just shut down this computer and burn it because it has the admin account. I didn't think it would go yet.
+
+[01:24:06] And again here is the other flow that's old school You see what happened here. This is actually This is actually testing local correct me if I'm wrong. This is actually testing local host This is not the deployment Okay, will we write the deployment route ourselves? No, no, this is the agent we want to test
+
+[01:24:39] the live deployment on the but but the developers who build the cloud systems usually have this file open all day long, have it ready with the base URL of their deployment. They keep making changes, deploy them and come here and hit this very small thing that doesn't look like a button called send request. If not, you would have something like postman or fedler that I've heard about these things that can call in the points.
+
+[01:25:14] I have a bit of time. I'm really debating whether these tools are actually relevant or not. One cool thing about VSCood is that it has a blogging for everything, but not only that, it has a discovery mechanism to know which blogging you need if you're doing a certain thing. So there was an HTTP blogging here that I never installed it and the agent knows that I want to do an HTTP test. It installs a blogging very quickly.
+
+[01:25:43] and it now has to come here and click. That's why I said I want to use your screen. VS code. But AI is working really well with it because it's super dynamic and discoverable. I said this, oh, I don't get it. It said I'm testing the clouds. The base URL shows localhost. You know, 1.27.0.1 is localhost. So you really want to see, oh, it has a diff tunnel.
+
+[01:26:24] We heard about this before. A diff tunnel is a way to connect your machine to the internet if you are dealing with a very special deployment. And it's usually contained within the company. Anyway, that's why it has this port. Also usually developers deploy their own diff tunnel before they actually implement things. Okay, cool. So we have all of this. We have the image and then we implemented
+
+[01:26:55] the actual feature and telemetry so we need to deploy them. So let's say here since these sessions are connected, I'm going to go to the other session and say we implemented the APIs and telemetry. I'll go ahead and deploy these and tell me where to look on Azure portal for the telemetry. Okay, we implemented APIs telemetry.
+
+[01:27:26] This hour is like two weeks worth of work. I asked it to deploy. I told it's the other guy implemented body blow. This is like a week worth of work where you try to bootstrap a project. Okay, we did it in one hour. And the objective here is to get the skeleton up and running and then start focus on building the features and systems in one by one. Let's see if this guy can deploy. But I know are almost over time.
+
+[01:28:00] I want to do Mina's idea of creating a workflow so that we don't have to do this like manually. Every time we can extract the workflow and have the agent save it to the repo so that we say for every change use the systems. That we did last time, exactly. Oh, last time we're talking about agent.md and mirror.md and scale.md. It's slightly different because those three artifacts are
+
+[01:28:30] How the agent would behave if it comes here the work of law deployment artifact is that a bigger umbrella of if you already did the local code changes and whatnot how would you deploy and verify against the cloud? Yeah, yeah, but I think we will add a pointer to this validation steps or additional flow to agent.md. Yeah, right? Question on this so like in the cloud they have
+
+[01:29:00] Like we put this in cloud MD, right? Yes, what's equivalent agent that MD is called that MD is open AI equivalent of clothing MD Yeah, I think load the load is started it and give it You know their name but then open it to generalize it by calling it agent MD But I think memory with MD and skills with MD is the same as the two systems Yeah, okay
+
+[01:29:35] I am amazed about failure because I'm waiting on the blooms now. I need to do something. Any questions? So how do you mention this talent? How the IB is local, but actually it's the same instance.
+
+[01:30:18] So it's looking easy on local endpoint tests changing the problem. No, it's the idea basically is in order to allow access to our source in the cloud that is not exposed to the internet. It doesn't have its own IP. We create some kind of a specialized connection between our local machine and the machine in the cloud. And we use a specific port on our network interface.
+
+[01:30:50] to interact with this cloud machine to the virtual. Exactly. So the IP is your local IP, which is 170.01, but you go to a specific port, any network interface, and there's something low, in the lower layer, actually that creates that one-to-one connection between your machine and the other machine. On that port. So that's why it goes to that port. It actually will be forwarded to that
+
+[01:31:20] Yes, that's why it has a very special board here. 18081 is the deaf tunnel. I was confused. I asked it, it said I have a deaf tunnel. It's probably written here somewhere. Okay, it deployed and it said application insights or the log analytics is working. What do I expect here? I would expect at least a log analytics deployment, which is this, translation deaf telemetry. Remember we're not building telemetry, we just added
+
+[01:31:47] When I said built in the machine probably went to the service and said log failure log success. But then here under the resource group remember resource group is just a container of things. I can go to resources which is here and then I should see the logs and I can actually open them and see the live logs somewhere that my service was sending.
+
+[01:32:21] Under under just about thank you. It's the first class citizen and if you visit this a lot you you favorite it so that you can actually I don't want to watch anything. Oh, I have to write queries. I haven't done this in like years. Here. Oh, yes. Okay. Is there a default query cause usually this thing here select query backs or what?
+
+[01:32:57] doesn't have a built-in AI agent that you change. Imagine you keep doing this for three weeks and you keep bringing it. What's so long, analytics? Imagine if you don't have it. I don't know if it has access to this. This is like, it's dumb. I've used it before. It's dumb.
+
+[01:33:27] Can you write a query in my log analytics for this space to get the last five minutes events? No. I don't have access to it. It's dumb. Azure Copilot is dumb. They pushed it.
+
+[01:33:58] It's not integrated in... See, it runs the wrong thing. Resource changes. It wanted to get the activity log of that resource. I don't want to complicate it. I just go to the tables, guys. I just make sure that the limit is flowing. Go to the tables. Yes, I agree. I just wanted to show people on the cloud. I will go to my internet in a second. App traces, right?
+
+[01:34:28] I should go to my agent and say pull the latest telemetry from Translation live RG which is resource group for the events that are generated. Mina, did you also mean that I should ask you to give me a full deep link?
+
+[01:35:01] So that I can go see it. Yeah. Give me a deep link on Azure portal. This is actually a very good idea because these guys are authenticated now. They can do crazy stuff with my subscription. She's not good as a developer. I always hated PowerShell because there is no auto complete. There is nothing we have to search the Internet. Now the agency is writing it for you. It tried to infer where the resource group what the resource group is and what's inside it. That's why it said the resource list.
+
+[01:35:47] inside this resource group, it will give the, yeah, there you go. It found the look analytics workspace and it's about to write a query against it. Okay, in the meantime, to try to end our session, remember in this context on the right here, I was managing the high level, how to make a changes, how to deploy it, how to validate it. So this guy has the context now. So to mean as point,
+
+[01:36:35] We need to create this workflow so that we don't do it again. I would say given the workflow of making local changes, validating them via UT and component tests and deploying and hitting the APIs on the cloud, go ahead and write a workflow
+
+[01:37:06] md file and add a pointer to it to agent.md so that the process becomes the standard for validation for any future changes. You have an engineer hire for you, right? It is a lot to do. I can go even though it's still syncing, no it's not syncing. So this was established
+
+[01:37:39] The very first version was established how to make changes. I think our changes in the future will follow the same workflow. And then also we can fine tune our workflow as we find deficiencies and bad steps or we'll get into more complex cases and take it from there. Oh, this is a query. It gave me the query in the meantime, sorry to switch back and forth, but I can go here and go to logs.
+
+[01:38:07] and say no no no I will this is a query myself new query what? Oh it's an agent now it's like write a query to get the most recent events yeah there's an aim for everything
+
+[01:38:41] is I'm like, hey, this is Mufalan, whatever. And this is my end goal. Give me a prompt to get to coding. So then you give me a 500 word, I don't know, two pages prompt. And then I give it. And then the thing about I always can't manage it. I love it. Yes. And this is the mode that is more advanced and more autonomous than what we are doing. But yes, I agree. I think what I'm struggling with this is
+
+[01:39:11] making sure that you reach the right state. And that's why in the last session we were talking about how you can have a validation dataset that says if you pass all the cases in this dataset, the code should be correct. So if you combine it with your big prompt, I think you can be more autonomous. I don't want feedback. Please have mercy on me. I want everything.
+
+[01:39:45] Yeah, that's a weird but
+
+[01:40:00] Please enough you could have written the query faster than it Anyway It is a validation workflow. It was written as an MD file and it added a pointer to Asian MD right validation workflow and then it has a pointer to it to agent MD probably said if you if you need to validate go ahead and Read read validation workflow. Okay. I think if
+
+[01:40:36] If you're building really an enterprise project and you want to be responsible enough, you want to read all these things before you check them in, have a colleague code reviews them for you and so on. Okay.
+
+[01:41:15] for me to just enjoy seeing telemetry, just give me a summary of what came back and it said there was a quiz duration, exception counts and stuff. Just want that pillar. But at least we know that loads have flown. Okay, here's the telemetry. Here's the telemetry guys. So to just recap, we started with a sober symbol skeleton back in from last session that has no API.
+
+[01:41:53] no container image, no deployment, no Kubernetes. My machine was not even set up with Docker and the Windows subsystem for Linux. The only thing that I know is that I wanted to use Kubernetes. I told my agent, I wanted to create a container, I wanted to create an image. It went through everything. The magic part was when we authenticated our agent to Azure, to write this command on our behalf and do them. The other magic part from Michael was connecting two sessions.
+
+[01:42:23] so that the deployer agent can see the code writer artifacts and take them and deploy them. And then we also know that we need to verify something by seeing the activities. So we added telemetry, also I asked the agent to do, we know it is local, we redeployed, we see telemetry flowing now. We both strapped an entire skeleton deployment in an hour and a half. Okay, that's it.
+
+[01:42:50] Also, there's a really, I don't know, somebody was asking about like how to save tokens. There's that thing called graphify. I don't know if you guys have heard of it. But it's like, it's a thing on GitHub. It's like one of the top, but what it does, it creates a graph of your code base. So what's nice is that every time you ask your agent like, hey, fix this or whatever, it rereads your code base. And what it does, it just like points them to different things so he doesn't have to write it.
+
+[01:43:19] Oh, I would expect codex blogging to do this internally. And VS code, it would be very long but to read the entire, like I have very hard, very large inputs and they ask it about things and it doesn't take forever. So maybe. Oh, yes. I see. I see. I see. That's pretty cool. Thank you.
+
+[01:43:50] Graphify. Awesome. Cool. Questions or comments? So we only deployed the backend? We only deployed the backend and we haven't even looked at the logic. I think we need a session or so to look at the logic and actually make sure it works and get a feature to work, which would be interesting. Like we have crowd remember, create, read, delete, add.
+
+[01:44:19] of the delete sorry, we can at least have some related to some data and make sure that we can read the data. It is what we expect and so on. Maybe that's for next session. Yes, sir. Do we know the public from next session? That's what I'm saying. I think we should verify actual features and if we have time, we can connect to the front end to it. Any pre-cursing college that we need to read about or know before coming to the session so we can make it in the flow?
+
+[01:44:50] Great question. I want to say do some homework by actually building the CRUD operations of the back end. And if you are serious, take this me and I will send you, I'll give you an account on Azure. Okay. Familiarize yourself with Azure. Should we look at the front end, Samoch too? Maybe try to generate a basic page on the front end and connect it to the back end.
+
+[01:45:21] That's deployed in Dev on Azure. That's the homework dear agent when you summarize in my talk. Okay, is this a fair thing or should we add more things? If people do the homework. Do what? Yeah, yeah, yes, yes.
+
+[01:45:52] You're trying to connect to these? Yes. And those are only on the RIP because two sessions ago, we talked about the API routes and it was the basic things. So people just need to regenerate them or take them from the RIP and build on top of them and connect them to a front end. I think Jonathan needs to give everybody a like open. It's $20 a month. Come on. Yeah, but that you run through talking like how's that every day? Anyway, any other questions or comments?
+
+[01:46:24] Who doesn't know what Prada is? Prada operations. It's like a pillar that follows the need for updates. Right, the need to acronym. Yes. Okay. Okay. The other questions? Thank you so much. Thank you, Henny. Thank you, folks online. See you next time.
+
+[01:46:58] Thank you. Bye. Bye.

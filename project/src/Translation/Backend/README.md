@@ -2,7 +2,7 @@
 
 Status: **Boundaries approved by the user on October 23, 2026**. Book, review and draft
 application services are implemented against injected ports. Real input-reader, storage
-and translation-provider adapters await user choices. No HTTP host exists yet.
+and translation-provider adapters await user choices. A separate host exists in `../Host` with business API contracts and OpenTelemetry; production business access remains blocked until adapters and identity are configured. See the [container runbook](../../../infrastructure/README.md).
 
 One service and one assembly, organized by capability:
 
@@ -18,7 +18,7 @@ Translation/
   Frontend/         reserved for the future web frontend
 ```
 
-Future HTTP handlers call the three application services. Those services enforce access
+The separate host maps HTTP contracts to the three application services; tests supply doubles while production registrations remain blocked. Those services enforce access
 and coordinate the storage/provider ports. Infrastructure implements the ports. Keep
 HTTP types, database models and provider SDK types outside these public contracts.
 `ISourceDocumentReader` isolates format/size/segmentation policy; its real adapter awaits
@@ -50,8 +50,7 @@ Accepted formats/size, identity provider, storage engine and translation vendor 
 
 ## Verification
 
-The proposal targets locally available .NET 8 to permit compilation. Select a supported
-deployment target and SDK policy before adding a runnable host.
+The proposal targets locally available .NET 8 to permit compilation. The preparation host preserves this target; review runtime support and SDK policy before production rollout.
 
 ```powershell
 dotnet build project/src/Translation/Backend/Translation.Backend.csproj

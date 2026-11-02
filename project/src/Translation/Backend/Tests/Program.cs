@@ -25,6 +25,18 @@ var tests = new (string Name, Func<Task> Run)[]
     ("Import validates before reading", BookValidation),
     ("Book read validates and preserves access failure", BookRead)
 };
+var selected = args.Length == 0 ? "all" : args[0];
+if (args.Length > 1 || selected is not ("all" or "unit" or "component"))
+{
+    Console.Error.WriteLine("Usage: Translation.Backend.Tests [all|unit|component]");
+    return 2;
+}
+tests = selected switch
+{
+    "unit" => tests.Concat(UnitBoundaryTests.Cases).ToArray(),
+    "component" => ComponentTests.Cases.ToArray(),
+    _ => tests.Concat(UnitBoundaryTests.Cases).Concat(ComponentTests.Cases).ToArray()
+};
 var failed = 0;
 foreach (var test in tests)
 {
@@ -260,9 +272,18 @@ sealed class FakeProvider : ITranslationProvider
 
 sealed class FakeStore : IReviewStore
 {
+    public ErrorCode? BeginError { get; init; }
+    public ErrorCode? CreateError { get; init; }
+    public ErrorCode? FinishError { get; init; }
+    public bool ThrowCleanup { get; init; }
+    public bool ReverseParagraphs { get; init; }
+    public CancellationToken LastToken { get; private set; }
+    public (ReviewerContext, Guid, Guid)? SaveScope { get; private set; }
     public Guid BookId { get; } = Guid.NewGuid();
     public Guid ParagraphId { get; } = Guid.NewGuid();
-    public BookReview Book => new(new(BookId, "Book"), [new(ParagraphId, 0, "أول", null, "review", "v1"), new(Guid.Parse("b887f367-74ed-4b43-af0f-4a4ea83a0317"), 1, "ثان", null, null, "v1")]);
+    public BookReview Book => new(new(BookId, "Book"), ReverseParagraphs
+        ? [new(Guid.Parse("b887f367-74ed-4b43-af0f-4a4ea83a0317"), 1, "ثان", null, null, "v1"), new(ParagraphId, 0, "أول", null, "review", "v1")]
+        : [new(ParagraphId, 0, "أول", null, "review", "v1"), new(Guid.Parse("b887f367-74ed-4b43-af0f-4a4ea83a0317"), 1, "ثان", null, null, "v1")]);
     public DraftOperation Operation { get; } = new(Guid.NewGuid(), DraftState.Pending, null);
     public ErrorCode? ReadError { get; init; }
     public bool Created { get; init; } = true;
@@ -278,38 +299,50 @@ sealed class FakeStore : IReviewStore
     public Task<OperationResult<BookReview>> CreateAsync(ReviewerContext reviewer, NewBook book, CancellationToken cancellationToken = default)
     {
         NewBooks.Add(book);
-        return Task.FromResult<OperationResult<BookReview>>(new OperationResult<BookReview>.Success(Book));
+        LastToken = cancellationToken;
+        return Task.FromResult<OperationResult<BookReview>>(CreateError is { } code
+            ? new OperationResult<BookReview>.Failure(code, "create rejected")
+            : new OperationResult<BookReview>.Success(Book));
     }
     public Task<OperationResult<BookReview>> GetAsync(ReviewerContext reviewer, Guid bookId, CancellationToken cancellationToken = default)
     {
         Reads++;
+        LastToken = cancellationToken;
         return Task.FromResult<OperationResult<BookReview>>(ReadError is { } code ? new OperationResult<BookReview>.Failure(code, "denied") : new OperationResult<BookReview>.Success(Book));
     }
     public Task<OperationResult<ParagraphView>> SaveReviewAsync(ReviewerContext reviewer, Guid bookId, Guid paragraphId, SaveReview review, CancellationToken cancellationToken = default)
     {
         Saves++;
+        SaveScope = (reviewer, bookId, paragraphId);
+        LastToken = cancellationToken;
         LastReview = review;
         return Task.FromResult<OperationResult<ParagraphView>>(new OperationResult<ParagraphView>.Failure(ErrorCode.Conflict, "stale"));
     }
     public Task<OperationResult<BeginDraftResult>> BeginDraftAsync(ReviewerContext reviewer, Guid bookId, string requestId, CancellationToken cancellationToken = default)
     {
         Begins++;
-        return Task.FromResult<OperationResult<BeginDraftResult>>(new OperationResult<BeginDraftResult>.Success(new(Operation, Created)));
+        return Task.FromResult<OperationResult<BeginDraftResult>>(BeginError is { } code
+            ? new OperationResult<BeginDraftResult>.Failure(code, "begin rejected")
+            : new OperationResult<BeginDraftResult>.Success(new(Operation, Created)));
     }
     public Task<OperationResult<DraftOperation>> FinishDraftAsync(ReviewerContext reviewer, Guid bookId, Guid operationId, DraftOutcome outcome, CancellationToken cancellationToken = default)
     {
         Outcomes.Add(outcome);
         FinishToken = cancellationToken;
+        if (outcome is DraftOutcome.Failed && ThrowCleanup) throw new InvalidOperationException("cleanup unavailable");
         if (outcome is DraftOutcome.Completed && CancelFinish is { } cancel)
         {
             cancel.Cancel();
             cancellationToken.ThrowIfCancellationRequested();
         }
-        return Task.FromResult<OperationResult<DraftOperation>>(new OperationResult<DraftOperation>.Success(Operation with { State = outcome is DraftOutcome.Completed ? DraftState.Succeeded : DraftState.Failed }));
+        return Task.FromResult<OperationResult<DraftOperation>>(FinishError is { } code
+            ? new OperationResult<DraftOperation>.Failure(code, "finish rejected")
+            : new OperationResult<DraftOperation>.Success(Operation with { State = outcome is DraftOutcome.Completed ? DraftState.Succeeded : DraftState.Failed }));
     }
     public Task<OperationResult<DraftOperation>> GetDraftAsync(ReviewerContext reviewer, Guid bookId, Guid operationId, CancellationToken cancellationToken = default)
     {
         StatusScope = (reviewer, bookId, operationId);
+        LastToken = cancellationToken;
         return Task.FromResult<OperationResult<DraftOperation>>(new OperationResult<DraftOperation>.Success(Operation));
     }
 }

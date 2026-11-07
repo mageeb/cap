@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: translation-backend
+  namespace: translation-dev
+spec:
+  template:
+    spec:
+      containers:
+        - name: backend
+          env:
+            - name: Translation__DeploymentTier
+              value: DEV
+            - name: Translation__DevReview__Enabled
+              value: "true"
+            - name: Translation__DevReview__ReviewerId
+              value: sample:romans-antonios-fekry
+            - name: Translation__Mongo__ConnectionString
+              valueFrom:
+                secretKeyRef:
+                  name: translation-mongodb-app
+                  key: connection-string
+            - name: Translation__Mongo__CaFile
+              value: /var/run/mongodb-ca/ca.crt
+          volumeMounts:
+            - name: mongodb-ca
+              mountPath: /var/run/mongodb-ca
+              readOnly: true
+      volumes:
+        - name: mongodb-ca
+          secret:
+            secretName: translation-mongodb-tls
+            items:
+              - key: ca.crt
+                path: ca.crt

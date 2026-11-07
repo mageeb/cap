@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - workload.yaml
+  - telemetry.yaml
+images:
+  - name: translation-backend
+    newName: translationdevku67727xgop2y.azurecr.io/translation-backend
+    digest: sha256:70d18f43bbd93bd976b413236e254d4818f005eeb3ba95c203fca96099319387

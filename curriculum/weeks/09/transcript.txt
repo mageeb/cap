@@ -1,0 +1,261 @@
+﻿Session 9 - Nov 6
+
+Full automated transcript, unedited. Timestamps refer to the original recording. Recognition errors and incidental chatter are retained.
+
+
+
+[00:00:02] Last session, Michael told me that I was moving a little fast. So we decided to get a whiteboard and explain a few things about the process and how you can be efficient in every step. And for the people online, I'm going to point my laptop at that physical whiteboard. Just to quickly go through
+
+[00:00:47] The most efficient way of building things. I will try not to mention the obvious, but I know you all know the fundamentals, but I will draw the process so that we see how it can be efficient on every step and make sure that we don't move in parallel and do things in parallel. We don't move too slow or too fast. Okay? Question to you. What is the foundation of everything? You can achieve from the conversation that I just had with Amir.
+
+[00:01:18] Is this visible online? I think that one is demo. If you can do it a little bit on the news. Yes. Okay. Start from the problem. And if you rush without the detail, I mean, go build this flight, a flight, a noise detector or tracker.
+
+[00:01:54] And he goes to his agent says build the right track, you wouldn't see what you would see. You would see around the website. But you move to a spec, okay? And then with the spec we'll talk about the persona, persona as, and then with the persona we'll talk about the MVP. Okay? This is the initial thing. Then the same is that you want to identify here. What is the same as that you want to identify in this step? You actually record everything. Even if you are
+
+[00:02:25] A single person team record everything, the text is gold. From your recording, that's what we did in our sessions. From our recording, we took the specs personal MVP and next time we came up with a plan, right? That has a hierarchy of work items. And from there, we started to set up our repo. And every single step here was agentic.
+
+[00:02:56] And if you remember Michael talking in the very first sessions, you will grow in the context. But as you go, you will have to do conversation, compaction. And compaction can be dangerous because it can drop some information. So what really matters at the very step is to keep the real artifact. The artifacts here is the work items. The artifacts here is the spit. So you put them on the side.
+
+[00:03:25] You want to have a share point or one driver, what not. But every artifact is the same that we can use even if we drop this entire conversation or a convection mista or a conversation. Life doesn't end. Makes sense? Okay. We'll set up our repo and we'll start building our back end, front end, tests, right? The whole enchilada of software factories.
+
+[00:03:55] If you remember, some of my favorites, I'll try to break it. It's okay, we'll break it. Okay, the whole software factory. And software factories is a concept, as I said last time. It is actually evolving day after day after day after day after day, to the extent that people started not to worry about people's. Like some people are, and I witnessed this, some people are working on building software factory in the cloud.
+
+[00:04:24] You go talk to the thing that builds and tests and refiles everything and it's going to happen. Okay? But you build your own software factory in terms of you write your code, you test your verify, you deploy, you check the logs and then rinse and repeat. Okay? So that's what I've done every time. One key, sorry, last time especially, or last two times. One key point.
+
+[00:04:52] What's the case?
+
+[00:05:20] Deployment and cloud and everything has been always time consuming. You have to troubleshoot and stuff, but if you authenticate, you have access to create things, look at the logs, troubleshoot and so on. Okay. Now we did all of this and we authenticated for sure, which benefited us all over the process here. What we haven't done is human firsthand validation. And I'm going to take a risk again with you today. I'm not strongly prepared.
+
+[00:05:51] But I want to get to a state where we can open the front end, I will connect to the back end, have the back end grab something from the data base and render it back on the front end as expected. Okay, we will put the data, we will put everything to make sure that what we expect is what we see. And this is where like, our value is really important because if we verify and we just accept everything as the feature we expect.
+
+[00:06:21] This might be going in the wrong direction. But if we really understand what we're doing, we will be in a good state. So, Amir, for example, how would you verify that the tracker is showing you the airplane in the right place? Or is the noise level correct? You have tests, do you? You don't have tests, awesome. Cool. So let's try to do this now. And I'm going to show you a simple working pattern.
+
+[00:06:52] Last time we had codecs in VS Code and we had two instances of VS Code that was reaching back and forth. And I thought that it would be more organized if we have four agents, each of my top sub agents, an agent for the backend, and this happened organically by the way. But I think we could have blended from the beginning.
+
+[00:07:22] An agent for the back end, it has all the context and all the codes that have been building and deploying with the back end. An agent for the front end that I just started today. And I actually, my brumpt was so simple. Given your knowledge about the back end APIs and all the MVP feature we discussed in the other sessions, please give me a plan for building the front end. I didn't even start coding. Okay, give me a plan and I didn't like the plan because it will consume a lot of time in the first two steps, so I omitted them.
+
+[00:07:52] For the sake of the exercise, which also applies to work. Sometimes the plan might go a little off. So it's really important to look at your plan and be convinced that it's what you need. And then review. And again, the biggest caveat of this class is that I'm not reviewing everything because it's been two hours every time or an hour and a half. So I just wanted to move forward. So it started spinning off the front end and colleagues was so cool because it opened this tab.
+
+[00:08:22] With the address of where the front end is supposed to render, okay, and it has access to it to verify what it is building. Okay, in VSCode there's a similar mode called share those agents. Sometimes as you speak to codecs, it opens a URL here and then you'll see at the top of the tab, it says share those agents to warn you that this particular html page embedded inside VSCode is shared those agents.
+
+[00:08:52] But here it's in codec so it's shared those asian by default. So it's not working yet. We'll continue to do what we want to do. So the front end is still thinking. And remember, as I said, doing things in parallel is the most important thing. So with this setup here, I see that another thing is awaiting deployment and this will switch context. This was the database I tried to deploy just 30 minutes before the session.
+
+[00:09:21] And I continued on the session where deployment was happening. I chatted with Chagy, we did a little bit on my way. And remember our conversation in the architecture session when we went to back and forth with Mina, we went to the FCA and we'll use DeqmanDB. So I wanted something cheap because I didn't want to spend money on my Azure subscription. So we decided to go with MongoDB, MongoDB Community Edition, so very cheap.
+
+[00:09:50] If you want to scale, we'll consider this more closely and give it an hour or so of comparing our options and then move with one deployment. But anyway, I chose MongoDB and I asked it to start preparing the deployment and pick up the schema from that session and it is deploying now. It happened to me to share this with you. The process became so easy that it became like as if you are buying a new phone.
+
+[00:10:20] And when we buy a new phone, because we love our phone so much, we sit down and carefully compare the options. I'm going to go with iPhone 18 Pro Max or 18 Blau or Do and stuff, and we create a table of comparison. It's going to last for two years. We really pay very close attention to our options. It is the same with infrastructure. If you're choosing a little base or back in the technology like Kubernetes, Laplace time,
+
+[00:10:48] You really want to invest an hour or two on comparing your options. Okay? We did the investment in the past. I did a very small investment today to just reduce the cost on our non-profit subscription. And that's why I moved with MongoDB. Then what do you do? I know there's some technical deployment. So I said, okay, bear bear the deployment. I want you to create the schema. And remember, we said for this particular exercise,
+
+[00:11:16] We will build the translation review project because we assume there was a customer. That's us also. And we have data from the customer, the couple of books that we use as a trier. So I gave it one of the folders, one of the chapters that was already translated, but has reviews, or need reviews. And I said, go to the database with this book so that when I vibe with the front end or build the front end,
+
+[00:11:42] I can connect to the back end and I can prove that the entire thing is actually working. I hope I can get to this today. I don't promise we'll get to it, but we'll try our best. I'm going in Yulu mode here. I don't do this at work. I read carefully. But I'm going to pause here and see if there are questions. Use the play button.
+
+[00:12:16] Did you attend the infrastructure session? The design session? Two sessions ago. I was there. I was on the MENA. What was talking about? If you remember, we talked about how relation and databases would be hard to scale and one of our goals in this project was scalability. So the thing was, no SQL database
+
+[00:12:47] The next slide is about the
+
+[00:13:20] If you remember in the beta base, in the design session, we said it's mostly gloves because you can have one paragraph that is so long, that's three pages or so. So the extent that you say, remind me to choose a white column that is like a Sandra or something. OK? Or Google Cables, I remember the exact name. But one of Google's storage systems has white column. OK.
+
+[00:13:51] Any other questions? Also, out of making sure that our stuff is organized, we agreed that on our subscription we will have separate resource groups for different stages of deployment. We are working on Dev. You usually work on Dev for a while because you don't want to promote your deployment to anything beyond the Dev as long as you're still developing. So I asked it to deploy the MongoDB
+
+[00:14:29] I don't see it yet. I want to help him look it here. Another thing that Sam mentioned also while this is running is that if you work in Codex, there is always a better view of agents. And we spun off multiple agents last time. And if you look here, we were doing all these things in parallel as much as we can. And every agent was actually two weeks ago.
+
+[00:15:08] And every agent will be working in parallel. So this is also a great way to parallelize because you don't want to be sequential because one of the key points for success is doing things in parallel. So you're parallelizing on multiple levels. On the high level, front end, the back end, test, cloud development, deployment, and within complex tasks like the back end, we did some parallelism and all what I needed to do is spin off multiple agents. I didn't do anything fancy. One for each of the above tasks.
+
+[00:15:39] Okay, cool. Look at this. It's actually, you know, this is really painful guys to me. This is honestly painful. Like it would take like three weeks to get to a working state. Okay. I think what I'm seeing here is not the data from the database. Okay. Again, this is where the human agency comes in.
+
+[00:16:05] I know I give you different data. So I'm going to iterate on it until the whole thing is connected. This front end is the front end code only. And you can see it's random barrel text. It makes sense, but looks like the LLM has generated it. But it makes me edit that size. Remember, we always have, we said it's a machine review project. So we always have what the machine has translated and we have a human reviewer to review. So it correctly made this read only.
+
+[00:16:34] I made this editable and sizeable, resizable so that I can edit and save. So it made progress. Okay. And for inspiration, I'm going to say this again. This is the age where we say ICs become managers. ICs are individual contributors. You became managers. Congratulations. You are all managers. You manage this. Anthony says, look at this. He was like, nobody's happy. I know. I'm not talking about this energy.
+
+[00:17:04] You're basically managing these agents here, the front end agent, the back end agent, the this agent, the cloud deployment agent. And it's actually exactly like how you would do it. How you would have a small team working on certain things. You know what happened to me like yesterday? I was doing a bunch of things and then there's some ad hoc work, like full up from a reverse PR, fix a small thing, fix a small constant.
+
+[00:17:32] So I made a small agent for ad hoc work and I told it look at the briefest sessions to Michael Boyd remember, I named the session so that the agents have context and I said look you're doing ad hoc work for me. Okay and just to understand what other agents are doing I will tell you what to do and then I give it very small PRs and it happened to me that when we hire a junior developer for us to ramp them up we give them some small work items, right?
+
+[00:17:58] So if you think about it, it is exactly following the model of a team. Just do it. Just do it this way. That's why, again, I came 30 minutes before the session and just renamed my previous session through the specialization. And now I have my team of agents. Okay. Which one is an agent? Everyone is an agent. Or is it just a regular chat? Yeah, it's sort of a regular chat. And the agent is something that has tools.
+
+[00:18:29] But they are also dedicated to my address subscription and they have my repo and they have my code, they have my specs, they have previous session recordings, so they have the context. But then also sometimes I tell them to spin off multiple agents. I just said spin off multiple agents, do the following so that it doesn't run sequentially. Okay.
+
+[00:18:59] This is the chat that we have been using since we did the design session. I just wrote a click on it and called it back in. I figured that because I know for example, when you do like clogged work I believe or like the product one it can spin off or create other parts of it.
+
+[00:19:27] I noticed that in class 2, now class 4 is a thing. So if you have a work item, it starts forking it and then it merges it back.
+
+[00:19:54] It doesn't need to learn all the details with the errors or everything.
+
+[00:20:00] Quirking then comes back and tells it is pay here is like in one sentence. It tells it what exactly happened, what it edited, what it changed like in five door points. So it wouldn't have to keep caching all that information. I see. And it also focus so that it doesn't block your session. Is this what you're saying? Yes, you can have like four, five, six things working at the same time. I see. I see. One thing that I noticed is that specialization is a kind.
+
+[00:20:26] So that's why I went to the front end, the back end and the deployer to be separate. So that they don't assume each other's toes or don't get confused or then to develop a compaction. Okay? The deployer, like any deployment engineer is the slowest. Because it's dealing with infrastructure. And it's back and forth, it's writing, writing, writing scripts. Exactly what would happen in a team. Right? It's always behind dealing with weird things. They are not coding. They are not enjoying themselves. They are just basically
+
+[00:20:55] Uh, dealing with infrastructure that works in a specific way. Yeah, the question. Yeah, I mean, that was just funny. I'm just kind of starting to look at some professional stuff and I'm not going to look at it. But I was going to say, like, we're describing. It is. It's just at the same time. Well, it's a subject in the grass.
+
+[00:21:24] So, I'm going to be talking about the concept of taking one core concept and visually making it look different or tweaking it in a certain way. So, what I'm seeing in the desktop is like now, instead of looking at the sub-agents in line, you'll actually see your session underneath a fork and it looks like a completely different session. In reality, behind the scenes, because that same thing is happening in the hardware, have a sub-agent in the same session, it's just like visually a little bit like organized differently.
+
+[00:21:53] I'm going Euro here. I should be more responsible, but we need this deployment to happen. If you read carefully, it will say, I will start deploying the text files to the database or writing them to the database. That's why it's behind.
+
+[00:22:24] We're the front end here. We need to get back and say make sure you connect to the div deployment. This is where you really need to understand what you're doing. We have a separate div deployment that we built via the div tunnel. Remember, we discovered that it created a div tunnel for us, which basically connects my machine to the internet so that a local host would
+
+[00:22:54] Sorry, so I removed deployment would look like a local host. Okay, so we'll let this work while the cloud deployment is trying to write things to the database. And see what happens. There are some options to go more you lose in this life or to approve, but I ignore it is to be honest. This is the first day I actually use this thing outside V school.
+
+[00:23:58] It's not doing enough work to talk over my life. Okay, so it goes to the Dev Tunnel. This is the port that we saw last time. So we know it is going in the right direction. If you remember in VSCode last time, we built a Dev Tunnel or it built a Dev Tunnel for us and was able to verify the API via this port. And as you see, a lot of the unknowns become infrastructure.
+
+[00:24:44] So you should really sit down and ask what this thing do so that you understand what was deployed on your behalf. The number two sessions would be infrastructure. No, you are, you'll take a break. Probably would be Mina talking about the bunch of different infrastructures, the most common infrastructure that you need to use. How would you actually sit up and enter things? It is never only a backend, right? There's API gateway, there's authentication and so on. Mina will go through
+
+[00:25:14] The entire, again, most common infrastructure into it. Let's see if our front end gets to a working state. There's a race condition here with the front end is actually moving a little faster than the back end agent. But we'll fix it based on what we understand from the looks. I really love the examples it picked up.
+
+[00:26:10] I think also one thing that's actually usually hard in building software project is the rule of the integration engineer. Everybody's excited about what they're building and deploying and moving forward. And then there's this senior principal, whatever integration engineer who tries to collect everything in their own head and make sure that everything works. And it's usually this moment where everything comes together for the first time and it never works. So if my front end doesn't work,
+
+[00:26:39] I will probably create another agent or go to the back end and make it pretend to be the integration engineer and have it spin off a bunch of agents to keep going until it returns what I expect. I will show what I expect and this is one of the key points. If you know how to validate, you will probably converge. If not, you will keep going in circles. So I will give it the local text file that I said go up to the database and say
+
+[00:27:07] Keep fixing your bugs, read the logs, and build the onion until you actually get it to return to this, at least on the back end. And then we can have the front end connect again. If you are managing a team of front end and back end, and your front end dude is complaining about this, what will you do? You'll connect them to the back end, and we'll say,
+
+[00:27:45] The front end is saying that they are seeing this. Can you investigate and fix? I could have said go read the other session but it would be, it would blow the context. It would read so many things from the front end. But what we need to do is the front end seeing 503. Go ahead Mina.
+
+[00:28:23] If I would do it, I would actually do it this way. I would set up a better loop, which was Michael's service for four sessions. But I wanted to actually go low level for debuggability and traceability. But yes, if we do it again and we know what we're doing, we should set up a loop.
+
+[00:28:52] Well, his loop was mainly talking about having a loop with a script, not having a loop managed by the AI. I don't think he was talking about that. No, the loop was managed by AI and there was a high level agent that manages the rate of the agents. For example, if I set up the loop and if I don't want to do all the low level stuff, I would actually set up a loop
+
+[00:29:26] I want to see the database and I want the APIs to get wired so that if I open the front end, I can navigate the box and get to chapter one and see the content of chapter one. And if you actually want to take the risk, you can turn on computer use, which has to click around and say, go run the front end again and again until you actually see the text coming from here.
+
+[00:29:58] How is your front end splitting the sentence? In the original app, I can't really remember or figure out how you, the view itself. I remember there was a paragraph and you can see the sentence itself. But the problem is with, for example, if we have a full paragraph from the Bible,
+
+[00:30:26] And it's not split like I'm giving you a raw data. It would be a paragraph. Unless we build the logic to split it. So if you look here at the data, let's, sorry. At my data, we use a new, what is Romans 1.0 text. We just used the carriage return, this backslash or backslash in between everything here. And this becomes a paragraph.
+
+[00:30:56] But when we serialize it in the database, everything will be recovered. Okay, so if we build the upload feature, which I trained for the sake of the exercise from the front end of the plan. If we say upload source text, the part in the back end that will receive this upload will be split by backslash or backslash in, to make paragraphs. I get that, but how?
+
+[00:31:24] How the back end know which part after which sentence is a paragraph ends? There is a hidden character here. What if the paragraph or the essay doesn't have it? They will have to be very long unless we actually write logic to spin it. And that's what I'm saying. So in this case, do we have to worry about that logic? Because we assume it's not in our MVP.
+
+[00:31:50] But imagine V2, we say we will handle some books that are very complex and the text will be too long for the reviewer to make sense of. We will split by a number of sentences. Maybe we'll use an AI and an MLM to split where it makes sense. And it will all happen in the source, so don't have to coordinate anything. In the very beginning we'll say split where the idea change. But it will be expensive for sure, because the MLM will have to spend a lot of tokens.
+
+[00:32:18] You know, you may be right. Yes, but you will split it at a random place. You can use an SLM, small language model, because it's a very simple thing. It doesn't have any logic or engineering or anything. It just understands, summarizes it or understands where the topic change. And you still it and should be cheap. But it should support the language that you're using. In this case, it's Arabic, for example, and you need an SLM that supports Arabic. They are all multilingual.
+
+[00:32:49] But some languages are less supported than others. Arabic is called the low resource language as there isn't enough content on the internet for AI to learn to be very clever at it, while English, Spanish, French and German are called high resource languages as there are so many sources. Okay, we're back in the still struggling to debug itself. It sees that the MongoDB has it and
+
+[00:33:20] We have to give it access to Azure.
+
+[00:33:54] But your live service needs authentication, which is a completely different story and I don't want to cover it. So I'm going to just win it. I think we can cover it for sure in the infrastructure sessions. But will we implement it or not? Is the question I think we can implement it. We can try to implement it on this project. No, I think. Implement manage identity and use like.
+
+[00:34:22] Microsoft Entra or Google Identity to implement manage identity. We did this in CAB1, it was fun. It was our bare hands. But to conduct a regular AI and see how we don't need security. I think the great thing when you go to the AI is that AI will continue to configure things on your behalf. You really make sure that you don't need security or have vulnerabilities or weaknesses. Right? Okay. We are still...
+
+[00:34:54] We have written our text to the database, but the back end is still connecting the dots. And this is exactly how it would have, you know, the configuration, sorry, an integration engineer. Everybody's like, it talks on my machine, talks on my machine, and then the guy keeps investigating and say, aha, authentication was my thing. Okay, what would we do? Implement it or escape it for not to just test? Probably, escape it to test or in dev. You know what I mean? So you can escape it, you test,
+
+[00:35:25] You're happy about the thing end-to-end and then you introduce authentication, which is usually a little more complex to introduce because you really have to understand what you're doing. Or otherwise you can introduce a vulnerability or a backdoor as I said. Okay, we'll give this to the infrastructure session. But for now, we ask it the back-end agent and this is where specialization is a king, right? We ask it the back-end agent to skip this piece
+
+[00:35:54] Now it is in its context. Now we didn't bloat all the other agents context with so many things because the front end doesn't care, the debloyer doesn't care, the local test don't care. You know, we'll turn the backend, skip this. I'm acting as an integration engineer here, even though it can be another agent, but do it, wire it, and unblock the front end. Okay. Remember our goal today, which I don't have promised you to achieve.
+
+[00:36:23] It gives the front end to actually read something that we already uploaded that we already know. The front end is still having a placeholder waiting for the backend to be fixed. And I hope you don't turn on int or its condition. You see the Deployer is really acting as a Deployer, Deployment Engineer. What they are doing is restart it and see if it works right around the script again and all of that. But I think
+
+[00:37:04] We were able to see that it worked and they are just giving us some file about the deploying stats. I don't know why these two, it looks like it has a repair. I'm going to skip this and see if it can be preserved again. Deployment engineers should be done here. I think this is the end of this guy. They were able to actually say we created a report from one chapter, this number of paragraphs and they are preserved.
+
+[00:37:56] I am done. Good. Thank you. This is the first time that deployment engine finishes first. And our back end is still fixing itself, fixed compiles. I want to tell it also to remember to deploy. In the meantime, it's always useful to go to your Azure subscription and make sure that your MongoDB
+
+[00:38:36] It has deployed and it has data. So our resource groups, I'm going to actually just read. Once we do the theoretical part of the infrastructure, we can open an address of subscription and show how you can deal with it. Because it's also a skill dealing with your own infrastructure. Here, this view just below the resource group is all the resources without grouping.
+
+[00:39:16] And then I can say I'm going to filter by time. I should have MongoDB resource here. Interesting. And as usual, if I can't, I can tell my agent to give me a full link to the MongoDB on the sub. Okay. See the part about running the, I'm not going to name this.
+
+[00:40:00] The part about running against the subscription live against the most most useful after this effects is said I'm gonna run to read the logs. She's usually very tiring human process if you do it on your own because there's always a lot of useless lines that you have to go through but now it's reading written in the meantime I can go to my MongoDB which is a great document scalable DB as we agreed and
+
+[00:40:30] Let's see where it is deployed. Did we deploy the MongoDB or the AI? The AI. I came 30 minutes before the session and I said based on the infrastructure recording, we remember all the transcript, we decided to make this. Now go back up the schema for me. I didn't even write the schema. Go back up the schema from there. Deploy MongoDB with the schema. And then I took one of my customer, put on customer data, which is on translation.
+
+[00:41:03] And I said, go pepulated with this data. The reason is I want to close the loop. Remember the very last step of me seeing the entire thing going from working back into the database and coming back with it as I do expect, not from the data or pepulated data protest. Also, it is always useful as a human to do some smoke tests, open your database, see if you can see its logs or
+
+[00:41:33] Events of what was written and whatnot so that you know the AI is not was not was not hallucinating. Obviously also there's a way to see the actual records that would be great. Those are just the logs. Let me see if there is a way you can see the records. Containers. You think containers is where the records are. Data. So here we'll go to our Nebroid engineer and say
+
+[00:42:15] Give me a link where I can see the table. In the meantime, we'll unblock our backend. Yes, and see it knows that we remember the first time we could use the backend. We said, did you see the process we built? Now write it in agent.md so that it becomes your own process every time you make a change. You make the change locally, run the test, deploy to the cloud, and test the cloud. Now it's doing it.
+
+[00:42:45] Because it's following agent with MD instructions, which is actually really cool. Again, in the meantime, I want to... There is a tool called MongoDB Combust. Quick question, Hani. Go ahead. Are you going to check it in as one PR, all of this? No. Well, for the sake of time, yes, but we're not supposed to check in massive PRs.
+
+[00:43:26] By the way, last time I broke it into 3PRs and I told my agent you see all these, I checked our files, bring them into tests, back in deployment and reverse 3PRs. And it was revert separately. At least today we have back end, front end and also deployment scripts, partial. We'll do the same. So when I... Will it make sense to tell it like, you know, give it...
+
+[00:43:56] Like the freedom to find how many PRs, like let's say 10 or 20. Yeah, I wouldn't say no. We can give it the freedom. It also depends on the team agreements and stuff. If you're working with the team, there might be a certain agreement on how we submit PR to each other, because until today we still have human reviewers. Like you just give it a rule, like you know, one comprehensive change is
+
+[00:44:29] This is a PR. Something that the person can review. Something that I can review and make sense of in one session. Yeah. Okay. There is a regression here. Let's see if I... Okay. It wants to have a small script to verify, which is nice to do before I move too fast. Yes, run it.
+
+[00:45:40] Okay, looks like it fixes the error, which was basically removing the authentication because we haven't built it yet. And then in the meantime, we can have the front end try again. It has deployed, right? It is this thing the best. So I assume it deployed the change. I'm not happy with the module of jumping between agents and just a prove blindly and even a prove while I understand, I think
+
+[00:46:42] Over the next year or so things will change and you will find a better model. The full orchestrator makes sense, but we'll see. Yeah, I think I think there's a way to configure a Yulu mode or bypass certain things or keep or you have my permission for something but then have the chance to approve it. To configure it. Okay, it works now. Awesome.
+
+[00:47:24] We did it. It is exactly the data that we have uploaded or asking the agent to upload. Remember the very first version of the front end in the first 15 minutes or so? It was giving us the random Arabic and English. But now this is exactly what I have in chapter one and I can prove this by going here and seeing the plain text. You see the plain text in Arabic if you read Arabic and then the plain text.
+
+[00:47:55] In the target language, chapter one, verse one, Paul, and so on, I can go back here and see chapter one, verse one, Paul, Paul equal, blah, blah, blah. In one hour, we talk the thing from something vague that we inherited from last time, with no front end, but remember, we identified every step. So we talk all the transcripts
+
+[00:48:25] You record everything, you never miss that. You never miss your reasoning, your team reasoning, your team meeting. We're able to take everything when the time of the front-end came, whatever the build of everything you understood from the session and the EGIS schema and particles from the EGIS contract. Make me the front-end of our honor and run it with V1 and then we'll say, build on the database from our MBD session, create the schema now, we never had the data before today. Okay?
+
+[00:48:53] This is bainfully good. It would take like four weeks to get to this state.
+
+[00:49:21] The first working version into end, back end, front end, some sort of user UX design and it's just easier. Okay, we've completed a project. Okay, questions. Just to go back, if we send a query to an AI, we'll give it a text Arabic and it transits in English and then this website is for us to review.
+
+[00:49:56] If you remember in the MVP, we said yes. We will upload, ideally in the MVP, we'll grab the entire book, as per our spec, and upload it. Imagine the whole book is here, or 10 files, one per chapter, and say go. And it goes asynchronously. Connect to an NLM, spend the token, needs to spend, come back with the machine, initial machine translation, and then the core logic of our MVP is the review process.
+
+[00:50:26] Okay, so from here we're going to start some tests. The logic and next step is to focus on engineering excellence. We got a working version into end. Now you want to solidify your unit tests, end-to-end tests, integration tests, syntactic live site tests, all of this for the back end, and then build some sort of belay write test. If you have heard about belay write, it is this tool that you click surround and make sure that the UX
+
+[00:50:55] This is what it is. And the objective of the playwright test is something called Benning test. You are happy with this state. Imagine we do some back and forth today until we get to the front end in a very specific state. We got this to be auto-saving, we got this to resize in a certain way. Then we say now we are meeting our respect, we need to pin it here as in pin it. So playwright tests would provide Benning tests. They were very painful, very
+
+[00:51:25] Very hard to write. They're also very ad hoc or unstable, but with AI you can generate very stable playwright test. Check them in. You have pinned your front end to the spec that you wrote. And with this you can say, now I can move forward with confidence as I write new things or as my agent write new things, I will make sure it will not regress anything. Okay, so the binning test is also regression test. But on the back end, the three suites of tests, UT,
+
+[00:51:57] This is the entire SDLC in one to codex. Our playwright is just basically a library that I perform tests on UX. So not like unit tests include the trans alone. It actually spends off the website and a browser. Sometimes headless browser. So you don't even see it.
+
+[00:52:28] And it starts clicking, so you build a test again that says, test loading, test the parallel text work, test save, test editing and save, test editing again and save, test resize. So it will do exactly this with the mouse. So it will exercise your front end. And what happens is that you will write a comprehensive set of test cases, you will pin them in place. If I would write the right tests now, I will go back to the spec and say, I have the code, I have the spec.
+
+[00:52:58] Right, play right test to comprehensively cover my spec and bend it in place. As in bend it as in test suite. You know what I mean? No, we need play right because the test will be saved and checked in. It will not, the AI will not come and click around every time would be very expensive again, but it would be very expensive and non-deterministic. But play right is code. It's like a unit test, right? So it will say open page, there's the code for open page.
+
+[00:53:31] It will be very long and noisy but it is bending your state to the spec. You safe and then I'm in.
+
+[00:54:17] Can you imagine that?
+
+[00:54:48] You can write small unit tests that extract the DOM area of this, for example, and test it's layout, it is rendering the right small div, as in div in the HTML page or a frame or whatnot. You will do a lot of UT in Playwright. I'm sure if you sit down with Scott Yves and say, I want to test the front end, give me a plan to give you a little better
+
+[00:55:18] So, it was Clash. There is a connector that's called Playwright. And in my website, it was using it a lot to test all of these buttons. I don't know if it's the code or it's a different tool that someone built that's called the same thing as Playwright.
+
+[00:55:48] It goes to the website, like in my class, you use the click links, click buttons, and then also takes screenshots of the current state of the website and the flip button. It stays somewhere that it doesn't like. It says, oh, from the picture that the playwright took this button, doesn't go here. I'm going to change it. Yes. So that's what Mina was talking about. Will we make the AlienM test it every time, or will we generate this and choose it in?
+
+[00:56:17] You're the ones that go back again to make the LN test them every time. That's expensive, you can. It's all in for the same, but to Amir's point I can say do a quick smoke test on the front end. Click around and make sure things work. Remember last time when it surprised us and said, can I use your screen please? And it showed us this small arrow.
+
+[00:56:46] I think it will have it now. Basic test high-level clicker. Make sure this thing work before we move forward. I don't know why it's not showing me the split. Here. It should show me. Here. This guy should start clicking around. So even clicking. It's not easy. You sit down and drink your coffee and enjoy seeing your feature working. This was a job, right? Manual testers.
+
+[00:57:45] We're vendors we hire from, whatever, somewhere to click around every time. It's disappearing, unfortunately, but it is so cool. And look, it is discovering bugs. It will probably give us a list of bugs to fix. Remember, this is a team of agents. I see as the managers, you will take the report from the front end, send it to the back end of the guy and say, your front end, will you find these bugs? Go fix them. If it happens to find bugs. So it's pretty cool.
+
+[00:58:17] Give us a report of what's going on.
+
+[00:59:00] Yeah.
+
+[00:59:43] The way I noticed it fixes the box, it just goes to fix the box but it doesn't have a retrospective to fix the design or fix things in a more loop-goose-to-way than just fixing the box in the video. So I found it useful.
+
+[01:00:00] I don't know the right papers to obtain the AI agent who are going to review and design review, etc. after a whole bunch of bug fixes are done. Which happens, all this happens in the background but then the code gets messed up in a way.
+
+[01:00:21] So this is a second one. I don't know if I'm doing something wrong or not. Do you use a spec, Abun? Do you use a spec? Okay. So you do a set? Okay. Now our course is a front-end host. The test they get, like, to make sure it covers all the pieces. That's the agent of work for it for hours. Where this comes back, it generates 10,000 tests, not generating. And then it's covered 100 bucks. In the course of the cases, it goes to its own 100 bucks. But then I noticed that if I asked it to go for a review or a design review or a bug batch,
+
+[01:00:49] It actually discovers the really silly stuff after the whole course is done. The scope is real. The scope is not just in how to think about that. The fact that I just hold this test to pass, no matter what I do, it's not like I'm gonna take the bag and I want to go through this bug and all the other things. But it gets cold if I go another round, it's good to use a design review of contagious. If I go like two or three of them, it goes back to finding
+
+[01:01:19] So for this part I don't know if I want something wrong, but this is a very visible phenomenon. Number three is I don't recommend that each one of us according to this process at work to define a skin that describes his own work through the flat-out skin. Because maybe I may not see the planes of playwright and how that field does not playwright.
+
+[01:01:48] All of the things needs to do good reviews on design. I commend that we all, we ourselves build up our own skills that defines our own workflows. At work we started to actually do this and we started to have a place in the repo specially for the project skills. So we will discover all of the skills because we manipulate a lot of data and we need to assemble the data and assemble the skills and we are going to use them.
+
+[01:02:17] On your point, Abuna, of doing things and waiting, in the beginning today we talked about how we split our team into back in the front-end system and deploy and we always keep ourselves engaged. Now I want to try one thing with you. This view here, the HTML view is embedded. So there might be a chance that they built it in such a way that it wouldn't block if we moved to another agent. So I'm going to say, let's see.
+
+[01:02:57] I am seeing this because when I saw this in VS Code, it created a very specific kind of window and highlighted it with shared those agents. And you can do other things while the agent is clicking around. So I'm going to try this. I wanted to say to other agents. Yeah, actually I want to see. Yeah, I think there are two pointers. There's a most pointer here that is independent of my of my. So they built it in a way to.
+
+[01:03:39] Yeah, yeah, in some other cases. No, let me actually let me switch to another thing. Last thing it was doing open document. Okay, 100% 100% but I think it might have both do when I switch it. It deserves looking into it. Cool. You safe.
+
+[01:04:10] I'm one of those students. It's a very easy trap to find. The reason that I sort of wrap my head around like why is this happening. Why people grab, you know, just letting go and then go around. There is obviously like a certain level of like parallelization that can help your work in multiple features, whatever. Eventually at some points that you're going to be stuck behind something or the temptation is going to be very easy if you do have multiple features to just sit there and go five minutes all the way down the phone.
+
+[01:04:42] Part of it is that this whole AI era, it used to be that you did not have to make a very, very strong active effort to keep your ring engaged and to avoid turning your ring off. It wasn't really an option to turn your ring off. You had to, because you were mainly writing code. You had to think about the next language you're writing. You had to think about something.
+
+[01:05:12] Well, they got it so very easy because of the small windows of like, so we get on three minutes, like one three minutes, right? It's so easy to turn your brain off. And it's also because they're so capable, they can really look like they're doing perfectly fine. And honestly, let's say 30, 40% of the time, actually can. It can do it on its own and you don't really need to add much, right?
+
+[01:05:39] But I think that's part of the reason, like, it is now so much more on us to ensure the fact that we are using our brains and to keeping our brains on and making an active effort into paying attention, thinking through things, like learning. Like the whole like, even just like something that's silly like learning, you have to actually make an effort to put time into learning versus like...
+
+[01:06:08] Before you just do that, because you're hearing it. Yeah, yeah, I've never seen it.
+
+[01:06:37] And he interpreted the whole big thing on his own. And then the guy asked why my developers are taking millions of dollars while I just spent a day and a month. The point is other than pushing to learn, you are also competing with any smart dude who's got a few five features in one day without you. And you are just waiting to think that you're going to see and just starting the region and waiting to see them there. So part of making the USF,
+
+[01:07:07] The 100x engineer is not a laboratory anymore. It is a must. The tool has changed and if you are not
+
+[01:07:36] Anyway, any other questions? I wasn't expecting this thing to work in this hour, but it always exceeded my expectations. It even did a small test for us, which was really cool.
+
+[01:08:09] So thank you so much. Oh, thank you. Thank you. Next time we'll do infrastructure for two lectures or so with Mina Mikheil. We'll try to cover as much as we can from the infrastructure and go on Azure board and see what they are. And then Samah Magarios is preparing how to batch the AI interview. He has a lot of experience with what happens in the new format of interviews. He's preparing a session or two.
+
+[01:08:41] What it means to get into an interview, detail you. Corona repo, here's an agent, here are tokens, go do something. So Sam will give us also some practical hands down and those are the remaining like things for sessions for Cabin will be done. This will be weird. If we are interviewing us trying to use AI. It's endless. Nazar, you're seeing anything? Sorry. Just thank you. Thank you. Okay. Thank you so much everyone.
+
+[01:09:11] Thank you. Bye Nazar. Take care. Bye bye.

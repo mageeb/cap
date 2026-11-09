@@ -7,14 +7,13 @@ public static class HostApplication
         var builder = WebApplication.CreateBuilder(args);
         builder.AddServiceTelemetry();
         configure?.Invoke(builder);
+        builder.AddDevDocuments();
         var app = builder.Build();
         app.UseRouting();
         app.UseSafeRequestTelemetry();
+        app.UseDevReviewer();
         app.MapGet("/health/live", () => Results.Ok(new { status = "alive" }));
-        // Fail closed until production identity and business dependencies are configured.
-        app.MapGet("/health/ready", () => Results.Json(
-            new { status = "not_ready", reason = "business_dependencies_not_configured" },
-            statusCode: StatusCodes.Status503ServiceUnavailable));
+        app.MapGet("/health/ready", (Func<HttpContext, Task<IResult>>)DevDocuments.Readiness);
         app.MapBusinessApi();
         return app;
     }

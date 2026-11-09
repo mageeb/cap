@@ -6,3 +6,10 @@
 - **Status:** Contract confirmed in [DEC-032](../../../../../DECISIONS.md#dec-032-proposed-translation-backend-boundaries); storage technology remains undecided.
 - **Evidence:** [Service-fake checks](../Tests/Program.cs) verify delegation, not adapter guarantees.
 - **Limits:** No concrete persistence, migration or durable authorization/atomicity verification exists.
+
+## 2026-11-06: DEV MongoDB review access
+
+- **Choice / why:** The host now supplies a real MongoReviewStore for existing seeded reads
+  and atomic version-filtered correction saves; unsupported import/draft operations fail explicitly.
+- **Status:** Implementation details pending [DEC-043](../../../../../DECISIONS.md#dec-043-dev-document-dependency-repair); DEV sample access approved by the user.
+- **Evidence:** [Feature007](../../../../specs/007-dev-document-access/tasks.md) tracks actual checks; the earlier absence of an adapter is historical.

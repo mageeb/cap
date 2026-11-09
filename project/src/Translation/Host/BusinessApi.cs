@@ -11,23 +11,22 @@ public static class BusinessApi
 {
     public static void MapBusinessApi(this WebApplication app)
     {
-        app.MapPost("/api/books", context => Execute(context, Import));
-        app.MapGet("/api/books/{bookId:guid}", context => Execute(context, async (http, reviewer) =>
+        app.MapPost("/api/books", context => Execute<IBookService>(context, Import));
+        app.MapGet("/api/books/{bookId:guid}", context => Execute<IBookService>(context, async (http, reviewer) =>
             Map(await http.RequestServices.GetRequiredService<IBookService>().GetAsync(
                 reviewer, Id(http, "bookId"), http.RequestAborted))));
-        app.MapPut("/api/books/{bookId:guid}/paragraphs/{paragraphId:guid}/review", context => Execute(context, Save));
-        app.MapPost("/api/books/{bookId:guid}/drafts", context => Execute(context, RequestDraft));
-        app.MapGet("/api/books/{bookId:guid}/drafts/{operationId:guid}", context => Execute(context, async (http, reviewer) =>
+        app.MapPut("/api/books/{bookId:guid}/paragraphs/{paragraphId:guid}/review", context => Execute<IReviewService>(context, Save));
+        app.MapPost("/api/books/{bookId:guid}/drafts", context => Execute<IDraftTranslationService>(context, RequestDraft));
+        app.MapGet("/api/books/{bookId:guid}/drafts/{operationId:guid}", context => Execute<IDraftTranslationService>(context, async (http, reviewer) =>
             Map(await http.RequestServices.GetRequiredService<IDraftTranslationService>().GetStatusAsync(
                 reviewer, Id(http, "bookId"), Id(http, "operationId"), http.RequestAborted))));
     }
 
-    private static async Task Execute(HttpContext http, Func<HttpContext, ReviewerContext, Task<IResult>> handler)
+    private static async Task Execute<TService>(HttpContext http, Func<HttpContext, ReviewerContext, Task<IResult>> handler)
     {
         IResult result;
         var registrations = http.RequestServices.GetRequiredService<IServiceProviderIsService>();
-        if (!registrations.IsService(typeof(IBookService)) || !registrations.IsService(typeof(IReviewService)) ||
-            !registrations.IsService(typeof(IDraftTranslationService)))
+        if (!registrations.IsService(typeof(TService)))
             result = Problem(503, "business_dependencies_not_configured");
         else if (Reviewer(http.User) is not { } reviewer)
             result = Problem(401, "validated_identity_required");

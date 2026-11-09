@@ -1,0 +1,18 @@
+# Open in VS Code with the installed REST Client extension.
+# First run in the VS Code PowerShell terminal:
+# powershell -NoProfile -ExecutionPolicy Bypass -File .\deploy\translation-dev\Start-PortForward.ps1
+# Then click Send Request above either request below.
+@baseUrl = http://127.0.0.1:18081
+
+### Liveness: expected 200 {"status":"alive"}
+GET {{baseUrl}}/health/live
+Accept: application/json
+
+### Readiness: expected 503 until business dependencies are implemented
+GET {{baseUrl}}/health/ready
+Accept: application/json
+
+### DEV API request: mapped route, expected 503 until business dependencies exist.
+# Health endpoints are excluded from request telemetry. Use this to generate it.
+GET {{baseUrl}}/api/books/00000000-0000-0000-0000-000000000001
+Accept: application/json

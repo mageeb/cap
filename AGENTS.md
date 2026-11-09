@@ -81,3 +81,9 @@ These instructions apply throughout this repository. Read them at the start of e
 - For documentation and scaffold changes, check the diff, whitespace, and affected local links. No application tests are needed for empty directories or prose alone.
 - For executable changes, inspect the relevant project's configuration and README, then run the checks appropriate to the changed behavior.
 - Report what changed, what was checked, and anything still unresolved. Record actual commands and results when they are part of teaching evidence.
+
+## Translation deployment and validation
+
+Translation deployment configuration lives in [projects/translation](projects/translation/README.md).
+For Translation changes, follow [the validation workflow](projects/translation/docs/validation-workflow.md)
+and read [the project instructions](projects/translation/AGENTS.md).

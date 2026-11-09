@@ -1,0 +1,233 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: translation-mongodb-retain
+provisioner: disk.csi.azure.com
+parameters:
+  skuName: StandardSSD_LRS
+reclaimPolicy: Retain
+allowVolumeExpansion: true
+volumeBindingMode: WaitForFirstConsumer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+spec:
+  clusterIP: None
+  publishNotReadyAddresses: true
+  selector:
+    app.kubernetes.io/name: translation-mongodb
+  ports:
+    - name: mongodb
+      port: 27017
+      targetPort: 27017
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: translation-mongodb
+automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongodb
+spec:
+  serviceName: mongodb
+  replicas: 1
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Retain
+    whenScaled: Retain
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: translation-mongodb
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: translation-mongodb
+    spec:
+      serviceAccountName: translation-mongodb
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 60
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+        seccompProfile:
+          type: RuntimeDefault
+      initContainers:
+        - name: prepare-keyfile
+          image: mongo:8.0
+          command: ["sh", "-ec", "cp /secret/keyfile /keyfile/keyfile; chmod 400 /keyfile/keyfile"]
+          resources:
+            requests: { cpu: 50m, memory: 64Mi }
+            limits: { cpu: 250m, memory: 128Mi }
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: { drop: [ALL] }
+          volumeMounts:
+            - { name: keyfile-secret, mountPath: /secret, readOnly: true }
+            - { name: keyfile, mountPath: /keyfile }
+      containers:
+        - name: mongodb
+          image: mongo:8.0
+          args:
+            - --replSet
+            - rs0
+            - --bind_ip_all
+            - --keyFile
+            - /keyfile/keyfile
+            - --wiredTigerCacheSizeGB
+            - "0.25"
+            - --tlsMode
+            - requireTLS
+            - --tlsCertificateKeyFile
+            - /tls/server.pem
+            - --tlsCAFile
+            - /tls/ca.crt
+            - --tlsAllowConnectionsWithoutCertificates
+          env:
+            - name: HOME
+              value: /tmp
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef: { name: translation-mongodb-auth, key: root-username }
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef: { name: translation-mongodb-auth, key: root-password }
+          ports:
+            - { name: mongodb, containerPort: 27017 }
+          resources:
+            requests: { cpu: 250m, memory: 512Mi }
+            limits: { cpu: "1", memory: 1Gi }
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: { drop: [ALL] }
+          startupProbe:
+            tcpSocket: { port: mongodb }
+            periodSeconds: 5
+            failureThreshold: 60
+          livenessProbe:
+            tcpSocket: { port: mongodb }
+            periodSeconds: 10
+          readinessProbe:
+            exec:
+              command: ["mongosh", "--quiet", "--tls", "--tlsCAFile", "/tls/ca.crt", "--host", "localhost", "--eval", "quit(db.hello().isWritablePrimary ? 0 : 1)"]
+            periodSeconds: 15
+            timeoutSeconds: 10
+          volumeMounts:
+            - { name: data, mountPath: /data/db }
+            - { name: configdb, mountPath: /data/configdb }
+            - { name: tmp, mountPath: /tmp }
+            - { name: keyfile, mountPath: /keyfile, readOnly: true }
+            - { name: tls, mountPath: /tls, readOnly: true }
+            - { name: schema, mountPath: /schema, readOnly: true }
+      volumes:
+        - name: schema
+          configMap: { name: translation-mongodb-schema-v1 }
+        - name: keyfile-secret
+          secret:
+            secretName: translation-mongodb-keyfile
+            defaultMode: 288
+        - name: keyfile
+          emptyDir: {}
+        - name: tls
+          secret:
+            secretName: translation-mongodb-tls
+            defaultMode: 288
+        - name: configdb
+          emptyDir: {}
+        - name: tmp
+          emptyDir: { sizeLimit: 256Mi }
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ReadWriteOnce]
+        storageClassName: translation-mongodb-retain
+        resources:
+          requests:
+            storage: 16Gi
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mongodb-schema-v1
+spec:
+  backoffLimit: 2
+  activeDeadlineSeconds: 600
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: translation-mongodb-admin
+    spec:
+      serviceAccountName: translation-mongodb
+      automountServiceAccountToken: false
+      restartPolicy: Never
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+        seccompProfile: { type: RuntimeDefault }
+      containers:
+        - name: schema
+          image: mongo:8.0
+          command: ["mongosh", "--quiet", "--nodb", "--file", "/schema/bootstrap.js", "--file", "/schema/verify.js"]
+          env:
+            - { name: HOME, value: /tmp }
+            - { name: MONGODB_TLS_CA, value: /tls/ca.crt }
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef: { name: translation-mongodb-auth, key: root-username }
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef: { name: translation-mongodb-auth, key: root-password }
+            - name: MONGODB_APP_USERNAME
+              valueFrom:
+                secretKeyRef: { name: translation-mongodb-app, key: app-username }
+            - name: MONGODB_APP_PASSWORD
+              valueFrom:
+                secretKeyRef: { name: translation-mongodb-app, key: app-password }
+          resources:
+            requests: { cpu: 100m, memory: 128Mi }
+            limits: { cpu: 500m, memory: 384Mi }
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: { drop: [ALL] }
+          volumeMounts:
+            - { name: schema, mountPath: /schema, readOnly: true }
+            - { name: tls, mountPath: /tls, readOnly: true }
+            - { name: tmp, mountPath: /tmp }
+      volumes:
+        - name: schema
+          configMap: { name: translation-mongodb-schema-v1 }
+        - name: tls
+          secret: { secretName: translation-mongodb-tls, defaultMode: 288 }
+        - name: tmp
+          emptyDir: {}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: translation-mongodb-ingress
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: translation-mongodb
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels: { app.kubernetes.io/name: translation-backend }
+        - podSelector:
+            matchLabels: { app.kubernetes.io/name: translation-mongodb-admin }
+        - podSelector:
+            matchLabels: { app.kubernetes.io/name: translation-mongodb }
+      ports:
+        - { protocol: TCP, port: 27017 }

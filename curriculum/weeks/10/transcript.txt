@@ -1,0 +1,441 @@
+﻿Session 10 - Nov 13
+
+Full automated transcript, unedited. Timestamps refer to the original recording. Recognition errors and incidental chatter are retained.
+
+
+
+[00:00:00] What is the objective of the talk?
+
+[00:00:33] We did lots of exercises before and we're going to apply it to YouTube. It's challenging but we'll try to take it step by step and we're going to do it together. I have a question. Didn't you work on YouTube? No. I worked on one piece in the YouTube and I'll show it to you. You have the comments, right? Yes. But before we start, let's start with personas.
+
+[00:01:04] Second session or third session or third session after the genetic stuff we talk about personas. Who are the personas of YouTube? Kids. Kids, that's a good one. The person that uploads, okay, that's great. This is the creator. The viewer. Yes. Who else? So the kid is a subset of the viewer, which is actually a good scenario, the most covering here, but this is a very good scenario.
+
+[00:01:37] The
+
+[00:02:13] I think it's a bit of an admin, not an internal Google admin. There should be some internal Google admin that will help those different assets. So you all got it all right. So you have the viewer, the creative that replies it, and people of those are the main person. Each persona has different requirements. A lot of viewer, it's all hidden. They are viewing videos. They are looking at shorts.
+
+[00:02:44] They are giving comments, they are adding comments, so it's very heavy traffic. The creator is heavy right track. They are trying to upload lots of videos, they are adjusting it, they are tracking metrics and other stuff and they are optimizing the media content to get more outreach to their customers. And then you have the advertisers and the advertiser is all real time auction. So the idea is, Amir Masar is working at Boeing.
+
+[00:03:10] This is a very
+
+[00:03:40] If you have an issue or something, you need to go to some sort of an admin. And also those people are also engineers who are helping with scalability issues. That's on the YouTube side, right? Yes. All good? Any questions? What's Ops? Operations? What's operation? Do you like to deal with technical issues?
+
+[00:04:27] If something goes wrong or if a creator has a question about their channel, how they can do certain features, they will reach out to ops or something like this. That's the problem. When everything is going wrong, it's ops only for things. I'm just maintaining the channel as well. So I'm just keeping it up and running. But we're not talking about the channel because the channel is a creator. The one who maintains the channel is the creator.
+
+[00:04:58] It doesn't necessarily have to be one simple problem.
+
+[00:05:27] But there are some cases where the machine fails to say this is true or not, but it goes back to a new one to decide if this is correct or not. And then as we see, as we architect the system, we might find that there is a major scalability issue. We'll talk about this one. Someone needs to go in and add more machines or add more storage or add more RAM or whatever it is. I'll sign it here and wait for the second question.
+
+[00:06:04] So we don't know our personas. What is the next step after the personas? Remember from the MBP? Sure. Yes. What is the MBP? What did we talk about in MBP? Viable. Yeah, what's inside the MBP? Yes, what is inside the MBP? So it's basically the minimal features we need to create in order to get to the production. Yes. So far, yes. We just started. We're trying to build YouTube from scratch. We started from personas.
+
+[00:06:42] We are going to design the MVP. We are going to design something from YouTube. What kind of features? I don't like people being silent. What kind of features we need to build? So maybe we could cover by each persona. What are the features that we need to have for the viewer? Okay, watch the video. Okay, what else? I'm going to close the video. This is the character.
+
+[00:07:16] This is a
+
+[00:07:51] This is not a picture. It could be a picture. For this discussion, it's a subset of the user. Search videos. And there's some way of differentiating between ad videos and regular videos. Which video and which video? Ad videos and regular videos. Oh, I see.
+
+[00:08:22] This is a big overview of the course.
+
+[00:08:55] What kind of control?
+
+[00:09:28] So now we're going for the advertisers. For the creator. No, the creator does not decide on the other side. This is a platform thing. Really? Yes. So that sponsors that thing too. Sponsor is something different as part of the video so it's not really, it's not a feature that we're going to expose. A payroll system, a secure payroll system. Payroll system, sure. That's a good one. Okay. That's something.
+
+[00:10:01] Okay, for advertisers, what kind of features we need to build for advertisers? Similar dashboard, see which ads are being watched. Here it is then. Yes, you need to see the outreach. And then advertisers, there are different ways to monetize ads. There is a state review. So as you see, videos, this advertiser will pay Google and usually it will.
+
+[00:10:31] Maybe it's 100 views per 100. But there is pay per click. So if you click and this is much more expensive because now you're converging traffic to their website. And there's something called pay per acquisition. If you go and acquire an iQI shoe from iQI, now you pay more because now you've got conversions of the. So all these metrics needs to be captured. There's also advertiser analytics.
+
+[00:11:00] But this is part of the auction.
+
+[00:11:29] So you mentioned kids, what would be an important feature for kids? Age control. Age control, so permissions for each console who can access the video. That would be for viewers. That would be for viewers, but it's actually a platform feature because the way you build it is not everyone is assigned a user, but you still need to figure out if this user is an adult or a kid.
+
+[00:11:57] So there is a platform. That holds under a variation. The Pregabok parental control. Parental control is a good feature as well. It also locks in certain content. Yes. That holds under a platform. It will cover this one. Yes. People block videos based on location. Maybe, yeah. Most of you watch soccer.
+
+[00:12:24] If there is a video posted by VN Sports, for example, you cannot watch it in US. You can only watch it in the Middle East because some CBC, for example, have the access. So there are some permission for it.
+
+[00:12:54] So, really, I want to make that we talked about personas, we're building YouTube. The personas for YouTube is the viewer, creator, advertiser, and people else. And then we talked about different teachers for the creator uploading a video, for the viewer watching a video, recommending a video, adding seeing comments for the, for the viewer also analytics, for the creators, and then for the advertiser, we do ads and then permission content.
+
+[00:13:23] So what are the non-functional requirements?
+
+[00:14:00] So when you watch a video, this needs to have a 5.9 availability. Why? The availability is 9.999%, which is two minutes a year. You always have the service on and you are available for most of the eight-hour queue. Why is watching a video with a 5.9? Exactly. So this is a very critical feature. So out of all those features,
+
+[00:14:31] When you are conducting the system, there are areas that you need to make sure they are 5-9 and there are areas that you are okay because they are not 5-9. So watching a video, yes, watching a video is the core of YouTube. If it's down, everything is done. But as Harbi mentioned, comments, if it is slow, so we have latency requirements as well. Watching a video when you click, you need to watch it right away. A comment could take more time to load. Spine, if it's broken, it's spine. So you could have
+
+[00:15:01] Added Bits on Ads.
+
+[00:15:34] This is a very important business. This is actually what is funding the videos.
+
+[00:16:06] Because without it, actually the business is not going to run. But in terms of like the point of view to someone to watch a video, that doesn't really affect the customer? Yes, from a customer perspective, the Five Nines is watching a video. But from a business perspective, your Five Nines is the bidding and showing the ads. So it's not like, that's why there are lots of different things. So permissions, access rights, age restriction, is this Five Nines, is this, what will be the...
+
+[00:16:38] Why is it fine? Why do you care? This one is not available. It's more about about accuracy. Yeah. So what would be is is the accuracy like if you get it 90% of the time, is it okay? Good enough for us or does it need to be 99.9? Like what would be the range here? It could be suited for you. Exactly. So now you have a regulation requirement. So if you if you show the tobacco ad for a kid, Google will pay X
+
+[00:17:10] This is a very critical.
+
+[00:17:41] It actually gets so nuanced. If you think about it, if you break down, watch in the video. What you call is AOSL-C-C-A-V-M-N-O or no-function requirement can be fine to first load. How many times it buffers? How many times I have to wait and so on? So it gets very nuanced in everyone and usually you have to break down
+
+[00:18:08] This is a very good point that Hany mentioned. This is an end user consumer facing product. So you have different kinds of requirements and regulations from an enterprise facing product. So if you are an enterprise facing product, you have two very different problems. For example, like the compute, you cannot run stuff in
+
+[00:18:37] You cannot store data that's going to be searched in Europe, you cannot save it in US. They have different kind of regulations. And those have FTPs. So also you need to architect your system in a way to keep the data in Europe, to keep the data in the US and so on. Tell us more about the regulations you have. Regulations? And yes, so those are how we have so many. Actually I'm doing one right now.
+
+[00:19:07] I do a lot with observability. The things that we're talking about right now, we're trying to do something new with observability, and use it like another service is the control of leaking PHI. What's this PHI? PHI is patient health information. Exactly what I'm talking about. It's a huge deal. It's actually a big consideration of the deal that we're going to make and all of that because there's
+
+[00:19:37] A legal agreement is called the BAA that we would have to sign with them if we were to store any DHA with them because that takes the blame away from us. But even beyond that, if the contract itself is not enough, we have a group of people in security that have to vet their full architecture using it with the BAA if it's their fault.
+
+[00:20:00] It doesn't matter if it's something not really, it's the legal agreement that I sleep with. Basically say like it's your fault that PHI weeks are long. But even with that, that's not enough because if it weeks even on their system, it's bad forever. So we have to like vet their whole architecture.
+
+[00:20:28] But yeah, I'd have to also look and make sure that there's no places that we could expose PHI because our platform obviously, like we medical research sometimes if you are a hospitalist and you actually can access PHI. So that's the whole thing. Like I'm making sure that like nothing that is done in a place where you can access PHI makes it any sort of like observability. But yeah, there's a lot of room.
+
+[00:20:57] So as you can see, the regulations and the requirements are totally different. Health care is a beast in terms of regulations and requirements and you need to take this into account and sometimes some of these things can take precedence over latency and availability and other stuff. Okay, so what kind of scale requirements? How many users do you expect we need to support? What an active PR?
+
+[00:21:28] So our system needs to scale to billions of users. And how many watching hours per hour? Ten millions per hour? Ten thousand. So this is the answer. Why this question is relevant? For the sake of availability, make sure that everyone is able to watch whatever they want to. It's not a very big philosophy. It's a direct indicator of how many connections there are. Exactly. So it's about capacity.
+
+[00:22:07] How many machines are you willing to use to serve the big use? So if you say I need to have one big view per hour, so I need one machine per hour. If I want 500 hours, so 500 hours per minute, now you need to have maybe 300 machines or 500 machines depending on
+
+[00:22:35] Resolution and other stuff and latency requirements and other stuff. And then one important aspect here also is the latency requirement for viewing the video. So we talked about watching the video as a core piece. So when you click, you need the video to be innocent. And we talked about availability. So these are the scale and core constraints we have. So we're going to support 2.5 billion plus users, 500 hours per minute.
+
+[00:23:03] And under 200 milliseconds, like in my head. I was going to say, 364. What is YouTube's competitor? Competitor? Yeah. Did we have it? That's a very good question. Who would be? This is actually something that's very important from a product perspective to figure out who your competitors are. Who do you think the competitors of YouTube are? I feel like YouTube is the only platform where you watch videos like this.
+
+[00:23:37] What is YouTube business in which category is YouTube?
+
+[00:24:08] So, everyone was on YouTube and then short from video came on. Now, at this point, they've evolved and they have their niches where it's like YouTube's like bomb form content. Daily motion. Actually, let's lasard. Daily motion. Like, it's a video.
+
+[00:24:37] That's what you're going to hear. Daily motion. Daily motion. Daily motion. This is Menia, entertainment business. We're just trying to get people entertained. We have a lot of free time. What do you do? You go to an entertainment platform. So if you're thinking about this from an entertainment perspective, so now you're actually in the category of Netflix. Disney Plus. Disney Plus.
+
+[00:25:09] So, why is this relevant?
+
+[00:25:38] So maybe we need to start adding base content movies and see it is stuff which is not actually, this is no longer uploading a video by a creator. Now it's maybe it's by an admin and you need to make deals with studio so it's totally different kind of thing that might actually require also infrastructure changes because once the license falls off you need to
+
+[00:26:06] I think we should not pull the internet to the web.
+
+[00:26:37] They are doing live streaming for games and stuff so you can read it to be in the business. So you need to support ViR which is totally different architecture from showing videos. Okay something that I don't know if this is on topic or on topic. YouTube originally started not as big as this video thing. It was meant to look at other kind of people. So I read about that the YouTube was originally launched as the video was like now.
+
+[00:27:07] Maybe it started as an idea and then they prepared it. MSN Groupon was not built for selling discounts. It was built for something legal and then they prepared it to become Groupon. But you never hear about the origin and story because it doesn't succeed. So maybe it started as a video or sharing app and then when they decided that I built infrastructure.
+
+[00:27:35] So let's put bending blocks.
+
+[00:28:22] I'm very proud of you.
+
+[00:29:55] We're doing architecture. What's the answer? Cash. I'm actually getting the API. I was in a very different camp story. Go watch. You tell me. What you put here and what you put here. And what is storage? I don't know what's storage. It's 1% below. Remember when we talked about blocks? Were you there in this session? Blocks is like a folder.
+
+[00:30:34] This is accessible from anywhere. It's so tight to a machine. It has everything and it's very cheap. This actually could be a good candidate for content that is like big use. It could be a lot like you get gigabytes of data. You could actually put it from blog. What would be the problem? Everything has a speed. So blog most likely to be a mechanical disk or HDD or this case scenario SSD.
+
+[00:31:05] You still have big limitations on the throughput that will come out of this. So this might have an issue. But yes, we need some blobs storage for some reasons of this consist. But still I give these a higher building block. I didn't see how I can do any of those with those building blocks. What do you think of this so far? This is any architecture would be like this. Load balancer, that's it.
+
+[00:31:39] Well, the front end is also your client machine, right? So your apps could be stuff that you just store them on the client machine.
+
+[00:32:10] So for example in the case of YouTube, your streaming video actually is a really bad idea to stream that live. Because then when you miss a packet or when you miss a frame or something happens, look out, they buffer. So what you do is you shove more than they need to see faster to the client. The client stores all about it. So if you're ever watching YouTube and you see the white bar, that's actually all the stuff that's actually in English.
+
+[00:32:41] So what would I save in this cache and what would I save in this cache? The frontend cache is what you're currently watching. Or maybe even something like the most likely to next watch. Very televised user. Backend cache would probably be something more like, we're talking about in a region, like hot videos. Videos that get watched a lot. Or, you know, training. Yeah. Something that is very useful for multiple users.
+
+[00:33:11] So this is the very user. This is for multiple users. With Dr. Abdelbalanser, we need a backup also for the storage and the backup for the database itself. Sure. So there will be a long dancer here. What is the name of the concept of having a backup? We're done. You have storage by definition as redundancy. Same thing with the new dancer. Sure.
+
+[00:33:51] We are going to need it for the athlete.
+
+[00:34:19] I'm going to talk about the future of the class session.
+
+[00:34:58] This is the creator. This is a client. So what kind of client is this? Well for now, if we're starting this fresh, this is just going to be a general client that can upload video. We need to mostly play around with all these. Okay, so what are the different client options that we, when you build this app?
+
+[00:35:29] Which website is one? Mobile app. The web app, mobile app. Are there other options for uploading a video? This is a good point. Like, some TV app, this is for people. I want to talk about desktop app. Mobile app actually, you need to make a decision how to go to support Android, iOS, and then the priorities will be different.
+
+[00:36:15] So TV app, it depends on most TVs right now are Android. Most likely your mobile app would work. But previously, TV had different architecture than it would have been different apps for you. You all know the difference between a native app and a native app? You know? So native apps?
+
+[00:36:58] You build natively in Android or iOS. And you use Swift to build it on iOS. Because we also have frameworks that act the act, allowing you to write it once and it runs on different platforms. What are the different results in this case? Actually, that was a great job. What? So there's a couple things you use that are specific features.
+
+[00:37:31] Can you give us examples?
+
+[00:38:03] It's straight through your Apple or your Android just because they're optimized to compile on those devices. It's also harder for depth and it's harder to debug and put on your real app. Are we assuming that the audience is here? Yes and no. A big part of this is the science is when you use AI, you know the three dots. So you need to be
+
+[00:38:32] What is the advantage of writing the app using React?
+
+[00:39:03] True. And you can jump from specs to either Swift or WebRoute. Without needing to worry about the spoken. We need to call us on cloud infrastructure. We have a lot of great content to add. The front end doesn't have a big gap from the cloud. I wanted to show the video. Because one option also is you might want to cache in the app. So your app will become your cache service.
+
+[00:39:33] It was cheap and you won't pay for anything. So some decisions you could make, maybe not in this architecture is you could save some content in there. Okay, walk me through.
+
+[00:40:00] Go from an app. So I go from app to connecting to the database. Connecting directly to the database. So after the user doesn't out-vote, yeah, I connect to the API, from the API to the build balancer to the database. I believe from there what happened is it would save pretty much the same data.
+
+[00:40:35] It should get back to me with a confirmation, like the videos that have been uploaded. Of course, these are asked to find all the description and all that. So it goes like this. Are you going to store the videos in the database? No, you store the videos in the blog. You store like a reference in the database. And when do you attempt success to these? There should be a communication between
+
+[00:41:08] This is a one-way of doing it. What were these issues?
+
+[00:41:41] It could cut in a little. The problem is you're keeping a connection here for a long time. And then you're uploading the video as is. The video could be 4K. If you're going to upload a 4K video, you see Google in YouTube, you have different options of showing the video. And not only when you're trying to watch a video on iOS or Android, you don't need the video 4K.
+
+[00:42:13] What do we do here? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you do? What do you
+
+[00:42:57] So we need to have one or two machines that take a video, that takes a video and conversate into different kinds of formats and storage.
+
+[00:43:29] So this is a component that we didn't catch anywhere. Can you say a component here? Here another microservice on the back end? Yes. It's not a microservice, it's compute. Bunch of servers that converge the videos into different kinds of formats. But I have to admit that this is a point where I want to give this a big one.
+
+[00:43:58] Let's do add comment and see comments. How do you look? This is a very good book. So now from the front end, you have like a text box under the video. For getter was a product part, think about it from an API architecture book. So from the front end when you add a comment, it will take the data and will store it in the database. So what would happen? What kind of API you would have here? That would be an add comment.
+
+[00:44:38] This is a comment service.
+
+[00:45:14] So what does that program call? That one, if something goes down, the whole thing doesn't fail. And you're able to reference other tables as needed in terms of which comment logs would you video to which user to which creator. You're able to have references for that. So how would you have references for this? So let's say we have a video service that has video server.
+
+[00:45:45] This is a video metadata.
+
+[00:46:23] The question is, yes, this comment belongs to some people. That's because we have different databases you cannot actually reference them. You lose the references and the degree of the data data is given. Exactly, you cannot do the point because now those are two different instances of database.
+
+[00:46:56] So, we need different servers that applies this kind of differential technique or this kind of mixing of data and separate layer here. Sun server that does this.
+
+[00:47:36] I don't think to judge you, but it's very important. When I see you, I just say, it's a vision. When I see you, I don't even get into the rest of the interview. Because you know they are afraid to return to the post-blog, but they are not asking to interact. Even if you don't know what the ask for graph connection, that's a little attention. And I have the idea I can give you all the better technologies. But these three jobs?
+
+[00:48:08] I was thinking that would make you differentiate you from others. And you understand why you're making those decisions and when you're making those decisions you're giving up something. So what are these? Okay, we talked about the microservice architecture. Nina, before we move forward, I think it was here. The center of the thing is always the video. Of the comments, uploads, view, everything. To bring us back, you need to understand that the things you watch the video is. Right?
+
+[00:48:41] But one simple design trick is using keywords. The thing about keywords is that if this 128 bits that can always be unique, it will be unique forever under eternity. And if you have a contract between the different services that given a keyword, I will be able to resolve where my stuff is. Then I use a keyword among all APIs. So I say, load comments for video drop and then you have the keyword.
+
+[00:49:09] A service will be able to resolve where the video is, where the point is. What is the love store back for the video so that you don't carry all the internet around? Imagine the internet is a sentence that means I laid out here is centered around the ones. If I do it the other way, they will give me everything I need to know about the video so that I don't have to put it from what they say that rules differential, laws differential, integrity and so on. So the point about Jyoth comes up a lot in many design use cases.
+
+[00:49:38] If you start with just defining a code for something that's unique, you actually solve the problem. And then you center your design around it. Does that make sense? There are different things we need to cover. Let's just put in the C comments. We just put in a code comment. C comments, I will go straight to the same comment service. So micro-server, each service has one ownership of something. So comments, you could read a comment from here, you could add a comment.
+
+[00:50:11] This is a very good question. I think we covered this before. Aguna's points, you remember the additional versus non-additional?
+
+[00:50:44] So with SQL, you guarantee consistency. Like when you insert a row, read after write, you have a guarantee that if you add other comments, I will be able to see you some comments right away. Plus, if a no SQL came in and so if the fuses wrote a comment and then hardly wrote a comment, this is the order is guaranteed. As if I do a no SQL database, you have eventual consistency. Eventually the data will be added because it's repeated. So
+
+[00:51:13] You can find the comment in one server. And Harvey's comment can go in another server. Depending where I am reading, I could read see Harvey's comment before you subscribe. They could find Masa and Harvey. It's one thing to use this comment, but actually you see Harvey's comment. Unless you design in such a way that eventual consistency is the condition of the relational components. If I comment through without a blank view, it's different than if you want to use a blank view. It's a lot of design.
+
+[00:51:44] So you need to handle this application. What is the application? Go for it. There are how many layers are there in design? The same in most of common layer. Hardware layer, network layer, protocol layer, application layer, it is API layer when we talk about APIs and contracts. Usually handling these things, for example in the case of comments, you say my comment will always move around with UTC timestamp so that when it eventually becomes available, my client or my API will sort it by UTC.
+
+[00:52:20] The problem is this time is coming from your computer clock or your machine clock.
+
+[00:52:53] Not all clocks are synchronized. The right here drift. A small drift. When you say not all machines, you mean like... Yeah, is this machine, when I asked it for time step, it would give me a machine built so it's clocked. Yeah. And you built the same thing at the same time, so it would be different. Really? I thought it was connected to the clock. For most of our communication, as Hennie mentioned, you can see it should be fine.
+
+[00:53:20] Okay.
+
+[00:53:52] The
+
+[00:54:23] This is mostly system engineering. It's all about showing depth in general and understanding. One interview I did, one interview before, was a very simple question and given two strengths, how many characters are similar for you? Use a hash table.
+
+[00:54:52] We'll hash T even. You would pick O and plus M. You didn't calculate the comparisons. You got it hash T. When you get the hash T, the hash T is doing it. It's not a constant problem anymore. You filled them because of that? Yeah, T on the R. The most important thing is understanding all the different things that are available. If you're not going to use it, having this understanding will help you enter. A few more to come next. I want to cover from Shafran Goyal.
+
+[00:55:23] Let's talk about videos. We decided to put some cash here and some cash here. So you should mention that I put videos here that would be relevant for everyone and here a cash per user. Let's say I want to talk about highlights of games and these are recommended videos. What would be the problem with this one?
+
+[00:56:21] You can still control which videos you want to show you so you cannot smash the cat.
+
+[00:56:53] This is a very good point.
+
+[00:57:25] We are going to watch the same thing. They don't even need to have a cash flow user. They are actually catching the actual deal. And they said you could cash the cohort. This could be one way. So you're actually increasing the amount of detail you're storing, because you're a surrogate, the same input, and you're using the same information. Do you have a question? So you're developing a... Are you saying that's how they actually put YouTube? No, but I was trying to go to the next step. So this could be a way to reduce...
+
+[00:57:55] All the other videos we talked about, the user will be a lot of repetition. And we need to avoid repetition as much as possible. So what do we do? Personal session? Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal session. Personal
+
+[00:58:31] So this is actually the recommender system. So there needs to be a recommender system. We missed this one. I'm trying to find my notes. I'm trying to find my even notes. So what prevents us from actually catching all the news?
+
+[00:59:24] Let's take a step up and how we agreed per cohort. How about if we do it per city? Most likely the people in this city will have similar interests. How about per country? So actually now, well, instead, you will have some machines in US
+
+[01:00:00] Some machines in Europe, some machines in Japan that have lots of videos. So this is a globally distributed cache and the content of this cache will be different. Yeah, it's a language. Of course. Sure. In Japan it's all Japanese, America's all American. What would be the problem with this approach? Just follow the problem. What are you giving up? You can't even give the Japanese videos as fast as you can.
+
+[01:00:34] Great. So how do we solve this? What do you think?
+
+[01:00:59] Do these need to be machines? We mentioned that before. What's the CDN? Basically just different storages like in the presentations. So we're actually architecting a CDN. So this is actually a CDN.
+
+[01:01:32] It's a way to basically have certain data or storage in multiple locations so that wherever anyone is they're able to access it without actually, and it could be virtualized. So it's not really like it's kind of like a cache but not really. It's the same idea.
+
+[01:01:56] This is what we are connected to. The CDM is a globally distributed cache and you configure it and put a bunch of stuff you want to put in. As a tool to handle that Japanese thing, most likely this is also part of our architecture. Maybe there is a very hot video in Japan, Ganga style or whatever. So this one is actually in Korea, but it's getting a lot of traction so actually you end up pushing it. You're repeating some of these caches elsewhere.
+
+[01:02:25] But you are very, you try to be very conscientious about which things you're going to approach globally versus globally. So this is the first step actually in the system design. So with all our clients, you will have different clients, web iOS, and most likely the user and the creator will only be desktop. Okay. And then the next step is the CDN. You have a CDN, a globally distributed CDN, where you store all the videos globally and it takes care of
+
+[01:03:07] If you are accessing it from the US, you're accessing the CDN and US. What's the special about CDN? You tell me more. What's the special about CDN? It's cheaper than normal storage. It's nothing other than just storage. You just solidify this. There's no compute, there's nothing fancy. It's usually public. You use it for public images and you use it for what purpose. There's probably more authentication. I think CDN is also called authentication. But in many cases, you work more authentication.
+
+[01:03:38] This is a higher level that you access directly. You don't even have the stack because you cannot handle all these loads with this stack. The CDN takes most of the load away from you. And that's why you find something here called the client edge.
+
+[01:04:07] So the next step would be traffic control, which is some sort of the API gateway that you were talking about. But this is even hitting before even getting into our backend. Then last time someone was asking about the firewall. You remember the firewall? This is called WAF, the web application firewall. What is the firewall doing? So does that block any vulnerable or any hackers or any sort of dangerous attacks? Yes.
+
+[01:04:42] That YouTube is not really as that's there because there's no like financial component subscription. No, but I could like in terms of like access anyone can access YouTube at any video. So no, but what if I access that? Yeah, that's where I access that content that I'm not supposed to see. That's not really new to unless it's like no, no, if it's if it's a restricted video, if you're not supposed to see in US and you use a VPN.
+
+[01:05:12] Or if you find a way to add, the main problem is if you find a hack in YouTube and you pass a content in the packet that will have SQL injection or something like that. So what this web does is it looks in the packet and decides should I pass this through or should I block it? It looks in the content of the packet before even going through your backend. So it's protection.
+
+[01:05:43] Next we'll go into the traffic and API control. So this is sort of the API layer slash load balancer layer, those two. So as you can see, there is an extended load balancer. So once you get the traffic, there is an extended load balancer.
+
+[01:06:24] And you will have a bunch of machines that are going to receive your request. So this load balancer can make a bunch of decisions. It can say, okay, like I'll look into the traffic on each server and I will give it to the least user. But this adds complex to the load balancer. So this is a tradeoff. If you're building a load balancer, you need to decide is it around Robin. You go server one, server two, server three, server four, or you look at, yeah, at least used. At least used meaning that you need to start.
+
+[01:06:53] Having extra logic and extra complexity in the load balance. And then you have the identity, identity provider. This is for authentication authorization. We've covered this before. And then you have a rate limiting. What is the rate limiting? Yes. Yes. So suppose that, remember, we're going to serve 2.5 billion users. What if the 2.5 billion user entered at the same time? Or what if, remember that most likely, this architecture
+
+[01:07:40] We're here in Europe, in America, in Japan. So most likely the Japanese customer will hit the same stack but in Japan. And the US customers would hit the servers in US. But what if there was an outage in the US? This could happen, right? Or you might hit, or you might end up
+
+[01:08:12] Maybe we talked about the persona, the ops persona decides to route all the traffic to Japan. So the Japanese servers cannot handle the Japan server traffic and the US traffic. So rate limiting is one way to do that, is to rate limit the access of the end users to those servers, to handle the load. It will.
+
+[01:08:41] But it's better than having a service done for everyone. When you see four or two months, our servers are too busy to serve you now, that's great. Yeah. And this class perhaps will outlook some people. Yeah. It's very recent in the initial and design interview to memorize the most common error code that goes to life for a 15-year-old or a 45-year-old.
+
+[01:09:07] At least you know that categories, that is different in this standard, because people know that you are deep into what you are doing. And then you could have a rate limiting back event for your micro-services. So suppose that you create the ones that keeps generating comments, you could rate limit this one. I had a friend actually in Facebook, he was also birthday, so he started liking, liking, liking, and then he got blocked, rate limiting because he was doing it so fast. So he got rate limited because this added overload on the like,
+
+[01:09:39] So you need to architect also the rate limiter based on the service and based on your architecture. Any questions? Next one is we talked about is microservices. We talked about the microservice. As you can see, we could have a bit you made a data service. We have this one. You can have a subscription service. Someone mentioned this one. Ask and bid service. So each service scales differently. It has its own SNOs.
+
+[01:10:12] I want you to go and check the Netflix microservice architecture. It's a huge mesh of services and they have a line that is 5.9 availability. Everything else you don't care because the 5.9 is watching the recommendation on other stuff has a lower availability but it's architected with the same way.
+
+[01:10:42] One important architecture of microservice is do you build it stateful or stateless? So a stateful, a stateless service, the good thing I was saying, those are actual servers, right?
+
+[01:11:20] So like a state is like you know like you insert a row into the database and it's not
+
+[01:11:57] So, you want to architect the market service to be stateless so that a crash, the next, so if you retry, it works. So it's like every time it's ready for you. That's right.
+
+[01:12:27] That's a good point. So the state is most likely something that will end up being in the database, but let's assume that our comments will go to an LNM and we ask the LNM some questions and then the LNM will go back to clarify these questions for the user. So I will store this state in the comments and then I'll go back to the user and ask him did you mean blah or did you mean something else? So when the user comes back I delete the same comments.
+
+[01:12:59] So, a state is something that you can temporary during the session.
+
+[01:13:30] Machine memory is that for your service memory or your application logic memory. If it crashes, it's gone. Yes. What is the problem? Other than if the machine failed, you're gone. The state is gone. But what other issues in architecture would go wrong? Think about that. We have multiple different parts for a service. A-link. Sorry? Sorry? A-link. So like when you want to scale the microservice.
+
+[01:14:05] So it's harder to scale with the state code. Harder to scale, correct. But from a load balance perspective, what would be the issue? Then you have to know to reroute. You have to route the session. Exactly. Like from the client to the server. It keeps that same connection. Correct.
+
+[01:14:39] So remember when we talk about load balancer we talk about two ways roundrobin, taking server based on order or based on load. So now actually cannot do that. You have to let load balance to the same server. The server might be overloaded or it adds more complex to the load balancer and it's harder to scale. So always try to architect your system as a state of service.
+
+[01:15:07] An example I mentioned around the comments, one thing you could do is you return all the payload back to the client and your server is now stable. And then once the client is spawned back, it spawns with all the payload. So even if the service went down or it routed to any server, it has all the context it needs to continue that course. One of the genius of OpenEI is that even though you sit down and you see a chair being seen for you,
+
+[01:15:35] It has always been for the most of the kind of safety service. The user assistant, user assistant, user assistant, see it on your machine. There's nothing on their service. So what's weird is if you are doping like 1700 iterations and you submit the next one, it is sending the entire thing again and again. So that they can return the service form, design, and service code is extremely expensive. Even if you design it right, it is extremely expensive. So most of...
+
+[01:16:03] The chatbot is in the state of the city. Next is the caching service. So what is this cache for? So we agreed that we're not going to cache this. What is the caching service? What are we going to use this cache for? The comments? How so?
+
+[01:17:00] The problem with the comments is if we're going to, actually it will have ID, comment ID, comment text, and some video ID, some video code, and maybe reference comment ID. Then it has a profile code. This profile is the profile user that added it. We need to show the picture, we need to show the person last name. It will have to timestamp. But the problem is,
+
+[01:17:37] And it will have other stuff as well. But each blue one is another join to a different service. And then you have hundreds of comments and nesting, testing has lots of complexity. So you could write a very complex query that grabs a comment. And then for every one of those it goes and calls the profile service to get the profile ID, the image. It calls into
+
+[01:18:07] I don't remember what other services we could use but you could think of like 4-5 services you could collect and then you find out, oh I have a reference comment ID. So I need to go get the comment ID or I have child comments. So each child comment we need to go and do fan out and do the same thing for all the comments. So it becomes a very very complex thing. So what we do is you compute all of these things as Verina mentioned and you put it in a cache. So maybe the ID will be video ID as the key.
+
+[01:18:36] And then the payload is the common cache. All the codes. Where we said this cache was saved? This would be a cache in the backend. How do you design a cache? So one of the popular caches is the disk cache. So we said video ID. So we'll have a bunch of servers here. That would have the cache date. How do I decide which server to go to for the cache?
+
+[01:19:23] I'm going to show you some of the services that you are using.
+
+[01:19:58] Thank you.
+
+[01:20:00] Okay, one approach is you store it anywhere and then the service will go send request to all the servers. You have to ID one and then it gets one. But now you're adding overhead on all the different servers. And then charging, how do I short? By indexing by ID for them. What do you mean by indexing by ID? So based on the value.
+
+[01:20:27] So, I guess you split it up so you have multiple servers each one should take 25 so long to 25.
+
+[01:20:57] I remember we also talked about that when we had starting from letters A to F. We talked about that we can actually show the one that's being overloaded. Yes, I was going to ask you what is the problem with this approach? It might get overloaded. Yeah, what in Gangnam style ended up being Hish? So you have a one billion
+
+[01:21:28] We have two videos here that are very hot.
+
+[01:22:00] How did you do this?
+
+[01:22:34] This is a very good point that you're in.
+
+[01:23:04] Because I was saying that we don't really need to cache the hunt views. Maybe our cache capacity is only 75. And we need to pick 75 videos based on the least recent access or whatever. So this means that the videos with a lot of views are going to be in the cache. The videos that are not the views, you are outside the cache with the capacity. And we could scale to the videos that are used. This is a very good point. But one of the challenges with this approach is
+
+[01:23:32] Sorry, I missed the question. Sorry. You have a good point. You decided that, okay, maybe we should just cache 75 videos instead of 100. But how do you how do you take those ranges to put on different servers? But let's say video two and three are least used.
+
+[01:24:07] So now you don't have continuous languages. You have Gaps. I should. I said how are we Gash the same video on different servers and make them by country or city and then now you're not getting a thousand people going to the same server. Sure. What is the problem with this approach? It's true better. It is a better thing. Yes. Where?
+
+[01:24:42] So it doesn't scale, you're repeating. It doesn't scale because now you're adding more resources for the same video. So we're trying to minimize the usage of not just possible. This is kept on the road. What do we do with hash delivery? How do you get the key? So you just hash the key by number, maybe by number of servers. We have four servers. So we do video ID, module of order.
+
+[01:25:26] And now we have video one, we'll end here, video two, three, video one, end here, two, three, four, five, six, seven, eight, nine, ten, ten. So what is the problem with this approach? What if you have a session on video one and five and ten, they're all the same on the really hard. Yes, what if, now we have one, five, and nine are here. What if actually one and five are very hot while the other ones are not hot?
+
+[01:25:57] Let's start off strong as well. Can you like, okay, is there a way to map different things that have a lot of views, those ones that don't have a lot of views so that you map it out where it's like the traffic is like, bounce? Yes, how would you map it? By, let's say, for example, maximum number of views. Okay, first of all, I just have a clue.
+
+[01:26:31] How does the router know that the video is in this block rather than this? Is it by a certain pattern or not? That's why we said hash. It would become very easier for the router to decide. Hey, why not do it so the videos that are being released are getting moved? Well, this would add a lot of complexity to the system. You want the router to be stupid, right? Yes. We need the router to be stupid. If you decided to do what you're saying,
+
+[01:27:04] This means that this service will need to have a mapping ID, a table for something, some people ID that will say, okay, video one would go to server two because it's getting hot. Okay, video two will go to server one, video C will go to server four. Why not have multiple routers? Multiple routers, and by now you're doing the same problem by multiple routers. And what is the problem with this approach? We do that.
+
+[01:27:38] This is also a catch word. This catch becomes actually about the neck because all the requests that are supposed to be distributed here are going to be added. Everybody's name is at the label. You said you wanted to say something.
+
+[01:28:10] I have a smaller list of these videos that we can cross on force and send it to her. What if we start a video that's... Okay, this is actually an accurate way to predict which videos are going to get the most views. So if a video is uploaded by a YouTube channel that has millions of subscribers, it's most likely to get a bunch of views than a...
+
+[01:28:40] You can also use the YouTube channel that I have here to let you know how to subscribe. And also, what you're saying here is you're solving it with a business logic. This is not applicable to other problems. It's all the cash problem in general. But I'm saying in terms of, because the problem that we're facing is trying to manage the cash, having to move down to the cash. In terms of traffic. Yes. Now in terms of storage, right? The point is...
+
+[01:29:09] So I'm saying is when we decide where each video goes in the cache, we again as we said we try to map them to where there is the maximum number of views. So like based on the views, but you want to do something.
+
+[01:29:41] How would you translate what you're saying to somebody? At the end of the day, I have a video. I need a very fast way. And this one is one clock cycle. You know a clock cycle? What you're saying requires business logic. It's lots of codes that needs to run. You're slowing the cash gift, which is the formula. Exactly. What if you had a sim in which there are one, can a one-pot video run on a one server?
+
+[01:30:11] This is not a video, it is a comments. We just need to get the comments.
+
+[01:30:42] This is one way. Sure. Did he say this? It's mainly adding a different server to handle the load. But so now your module is broken. You have to do by five. You need to do that. If you do by five, all your things are messed up. And then by five, this means that one module one to be here, that's two modules, two modules five.
+
+[01:31:13] Instead of going here, it will go here. Yeah. So now we will have a backup for each of these. Backup, sure. So now you have a backup. That's a good point. This is one way of solving it. But now there's a lot of wasted resources. Because you have only one whole server, but now you added extra C servers unnecessarily. Do we only add to the server that's hot? How would you know what it's going to be? This could be an option.
+
+[01:31:42] Yes, you could add a server, but now we need to get the load balancer to add another load balancer here. The load balancer is between, but cannot do the same thing on the file. So the answer to this one is consistent hashing. Something called consistent hashing. Yeah, the WhatsApp group to explain consistent hashing. Is it X problem? The idea is instead of having it as a linear, you have it as a ring. Ring.
+
+[01:32:14] And then when you add a new server, the consistent hashing enables. So, if you add the server here linearly, you need to move 90% of the data to different servers. Here, you only need to change 10% of the data. But watch the data because we're running out of time.
+
+[01:32:47] We covered this before. You need to make a decision between no SQL versus SQL. And even with SQL, you could do short. Remember we talked about last time, many explained that no SQL is easy because you don't need to define your business in an object model. And you could do the work experiment quickly, but it's not consistency guarantees and you need a bunch of stuff. You go SQL.
+
+[01:33:39] But one of the problems with SQL is it's a scale up. So you have limit on how much data you could put in one database. But what if I want SQL but I can't scale up? I want to scale up. Partition. You do partition. Same idea. Similar what we did with hashings. We say that big use comments that are related to big use from 125 will go to this SQL data base and then 26 to
+
+[01:34:09] 250 goes to this database and so on and so forth. And then you will have also a balance of here. But in databases there is something called what Piro mentioned, you can add replicas. So you could add a bunch of replicas here that will help you score these kids. And remember when we started our architecture, we said that this is a very heavy system.
+
+[01:34:41] Like how many comments are you going to write versus how many comments are you going to meet? Most likely most of the time 99% of the time you are reading and 1% or maybe a little bit more you're writing. So you could actually scale the right one go here, but then you could read from here. So now you could scale it a bit. What is the problem with this answer? Exactly. So if you write here, you need to
+
+[01:35:10] So, to go and replicate the rights everywhere. So read after writing becomes a problem. It's not identical. But actually, is it a problem in our system? That's a good question. Yeah, because we care about eventual consistency for comments. No, since we went here, yes, we could go with eventual consistency. But any point is a very good point. Because when you add a new comment,
+
+[01:35:48] You're not going to see it with this architecture. If you added a comment that references another comment, you still don't going to see it because the order is guaranteed here. And then if you see it here. Once it's a problem with this architecture, there's another problem here. Everything is a trigger. This becomes a bottleneck. That seems like you've always had sometimes the answer to your question. Some of these are for sake in a way that you really understand. But there are lots of architectures to solve this problem.
+
+[01:36:31] We call it primary primate. So there's two ways. There is something called active and inactive or active active. The idea is this server is just available in case this one went out and they communicate with each other with checkpointing. I'll send the packets. If I get the response, I know I'm still, this is still active so I'm inactive. Or and if I don't hear back, I'll pick over. And by picking over,
+
+[01:37:04] We just changed the IP address and the load balance if you say, okay, I'm the active now until this comes back and then you start taking the rights. And that will access the replicas, right? Yes, yes. And sometimes actually it has its own difference. And then every time you write here, the right goes here as well and goes there. What is the problem with this? Where is the resource? Where is the resource? But you're sacrificing now the resources for availability and...
+
+[01:37:35] The problem here is what if this right group is a network connection or this is down or something? You have to add retries. You could add retries instead of fees. But retries would be one solution, yes. So do you have like existing rights? No new rights coming in. If it's massive.
+
+[01:38:08] The load balancer will always pick this one because this is the active one. The problem is you always need this one to be up to date with that one. So this is a decision you need to make. This is sort of replication. Do you return back to the client and say I'm done once the write happens here?
+
+[01:38:38] Or once the rights happen on those post-its, move. It's a decision that you need to make. It's a trigger. This will slow your either an extra network copy and an extra right. So it's a decision you need to make that I'm going to slow down the rights in favor of resilience. Or I could say no. I won't guarantee these rights. It will be an asynchronous application. But the challenge is if this went down, this could be different.
+
+[01:39:10] So you lose some of the things. So everything is available. I think we covered the most important. Any questions? Any points to add? Could you come out? No, no, no, continue. I will almost not finish. Oh, now we didn't. We're not always done with it. No, no, no. That's a different part. It's common to do. OK, so remember.
+
+[01:39:53] One of the things we talked about is, okay, I uploaded a video and then I need to send it to a server.
+
+[01:40:00] So, how did I do this? I actually did something asynchronous. I messaged Q. So, there is a server here that needs to send a message or start an asynchronous operation. So, this is an asynchronous operation. Too much of servers here. Again, there will be some balance here or something. And actually there might be multiple subscribers. Like maybe this is...
+
+[01:40:29] This is the 720. Once I see the message, each one of those will take the video and start converting it into different sets. Another way is if I view the video, you finish the video, you want to update the analytics. You will send the message also to regenerate analytics or add information to the analytics.
+
+[01:41:00] If you want to update the video, if you want to update all of these things, you do it asynchronously. That way. Because it's not depending on the next operation. Is there nothing? Yeah, like... Thank you, Sam. Sam, I have been sending you lots of homework. Like these kids need a lot. Local message, excuse. This is great. Another one is can eating somethings.
+
+[01:41:32] How is it automated?
+
+[01:42:00] I said, it's a very slight chance that the automation fails. It cannot, it's an after machine learning, but maybe it doesn't have the accuracy enough to say that this is actually correct. So it falls back to a human to go and break what?
+
+[01:42:38] That was your something here. Yeah, but you know, work for a lot of things, you have to be listening to half-bass. It's always the same as the front and the background. Of course, that doesn't serve, uh, yes, a real time traffic. So in many designs, you really need to be aware of real time. Yeah, you actually have it in the next, uh... Yes, I think the batch process should be done. You're not good for that. Okay. So I think both of them were very good points. Uh, it's a... those, uh, those nodes, they are listened to a message, uh...
+
+[01:43:08] This is a machine learning process pipeline. So it needs to go read data and train the models.
+
+[01:43:38] As I was working on something like this at Google, where we wanted to figure out the viewer of the YouTube video is under each or above each. We needed to collect the viewing history of this user offline, and then we used it to portray, and then we used to make a decision offline on whether this user is above 18 or under 18, because you cannot do it in 15. And once you do that, you could actually make business decisions based on a plan that you click on.
+
+[01:44:12] There is something called column analytics just at toy I. The way the data is stored in general is user X, checked ad one. Maybe I'm a little bit... And data and databases are stored in raw formats. Like we always store it in raw formats.
+
+[01:44:57] For simplicity, product X was sold for 30,000. Product Y sold for 20. Product X sold for 30. And this is date. This is 10, 10, 10, 11, and so on. That's stored in a row for minutes. Thank you. And then
+
+[01:45:28] Most likely the table has a bunch of other columns. But what if I want to just figure out the total sales of product X? If I want to read the product sales for product X, this means that I need to read all the tables to be able to get X and the sales. This is a lot of iPhone. I'm going to read all these different columns.
+
+[01:46:03] Just to get this field and this is not good for analytics. We're going to read not so bikes unnecessarily. The column analytics is stored the same people, but in column of products. I mean, oh, at the end of the day, these are fines stored in this class, but fines are stored this way. X 30, 1010, Y 20, 1010 and then
+
+[01:46:38] The page is over. And then we go to the next page. X, 13, 10, 11. And so in order to get those two surface, I need to read the two pages. I'll call my format. The wait stores it. The store is a different way. The first page will be X, Y, X. This one. Second page is 13, 20, 13. Third page is 10.
+
+[01:47:10] So, let me check the first, which are, and then you have a bunch of other columns here. So, with column there, you just read those two, and that's it. So, you reduce the I go a lot, so you could run the analytics, these analytics actually, you're running on a pair of bytes of data, maybe a pair of bytes of data, but because of column there, you're just reading the least amount of,
+
+[01:47:41] And the most common thing is the first thing we learn about data relays. And it's very useful in data leak houseings if you have here this or data leaks. Because there's always a case where you want to grab two or three columns and you don't really care about the rest. Right? And that's processing analytics and insights and whatnot. So you use bar cake.
+
+[01:48:09] Right, so it is almost a solution to, I have this massive amount of debt and it doesn't make sense to process every row, you convert it to bucket and all of a sudden you kind of fill in your debt of format and then you are very efficient, massively efficient in a way that's a different from the bucket. I think we're almost done. The last thing is storage tiering. So remember we had
+
+[01:48:38] Every single, maybe we'll have lots of videos in SSD, but maybe you uploaded a video that nobody's watching 10 years ago. I have that actually on YouTube. I want it to be because nobody's watching. So videos that are very old, so this is called Tearing. The idea is you store low videos that have never been accessed for a while on a very, very cheap storage.
+
+[01:49:13] This is a batch of online jobs that keep analyzing which videos I could push out and which kinds of videos I need to come. You can go to lower blob stores or you could even go magnetic. At least the response time of the store is very slow.
+
+[01:49:40] We talked about Kubernetes before. Observability, Hennie covers this in bus session is very important.
+
+[01:50:17] Given that we're going to micro-service architecture and services are going to call each other offline processing, stream processing, listening to Kafka, what if I didn't get trans-coded properly? So we need to figure out where did this feed, this during the upload flow when it hit the server or the Kafka message had an issue, the workers were down. Like all of this, you need to
+
+[01:50:45] Use keywords to capture a request all the way through the different servers and different services to be able to trace it back and figure out ways of bugs.
+
+[01:51:26] Is there something that I skipped? But the most important thing that I want you to get out of this is there is no right or wrong decision. It's all three dots. And this is what you need to go in the system interview as any...
+
+[01:51:53] Even in the interview, when you go and talk about some of these things, it's different from you saying, I'm going to use this or I'm going to use this, but I know that this has these issues. I took this decision based on the business requirements or based on the functional requirements.
+
+[01:52:22] But I could adapt to this and you show that why you know the different options but you pick this one. What do you see this whole in shallah the possibilities and directions.
+
+[01:52:49] But the amount of the rate of the class is so hard that you have to study them step by step, layer by layer and give them right even with AI. But you have to just throw everything and see design YouTube. There are 700 possibilities and maybe AI will come up with, will probably lock night and confidence but it might not fit your scale needs and economics and what not. So what shall I do with AI? You, you are on the work. Hey Masala, in fact we talked about Masala in the commenting service.
+
+[01:53:16] This could be availability service. When you are deploying it, you don't need to deploy it on 1000 machines. Maybe 500 machines are enough. But for example, when you upload servers, this needs to be very critical and this is how you get content in. The analytics stuff could be down for a day or two. It's fine.
+
+[01:53:44] These are the kinds of trade-offs that AI will not hook. As Hennie mentioned, this could be stated, because the way you spec it is you know the trade-offs, and you know which ones you're willing to sacrifice and which ones above. So I was back and I should make this, what's important to me and what's not. And I took this decision because I'm more interested in this trade-off or more. Yes. Also from what I noticed, AI really is so bad with money. It can't get an estimate.
+
+[01:54:14] But at the time the deployment of the machine is it and it works on global distribution and stuff and you complete it from what AI predicted. This is where you come in and do the math. And usually I'm doing the math, but you have to drive the details. You know what I mean? And then you'll probably get it a little off. So you understand your system and troubleshoot all the, all the, all the, all the life side of the dashboards and then you pay a bit back and update your design. AI can't do this for you simply. It is not, it doesn't have experience of the real world somehow.
+
+[01:54:45] I would also say something from experience dealing with
+
+[01:55:24] The AI is so biased to finish. It was actually to finish the problem. So maybe it gets too silly layers right. Or we have very good choice in every layer for it to be able to finish. We are also biased to finish, but we know when to slow down and want to go fast. And sometimes we slow down on purpose. So we have to assist in this kind of automation. And that the give you a message on the services, the microservices.
+
+[01:55:57] Microservice architecture was very cool, maybe eight years ago. But suddenly people found out it's unmanageable. And it's very costly actually. SQL database are very expensive. So if you have one server per service, you're gonna go bankrupt. You have to go with no SQL. You run with different problems. Or you decide that, okay, microservices are overkill. Maybe I should do a console adage.
+
+[01:56:29] This is a
+
+[01:57:01] We didn't talk about some of these things. I would suggest that you all look at these things, the stuff we didn't talk about. Go research it yourself. You're not hard. But I think we covered the whole picture. Also, there are so many nice design interview videos on YouTube. Design YouTube, design Twitter, design over, design this. Beautiful. Beautiful. I'm going to just sit down and see them and then try to talk to you.
+
+[01:57:33] I'm very excited. Okay, we are debating whether the next time would be the AI interview or more infrastructure. I wanted to be honest, I also wanted to invite the speakers, but I'm really very excited.
+
+[01:58:09] But at least for sure the AI interview is on one or two sessions. So you guys, we will let you guys know by what time. And the week after, is there a person you like to be in the world? Yeah. I like to be in the world. Yeah, for sure. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank you. Thank
+
+[01:58:52] Thank you guys. Thank you Nazar. Bye bye. Take care. Bye bye.
